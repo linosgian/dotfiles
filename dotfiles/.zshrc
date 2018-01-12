@@ -79,6 +79,7 @@ export SSH_KEY_PATH="~/.ssh/rsa_id"
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 alias ll="ls -al"
+alias c="clear"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 

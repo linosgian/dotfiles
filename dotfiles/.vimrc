@@ -12,6 +12,7 @@
         Plug 'tpope/vim-commentary'
         Plug 'christoomey/vim-tmux-navigator'
         Plug 'scrooloose/nerdtree'
+	Plug 'dbakker/vim-projectroot'
     call plug#end()
 "}
 
@@ -64,7 +65,6 @@
 
     " Visuals {
         set number " Enable line numbering
-        set relativenumber " Enable relative numbering
         set ruler
         let g:loaded_matchparen=1 " Stop hightlighting matching brackets when the cursors on them
         set mouse=a " Enable mouse
@@ -174,7 +174,13 @@
     map ; :
 
     " ctrlp-alike searching
-    nmap <C-p> :Files<CR>
+    function! s:find_git_root()
+	      return system('git rev-parse --show-toplevel 2> /dev/null')[:-2]
+      endfunction
+
+      command! ProjectFiles execute 'Files' s:find_git_root()
+
+    nmap <C-p> :ProjectFiles <CR>
 
     " Start/End-of-line
     noremap H ^
