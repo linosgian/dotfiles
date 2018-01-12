@@ -1,4 +1,4 @@
-# If you come from bash you might have to change your $PATH.
+# If you come from bash you might have to change your $PAT.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
@@ -79,3 +79,11 @@ export SSH_KEY_PATH="~/.ssh/rsa_id"
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 alias ll="ls -al"
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# Fix color madness with xterm, screen
+export TERM=xterm-256color
+[ -n "$TMUX" ] && export TERM=screen-256color
+
+export GOPATH=$HOME/go

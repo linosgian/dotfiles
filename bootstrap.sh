@@ -6,7 +6,7 @@ else
     pkgmanager="sudo apt-get install -y "
 fi
 
-installs="zsh git gcc-c++ cmake"
+installs="zsh git"
 
 eval $pkgmanager$installs
 
