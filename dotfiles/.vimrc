@@ -70,6 +70,7 @@
         let g:loaded_matchparen=1 " Stop hightlighting matching brackets when the cursors on them
         set mouse=a " Enable mouse
         set nocursorline
+	set nocursorcolumn
         set list    " show trailing whitespace
         set listchars=tab:▸\ ,trail:·,extends:❯,precedes:❮
         set showcmd " Prints the commands you type on the fly ( bottom right corner )
@@ -187,6 +188,7 @@
 
     " Filetypes
         autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=4 shiftwidth=4 
+        autocmd BufNewFile,BufRead *.php setlocal expandtab tabstop=2 shiftwidth=2
         autocmd FileType json setlocal expandtab shiftwidth=2 tabstop=2
         autocmd BufNewFile,BufRead *.vim setlocal expandtab shiftwidth=2 tabstop=2
         augroup filetypedetect
