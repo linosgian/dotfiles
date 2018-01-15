@@ -88,3 +88,4 @@ export TERM=xterm-256color
 [ -n "$TMUX" ] && export TERM=screen-256color
 
 export GOPATH=$HOME/go
+export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow --glob "!.git/*"'

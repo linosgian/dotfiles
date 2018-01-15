@@ -1,12 +1,16 @@
 #!/usr/bin/env bash
 
+if [[ -z $(which rg) ]]; then
+   echo "Please install ripgrep from https://github.com/BurntSushi/ripgrep then come back"
+   exit
+fi
 if [[ ! -z $(which yum) ]]; then
     pkgmanager="sudo yum install -y "
 else
     pkgmanager="sudo apt-get install -y "
 fi
 
-installs="zsh git"
+installs="zsh git ripgrep"
 
 eval $pkgmanager$installs
 

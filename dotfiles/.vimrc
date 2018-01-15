@@ -2,7 +2,7 @@
 
 " Load plugins {
     call plug#begin('~/.vim/plugged')
-        Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+        Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }
         Plug 'junegunn/fzf.vim'
         Plug 'fatih/molokai'
         Plug 'tpope/vim-fugitive'
@@ -12,7 +12,7 @@
         Plug 'tpope/vim-commentary'
         Plug 'christoomey/vim-tmux-navigator'
         Plug 'scrooloose/nerdtree'
-	Plug 'dbakker/vim-projectroot'
+        Plug 'raimondi/delimitmate'
     call plug#end()
 "}
 
@@ -61,6 +61,7 @@
         set incsearch " Highlight findings as you type
         set wrapscan " Wrap search findings
         set smartcase " Unless a capital case letter is given
+        set grepprg=rg\ --vimgrep
     "}
 
     " Visuals {
@@ -130,18 +131,58 @@
     " Splits {
         set splitright " Split right of the current window
         set splitbelow " Split below current window
-        "}
+    "}
 
     " Custom commands {
         " open :help vertically
         command! -nargs=* -complete=help Help vertical belowright help <args> 
         autocmd FileType help wincmd L
 
+        " Open NERDTree when opening a directory with vim
         autocmd StdinReadPre * let s:std_in=1
         autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | endif
 
+        " Open NERDTree when vim is called without arguments
         autocmd StdinReadPre * let s:std_in=1
         autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+
+        " Find the current dir's root by looking for the git-root
+        function! s:find_git_root()
+            return system('git rev-parse --show-toplevel 2> /dev/null')[:-2]
+        endfunction
+
+        command! -bang -nargs=? -complete=dir Files
+        \ call fzf#vim#files(s:find_git_root(), fzf#vim#with_preview(), <bang>0)
+
+        " --column: Show column number
+        " --line-number: Show line number
+        " --no-heading: Do not show file headings in results
+        " --fixed-strings: Search term as a literal string
+        " --ignore-case: Case insensitive search
+        " --no-ignore: Do not respect .gitignore, etc...
+        " --hidden: Search hidden files and folders
+        " --follow: Follow symlinks
+        " --glob: Additional conditions for search (in this case ignore everything in the .git/ folder)
+        " --color: Search color options
+
+        " Use Ripgrep for searching with fzf.
+        " Pop open a preview window with '?'
+        " Lastly, the search is going to be project-wide (see find_git_root())
+        command! -bang -nargs=* Find call 
+                    \ fzf#vim#grep('rg --column --line-number --no-heading ' 
+                    \ .'--fixed-strings --ignore-case --no-ignore --hidden '
+                    \ .'--follow --glob "!.git/*" --color "always" '
+                    \ .shellescape(<q-args>).' '.s:find_git_root().'| tr -d "\017"', 1, <bang>0 ? fzf#vim#with_preview('up:60%')
+                    \                                                     : fzf#vim#with_preview('right:50%:hidden', '?'), <bang>0)
+
+        function! s:FindFriendly()
+            let temp=input("Search project root for: ")
+            if temp != ""
+                execute "Find ".temp
+            endif
+        endfunction
+
+        command! FindF call s:FindFriendly()
     "}
 
     " Filetypes
@@ -174,13 +215,8 @@
     map ; :
 
     " ctrlp-alike searching
-    function! s:find_git_root()
-	      return system('git rev-parse --show-toplevel 2> /dev/null')[:-2]
-      endfunction
-
-      command! ProjectFiles execute 'Files' s:find_git_root()
-
-    nmap <C-p> :ProjectFiles <CR>
+    nmap <C-p> :Files <CR>
+    nmap <C-g> :FindF <CR>
 
     " Start/End-of-line
     noremap H ^
@@ -215,6 +251,11 @@
 
     vnoremap * :<C-u>call <SID>VSetSearch()<CR>//<CR><c-o>
     vnoremap # :<C-u>call <SID>VSetSearch()<CR>??<CR><c-o>
+
+    " Toggling NERDTree
+    nmap <C-n> :NERDTreeToggle<CR>
+    nmap ,n :NERDTreeFind<CR>
+
 "}
 
 " Plugins {
@@ -227,6 +268,15 @@
         let g:go_highlight_types = 1
         let g:go_highlight_functions = 1
     "}
-    " buftabline {
+    " fzf {
+        let g:fzf_history_dir = '~/.local/share/fzf-history'
+    " }
+    " delimitMate {
+        let g:delimitMate_expand_cr = 1
+        let g:delimitMate_expand_space = 1
+        let g:delimitMate_smart_quotes = 1
+        let g:delimitMate_expand_inside_quotes = 0
+        let g:delimitMate_smart_matchpairs = '^\%(\w\|\$\)'
+        imap <expr> <CR> pumvisible() ? "\<c-y>" : "<Plug>delimitMateCR"
     " }
 "}
