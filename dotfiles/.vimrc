@@ -13,8 +13,9 @@
         Plug 'christoomey/vim-tmux-navigator'
         Plug 'scrooloose/nerdtree'
         Plug 'raimondi/delimitmate'
-        Plug 'ap/vim-buftabline'
         Plug 'qpkorr/vim-bufkill'
+        Plug 'jwalton512/vim-blade'
+        Plug 'mgee/lightline-bufferline'
     call plug#end()
 "}
 
@@ -115,6 +116,7 @@
             function! LightlineGetCwd()
                 return expand('%') !=# '' ? expand('%') : '[No Name]'
             endfunction
+            set showtabline=2
 
         "}
 
@@ -280,9 +282,11 @@
         let g:go_highlight_types = 1
         let g:go_highlight_functions = 1
     "}
+
     " fzf {
         let g:fzf_history_dir = '~/.local/share/fzf-history'
     " }
+
     " delimitMate {
         let g:delimitMate_expand_cr = 1
         let g:delimitMate_expand_space = 1
@@ -290,5 +294,15 @@
         let g:delimitMate_expand_inside_quotes = 0
         let g:delimitMate_smart_matchpairs = '^\%(\w\|\$\)'
         imap <expr> <CR> pumvisible() ? "\<c-y>" : "<Plug>delimitMateCR"
+    " }
+
+    " lightline-bufferline
+        let g:lightline.tabline          = {'left': [['buffers']], 'right': [['close']]}
+        let g:lightline.component_expand = {'buffers': 'lightline#bufferline#buffers'}
+        let g:lightline.component_type   = {'buffers': 'tabsel'}
+        let g:lightline#bufferline#show_number=2
+        let g:lightline#bufferline#min_buffer_count=2
+        hi clear LightLineLeft_tabline_tabsel
+        hi LightLineLeft_tabline_tabsel ctermfg=Black ctermbg=112
     " }
 "}
