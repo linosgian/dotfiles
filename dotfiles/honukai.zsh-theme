@@ -51,16 +51,3 @@ ${git_info}]\
 %{$fg[white]%}[%*] \
 %{$terminfo[bold]$fg[red]%}→ %{$reset_color%}"
 
-if [[ "$USER" == "root" ]]; then
-PROMPT="
-%{$terminfo[bold]$fg[blue]%}#%{$reset_color%} \
-%{$bg[yellow]%}%{$fg[cyan]%}%n%{$reset_color%} \
-%{$fg[white]%}@ \
-%{$fg[green]%}$(box_name) \
-%{$fg[white]%}[ \
-%{$terminfo[bold]$fg[yellow]%}${current_dir}%{$reset_color%}\
-${hg_info}| \
-${git_info} ]\
-%{$fg[white]%}[%*]
-%{$terminfo[bold]$fg[red]%}→ %{$reset_color%}"
-fi
