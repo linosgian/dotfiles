@@ -13,6 +13,7 @@
         Plug 'christoomey/vim-tmux-navigator'
         Plug 'scrooloose/nerdtree'
         Plug 'raimondi/delimitmate'
+        Plug 'ap/vim-buftabline'
     call plug#end()
 "}
 
@@ -45,7 +46,6 @@
 
         set hidden " Handles buffers better.
     "}
-
     set backspace=indent,eol,start " Make backspace work as 'intented'
 	set shiftround " 'Smart indent'
 
@@ -257,6 +257,7 @@
     " Toggling NERDTree
     nmap <C-n> :NERDTreeToggle<CR>
     nmap ,n :NERDTreeFind<CR>
+    nmap <Tab> :bnext<CR>
 
 "}
 
