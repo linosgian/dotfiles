@@ -14,6 +14,7 @@
         Plug 'scrooloose/nerdtree'
         Plug 'raimondi/delimitmate'
         Plug 'ap/vim-buftabline'
+        Plug 'qpkorr/vim-bufkill'
     call plug#end()
 "}
 
@@ -257,8 +258,16 @@
     " Toggling NERDTree
     nmap <C-n> :NERDTreeToggle<CR>
     nmap ,n :NERDTreeFind<CR>
+    " Open files/folders with 'l'
+    " And open recursively with Space
+    let g:NERDTreeMapActivateNode="l"
+    let g:NERDTreeMapOpenRecursively="<Space>"
+
+    " switch buffers with tab
     nmap <Tab> :bnext<CR>
 
+    " close buffers but not their windows (bufkill)
+    nmap <C-D> :BD<CR>
 "}
 
 " Plugins {
