@@ -114,7 +114,7 @@
                   \ },
                   \ }
             function! LightlineGetCwd()
-                return expand('%') !=# '' ? expand('%') : '[No Name]'
+                return expand('%:h') !=# '' ? expand('%:h') : '[No Name]'
             endfunction
             set showtabline=2
 
@@ -145,10 +145,6 @@
         " Open NERDTree when opening a directory with vim
         autocmd StdinReadPre * let s:std_in=1
         autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | endif
-
-        " Open NERDTree when vim is called without arguments
-        autocmd StdinReadPre * let s:std_in=1
-        autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 
         " Find the current dir's root by looking for the git-root
         function! s:find_git_root()
@@ -239,7 +235,7 @@
     nnoremap Y y$
 
     " Enter automatically into the files directory
-    autocmd BufEnter * silent! lcd %:p:h
+    "autocmd BufEnter * silent! lcd %:p:h
 
     " Prevent the q: window from showing 
     map q: :q
@@ -301,7 +297,9 @@
         let g:lightline.component_expand = {'buffers': 'lightline#bufferline#buffers'}
         let g:lightline.component_type   = {'buffers': 'tabsel'}
         let g:lightline#bufferline#show_number=2
-        let g:lightline#bufferline#min_buffer_count=2
+        let g:lightline#bufferline#min_buffer_count=0
+        let g:lightline#bufferline#filename_modifier=":p:t"
+        let g:lightline#bufferline#shorten_path=0
         hi clear LightLineLeft_tabline_tabsel
         hi LightLineLeft_tabline_tabsel ctermfg=Black ctermbg=112
     " }
