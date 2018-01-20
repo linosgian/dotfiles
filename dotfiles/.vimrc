@@ -95,8 +95,8 @@
 
             let g:rehash256 = 1
             set background=dark
-            colorscheme molokai
             let g:molokai_original = 1
+            colorscheme molokai
         "}
 
         " Statusline {
@@ -301,8 +301,6 @@
         let g:lightline.component_expand = {'buffers': 'lightline#bufferline#buffers'}
         let g:lightline.component_type   = {'buffers': 'tabsel'}
         let g:lightline#bufferline#show_number=2
-        let g:lightline#bufferline#min_buffer_count=2
-        hi clear LightLineLeft_tabline_tabsel
-        hi LightLineLeft_tabline_tabsel ctermfg=Black ctermbg=112
+        let g:lightline#bufferline#min_buffer_count=0
     " }
 "}

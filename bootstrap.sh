@@ -22,6 +22,8 @@ git clone https://github.com/zsh-users/zsh-syntax-highlighting $HOME/.oh-my-zsh/
 git clone https://github.com/zsh-users/zsh-autosuggestions $HOME/.oh-my-zsh/custom/plugins/zsh-autosuggestions
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 
+mkdir -p ~/.vim/after/plugin
+ln -s $PWD/dotfiles/after/hifix.vim ~/.vim/after/plugin
 ln -s $PWD/dotfiles/.vimrc ~/.vimrc
 ln -s $PWD/dotfiles/.tmux.conf ~/.tmux.conf
 
