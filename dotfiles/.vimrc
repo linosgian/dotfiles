@@ -95,8 +95,8 @@
 
             let g:rehash256 = 1
             set background=dark
-            colorscheme molokai
             let g:molokai_original = 1
+            colorscheme molokai
         "}
 
         " Statusline {
@@ -299,8 +299,5 @@
         let g:lightline#bufferline#show_number=2
         let g:lightline#bufferline#min_buffer_count=0
         let g:lightline#bufferline#filename_modifier=":p:t"
-        let g:lightline#bufferline#shorten_path=0
-        hi clear LightLineLeft_tabline_tabsel
-        hi LightLineLeft_tabline_tabsel ctermfg=Black ctermbg=112
     " }
 "}
