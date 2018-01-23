@@ -187,6 +187,7 @@
 
     " Filetypes
         autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=4 shiftwidth=4 
+        autocmd BufNewFile,BufRead Vagrantfile setlocal expandtab tabstop=2 shiftwidth=2
         autocmd BufNewFile,BufRead *.php setlocal expandtab tabstop=2 shiftwidth=2
         autocmd FileType json setlocal expandtab shiftwidth=2 tabstop=2
         autocmd BufNewFile,BufRead *.vim setlocal expandtab shiftwidth=2 tabstop=2
