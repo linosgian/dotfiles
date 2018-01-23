@@ -2,7 +2,7 @@
 
 " Load plugins {
     call plug#begin('~/.vim/plugged')
-        Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }
+        Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
         Plug 'junegunn/fzf.vim'
         Plug 'fatih/molokai'
         Plug 'tpope/vim-fugitive'
@@ -72,7 +72,7 @@
         let g:loaded_matchparen=1 " Stop hightlighting matching brackets when the cursors on them
         set mouse=a " Enable mouse
         set nocursorline
-	set nocursorcolumn
+        set nocursorcolumn
         set list    " show trailing whitespace
         set listchars=tab:▸\ ,trail:·,extends:❯,precedes:❮
         set showcmd " Prints the commands you type on the fly ( bottom right corner )
@@ -138,6 +138,14 @@
     "}
 
     " Custom commands {
+        " Compile latex upon saving
+        function! CompileTex()
+            !pdflatex %
+            redraw!
+        endfunction
+
+        au BufWritePost *.tex call CompileTex()
+
         " open :help vertically
         command! -nargs=* -complete=help Help vertical belowright help <args> 
         autocmd FileType help wincmd L
@@ -216,15 +224,17 @@
     map ; :
 
     " ctrlp-alike searching
-    nmap <C-p> :Files <CR>
-    nmap <C-g> :FindF <CR>
+    map <C-p> :Files <CR>
+    map <C-g> :FindF <CR>
+    map <C-e> :History<CR>
 
     " Start/End-of-line
     noremap H ^
     noremap L $
 
     " Page-down 
-    nnoremap <Space> <c-d>
+    nnoremap <Space> <c-d>zz
+    nnoremap <C-b> <C-u>zz
 
     " Search mappings: These will make it so that going to the next one in a
     " search will center on the line it's found in.
