@@ -88,11 +88,11 @@
         "}
 
         " Coloring {
-            " syntax enable
-            " if $COLORTERM == 'gnome-terminal'
-            "     set t_Co=256
-            " endif
-            " set t_ut=
+            syntax enable
+            if $COLORTERM == 'gnome-terminal'
+                set t_Co=256
+            endif
+            set t_ut=
 
             " let g:rehash256 = 1
             " let g:molokai_original = 1
@@ -105,7 +105,7 @@
             " Make statusline visible when vim is opened
             set laststatus=2 
             let g:lightline = {
-                  \ 'colorscheme': 'one',
+                  \ 'colorscheme': 'wombat',
                   \ 'active': {
                   \   'left': [ [ 'mode', 'paste' ],
                   \             [ 'readonly', 'filename', 'gitbranch'] ]
