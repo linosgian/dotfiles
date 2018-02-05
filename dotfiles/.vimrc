@@ -195,8 +195,9 @@
 
     " Filetypes
         autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=4 shiftwidth=4 
+        autocmd BufNewFile,BufRead *.js setlocal expandtab tabstop=4 shiftwidth=4 
         autocmd BufNewFile,BufRead Vagrantfile setlocal expandtab tabstop=2 shiftwidth=2
-        autocmd BufNewFile,BufRead *.php setlocal expandtab tabstop=2 shiftwidth=2
+        autocmd BufNewFile,BufRead *.php setlocal expandtab tabstop=4 shiftwidth=4
         autocmd FileType json setlocal expandtab shiftwidth=2 tabstop=2
         autocmd BufNewFile,BufRead *.vim setlocal expandtab shiftwidth=2 tabstop=2
         augroup filetypedetect
@@ -280,6 +281,9 @@
 "}
 
 " Plugins {
+    " NERDTree{
+        let NERDTreeShowHidden=1
+    " }
     " vim-go {
         let g:go_highlight_space_tab_error = 0
         let g:go_highlight_array_whitespace_error = 0
