@@ -16,6 +16,7 @@
         Plug 'qpkorr/vim-bufkill'
         Plug 'jwalton512/vim-blade'
         Plug 'mgee/lightline-bufferline'
+        Plug 'w0ng/vim-hybrid'
     call plug#end()
 "}
 
@@ -87,16 +88,17 @@
         "}
 
         " Coloring {
-            syntax enable
-            if $COLORTERM == 'gnome-terminal'
-                set t_Co=256
-            endif
-            set t_ut=
+            " syntax enable
+            " if $COLORTERM == 'gnome-terminal'
+            "     set t_Co=256
+            " endif
+            " set t_ut=
 
-            let g:rehash256 = 1
+            " let g:rehash256 = 1
+            " let g:molokai_original = 1
+            " set termguicolors
             set background=dark
-            let g:molokai_original = 1
-            colorscheme molokai
+            colorscheme hybrid
         "}
 
         " Statusline {
@@ -194,8 +196,9 @@
     "}
 
     " Filetypes
-        autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=4 shiftwidth=4 
-        autocmd BufNewFile,BufRead *.php setlocal expandtab tabstop=2 shiftwidth=2
+        autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=4 shiftwidth=4 softtabstop=4
+        autocmd BufNewFile,BufRead *.js setlocal expandtab tabstop=4 shiftwidth=4 softtabstop=4
+        autocmd BufNewFile,BufRead *.php setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
         autocmd FileType json setlocal expandtab shiftwidth=2 tabstop=2
         autocmd BufNewFile,BufRead *.vim setlocal expandtab shiftwidth=2 tabstop=2
         augroup filetypedetect
@@ -214,6 +217,8 @@
 " Mappings {
     let mapleader = ","
 
+    " Install plugins
+    nmap <leader>i :PlugInstall<CR>
     " Faster command
     nmap ! :!
 
@@ -266,6 +271,7 @@
     " Toggling NERDTree
     nmap <C-n> :NERDTreeToggle<CR>
     nmap ,n :NERDTreeFind<CR>
+
     " Open files/folders with 'l'
     " And open recursively with Space
     let g:NERDTreeMapActivateNode="l"
@@ -276,6 +282,40 @@
 
     " close buffers but not their windows (bufkill)
     nmap <C-D> :BD<CR>
+
+    function! s:build_go_files()
+    let l:file = expand('%')
+    if l:file =~# '^\f\+_test\.go$'
+        call go#test#Test(0, 1)
+    elseif l:file =~# '^\f\+\.go$'
+        call go#cmd#Build(0)
+    endif
+    endfunction
+
+    augroup go
+        autocmd!
+
+        autocmd FileType go nmap <silent> <Leader>v <Plug>(go-def-vertical)
+        autocmd FileType go nmap <silent> <Leader>s <Plug>(go-def-split)
+
+        autocmd FileType go nmap <silent> <Leader>x <Plug>(go-doc-vertical)
+
+        autocmd FileType go nmap <silent> <Leader>i <Plug>(go-info)
+        autocmd FileType go nmap <silent> <Leader>l <Plug>(go-metalinter)
+
+        autocmd FileType go nmap <silent> <leader>b :<C-u>call <SID>build_go_files()<CR>
+        autocmd FileType go nmap <silent> <leader>t  <Plug>(go-test)
+        autocmd FileType go nmap <silent> <leader>r  <Plug>(go-run)
+        autocmd FileType go nmap <silent> <leader>e  <Plug>(go-install)
+
+        autocmd FileType go nmap <silent> <Leader>c <Plug>(go-coverage-toggle)
+
+        " I like these more!
+        autocmd Filetype go command! -bang A call go#alternate#Switch(<bang>0, 'edit')
+        autocmd Filetype go command! -bang AV call go#alternate#Switch(<bang>0, 'vsplit')
+        autocmd Filetype go command! -bang AS call go#alternate#Switch(<bang>0, 'split')
+        autocmd Filetype go command! -bang AT call go#alternate#Switch(<bang>0, 'tabe')
+    augroup END
 "}
 
 " Plugins {
