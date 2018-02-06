@@ -1,6 +1,6 @@
 function! MyHighlights() abort
     hi clear LightLineLeft_tabline_tabsel
-    hi LightLineLeft_tabline_tabsel ctermfg=Black ctermbg=116
+    hi LightLineLeft_tabline_tabsel ctermfg=Black ctermbg=110
 endfunction
 augroup MyColors
     autocmd!

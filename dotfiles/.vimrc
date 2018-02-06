@@ -17,6 +17,7 @@
         Plug 'jwalton512/vim-blade'
         Plug 'mgee/lightline-bufferline'
         Plug 'w0ng/vim-hybrid'
+        Plug 'cocopon/lightline-hybrid.vim'
     call plug#end()
 "}
 
@@ -94,9 +95,6 @@
             endif
             set t_ut=
 
-            " let g:rehash256 = 1
-            " let g:molokai_original = 1
-            " set termguicolors
             set background=dark
             colorscheme hybrid
         "}
@@ -323,6 +321,9 @@
     " NERDTree{
         let NERDTreeShowHidden=1
     " }
+    " Bufkill {
+        let g:BufKillCreateMappings=0
+    " }
     " vim-go {
         let g:go_highlight_space_tab_error = 0
         let g:go_highlight_array_whitespace_error = 0
@@ -342,6 +343,8 @@
         let g:delimitMate_expand_space = 1
         let g:delimitMate_smart_quotes = 1
         let g:delimitMate_expand_inside_quotes = 0
+
+        " Fix lightline issue, where if lazyredraw is set, it doesnt appear
         let g:delimitMate_smart_matchpairs = '^\%(\w\|\$\)'
         imap <expr> <CR> pumvisible() ? "\<c-y>" : "<Plug>delimitMateCR"
     " }
@@ -355,3 +358,6 @@
         let g:lightline#bufferline#filename_modifier=":p:t"
     " }
 "}
+
+" Fix lightline issue, where if lazyredraw is set, it doesnt appear
+autocmd VimEnter * redraw
