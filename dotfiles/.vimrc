@@ -202,6 +202,7 @@
         autocmd BufNewFile,BufRead *.vim setlocal expandtab shiftwidth=2 tabstop=2
         augroup filetypedetect
             autocmd BufNewFile,BufRead .tmux.conf*,tmux.conf* setf tmux
+            autocmd BufNewFile,BufRead Vagrantfile setf ruby
             autocmd BufNewFile,BufRead .nginx.conf*,nginx.conf* setf nginx
         augroup END
 
@@ -325,6 +326,7 @@
         let g:BufKillCreateMappings=0
     " }
     " vim-go {
+        let g:go_fmt_command = "goimports"
         let g:go_highlight_space_tab_error = 0
         let g:go_highlight_array_whitespace_error = 0
         let g:go_highlight_trailing_whitespace_error = 0
