@@ -291,6 +291,13 @@
     endif
     endfunction
 
+    " Goes upwards from the current file's directory to find a main.go file
+    " and execute it using :GoRun
+    function! s:find_main_file()
+        let l:main = findfile('main.go', expand("%:p:h:t") + ";")
+        call go#cmd#Run(0, l:main)
+    endfunction
+
     augroup go
         autocmd!
 
@@ -304,10 +311,10 @@
 
         autocmd FileType go nmap <silent> <leader>b :<C-u>call <SID>build_go_files()<CR>
         autocmd FileType go nmap <silent> <leader>t  <Plug>(go-test)
-        autocmd FileType go nmap <silent> <leader>r  <Plug>(go-run)
+        autocmd FileType go nmap <silent> <leader>r  :call <SID>find_main_file()<CR>
         autocmd FileType go nmap <silent> <leader>e  <Plug>(go-install)
 
-        autocmd FileType go nmap <silent> <Leader>c <Plug>(go-coverage-toggle)
+        autocmd FileType go nmap <silent> <Leader>c :cclose<CR>
 
         " I like these more!
         autocmd Filetype go command! -bang A call go#alternate#Switch(<bang>0, 'edit')
