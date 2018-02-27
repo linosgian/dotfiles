@@ -18,6 +18,7 @@
         Plug 'mgee/lightline-bufferline'
         Plug 'w0ng/vim-hybrid'
         Plug 'cocopon/lightline-hybrid.vim'
+        Plug 'SirVer/ultisnips'
     call plug#end()
 "}
 
@@ -195,7 +196,9 @@
 
     " Filetypes
         autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=4 shiftwidth=4 softtabstop=4
+        autocmd BufNewFile,BufRead *.tex setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
         autocmd BufNewFile,BufRead *.js setlocal expandtab tabstop=4 shiftwidth=4 softtabstop=4
+        autocmd BufNewFile,BufRead *.jssetlocal expandtab tabstop=4 shiftwidth=4 softtabstop=4
         autocmd BufNewFile,BufRead *.php setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
         autocmd BufNewFile,BufRead Vagrantfile setlocal expandtab tabstop=2 shiftwidth=2
         autocmd FileType json setlocal expandtab shiftwidth=2 tabstop=2
@@ -221,6 +224,17 @@
     nmap <leader>i :PlugInstall<CR>
     " Faster command
     nmap ! :!
+
+    " Enable tmux-navigator for all modes
+    nnoremap <silent> <C-h> :TmuxNavigateLeft<cr>
+    nnoremap <silent> <C-j> :TmuxNavigateDown<cr>
+    nnoremap <silent> <C-k> :TmuxNavigateUp<cr>
+    nnoremap <silent> <C-l> :TmuxNavigateRight<cr>
+
+    inoremap <silent> <C-h> <Esc>:TmuxNavigateLeft<cr>
+    inoremap <silent> <C-j> <Esc>:TmuxNavigateDown<cr>
+    inoremap <silent> <C-k> <Esc>:TmuxNavigateUp<cr>
+    inoremap <silent> <C-l> <Esc>:TmuxNavigateRight<cr>
 
     " Source .vimrc
     map <silent> <leader>V :source ~/.vimrc<CR>:filetype detect<CR>:exe ":echo 'vimrc reloaded'"<CR>
@@ -308,7 +322,7 @@
         autocmd FileType go nmap <silent> <leader>r  <Plug>(go-run)
         autocmd FileType go nmap <silent> <leader>e  <Plug>(go-install)
 
-        autocmd FileType go nmap <silent> <Leader>c <Plug>(go-coverage-toggle)
+        autocmd FileType go nmap <silent> <Leader>c :cclose<CR>
 
         " I like these more!
         autocmd Filetype go command! -bang A call go#alternate#Switch(<bang>0, 'edit')
