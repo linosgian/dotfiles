@@ -26,6 +26,7 @@ export SSH_KEY_PATH="~/.ssh/rsa_id"
 # Aliases
 alias ll="ls -al"
 alias c="clear"
+alias vssh="vagrant ssh"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
@@ -34,4 +35,8 @@ export TERM=xterm-256color
 # [ -n "$TMUX" ] && export TERM=screen-256color
 
 export GOPATH=$HOME/go
+export PATH=$PATH:$(go env GOPATH)/bin
 export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow --glob "!.git/*"'
+
+export DOCKER_API_VERSION=1.34
+source ~/.zshrc_local

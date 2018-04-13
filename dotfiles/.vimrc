@@ -102,7 +102,7 @@
 
         " Statusline {
             " Make statusline visible when vim is opened
-            set laststatus=2 
+            set laststatus=2
             let g:lightline = {
                   \ 'colorscheme': 'wombat',
                   \ 'active': {
@@ -123,7 +123,15 @@
 
     " Backup/Swap/Undo/Saving {
         set undolevels=2000
-        set undodir=/tmp// " Save undo to /tmp so everything gets deleted upon reboot
+        "
+        " Let's save undo info!
+        if !isdirectory($HOME."/.vim")
+            call mkdir($HOME."/.vim", "", 0770)
+        endif
+        if !isdirectory($HOME."/.vim/undo-dir")
+            call mkdir($HOME."/.vim/undo-dir", "", 0700)
+        endif
+        set undodir=~/.vim/undo-dir " Save undo to /tmp so everything gets deleted upon reboot
         set undofile " Enable persistent undo ( writes to disk )
 
         set noswapfile " Disable swap files
@@ -150,10 +158,6 @@
         " open :help vertically
         command! -nargs=* -complete=help Help vertical belowright help <args> 
         autocmd FileType help wincmd L
-
-        " Open NERDTree when opening a directory with vim
-        autocmd StdinReadPre * let s:std_in=1
-        autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | endif
 
         " Find the current dir's root by looking for the git-root
         function! s:find_git_root()
@@ -192,10 +196,16 @@
         endfunction
 
         command! FindF call s:FindFriendly()
+
+        " Closes all buffers but the current one.
+        function! s:CloseAllBuffers()
+            exe ":wa! | :%bd | e # | bd #"
+        endfunction
     "}
 
     " Filetypes
         autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=4 shiftwidth=4 softtabstop=4
+        autocmd BufNewFile,BufRead *.tex setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
         autocmd BufNewFile,BufRead *.js setlocal expandtab tabstop=4 shiftwidth=4 softtabstop=4
         autocmd BufNewFile,BufRead *.php setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
         autocmd BufNewFile,BufRead Vagrantfile setlocal expandtab tabstop=2 shiftwidth=2
@@ -203,6 +213,7 @@
         autocmd BufNewFile,BufRead *.vim setlocal expandtab shiftwidth=2 tabstop=2
         augroup filetypedetect
             autocmd BufNewFile,BufRead .tmux.conf*,tmux.conf* setf tmux
+            autocmd BufNewFile,BufRead Vagrantfile setf ruby
             autocmd BufNewFile,BufRead .nginx.conf*,nginx.conf* setf nginx
         augroup END
 
@@ -220,10 +231,34 @@
     " Search and replace all occurences of current word
     :nnoremap <Leader>sr :%s/\<<C-r><C-w>\>/
 
+    nmap <Leader>1 <Plug>lightline#bufferline#go(1)
+    nmap <Leader>2 <Plug>lightline#bufferline#go(2)
+    nmap <Leader>3 <Plug>lightline#bufferline#go(3)
+    nmap <Leader>4 <Plug>lightline#bufferline#go(4)
+    nmap <Leader>5 <Plug>lightline#bufferline#go(5)
+    nmap <Leader>6 <Plug>lightline#bufferline#go(6)
+    nmap <Leader>7 <Plug>lightline#bufferline#go(7)
+    nmap <Leader>8 <Plug>lightline#bufferline#go(8)
+    nmap <Leader>9 <Plug>lightline#bufferline#go(9)
+    nmap <Leader>0 <Plug>lightline#bufferline#go(10)
     " Install plugins
     nmap <leader>i :PlugInstall<CR>
     " Faster command
     nmap ! :!
+
+    " Close all buffers but the current one
+    nnoremap <leader>o :call <SID>CloseAllBuffers()<cr>
+
+    " Enable tmux-navigator for all modes
+    nnoremap <silent> <C-h> :TmuxNavigateLeft<cr>
+    nnoremap <silent> <C-j> :TmuxNavigateDown<cr>
+    nnoremap <silent> <C-k> :TmuxNavigateUp<cr>
+    nnoremap <silent> <C-l> :TmuxNavigateRight<cr>
+
+    inoremap <silent> <C-h> <Esc>:TmuxNavigateLeft<cr>
+    inoremap <silent> <C-j> <Esc>:TmuxNavigateDown<cr>
+    inoremap <silent> <C-k> <Esc>:TmuxNavigateUp<cr>
+    inoremap <silent> <C-l> <Esc>:TmuxNavigateRight<cr>
 
     " Source .vimrc
     map <silent> <leader>V :source ~/.vimrc<CR>:filetype detect<CR>:exe ":echo 'vimrc reloaded'"<CR>
@@ -242,7 +277,11 @@
 
     " Page-down 
     nnoremap <Space> <c-d>zz
-    nnoremap <C-b> <C-u>zz
+    vnoremap <Space> <c-d>zz
+    " This can be triggered by <C-Space> as well
+    " For more: https://stackoverflow.com/questions/24983372/what-does-ctrlspace-do-in-vim
+    nnoremap <C-@> <C-u>zz 
+    vnoremap <C-@> <C-u>zz 
 
     " Search mappings: These will make it so that going to the next one in a
     " search will center on the line it's found in.
@@ -298,8 +337,8 @@
     " Goes upwards from the current file's directory to find a main.go file
     " and execute it using :GoRun
     function! s:find_main_file()
-        let l:main = findfile('main.go', expand("%:p:h:t") + ";")
-        call go#cmd#Run(0, l:main)
+        let l:main_dir = fnamemodify(findfile('main.go', expand("%:p") . ";"), ":h")
+        execute '!go run '.  l:main_dir . '/*.go'
     endfunction
 
     augroup go
@@ -336,7 +375,14 @@
     " Bufkill {
         let g:BufKillCreateMappings=0
     " }
+    " python-jedi {
+        let g:jedi#completions_enabled = 0
+        let g:jedi#goto_definitions_command = "gd"
+    " }
     " vim-go {
+        let g:go_fmt_command = "goimports"
+        let g:go_def_mode = 'godef'
+        let g:go_fmt_fail_silently = 1
         let g:go_highlight_space_tab_error = 0
         let g:go_highlight_array_whitespace_error = 0
         let g:go_highlight_trailing_whitespace_error = 0
