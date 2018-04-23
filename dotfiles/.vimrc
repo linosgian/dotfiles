@@ -18,8 +18,7 @@
         Plug 'mgee/lightline-bufferline'
         Plug 'w0ng/vim-hybrid'
         Plug 'cocopon/lightline-hybrid.vim'
-        Plug 'SirVer/ultisnips'
-        Plug 'davidhalter/jedi-vim'
+        Plug 'tpope/vim-markdown'
     call plug#end()
 "}
 
@@ -237,6 +236,9 @@
 " Mappings {
     let mapleader = ","
 
+    " Search and replace all occurences of current word
+    :nnoremap <Leader>sr :%s/\<<C-r><C-w>\>/
+
     nmap <Leader>1 <Plug>lightline#bufferline#go(1)
     nmap <Leader>2 <Plug>lightline#bufferline#go(2)
     nmap <Leader>3 <Plug>lightline#bufferline#go(3)
@@ -363,6 +365,7 @@
         autocmd FileType go nmap <silent> <leader>b :<C-u>call <SID>build_go_files()<CR>
         autocmd FileType go nmap <silent> <leader>t  <Plug>(go-test)
         autocmd FileType go nmap <silent> <leader>r  :call <SID>find_main_file()<CR>
+        autocmd FileType go nmap <silent> <leader>lr  :GoRun %<CR>
         autocmd FileType go nmap <silent> <leader>e  <Plug>(go-install)
 
         autocmd FileType go nmap <silent> <Leader>c :cclose<CR>
@@ -397,6 +400,8 @@
         let g:go_highlight_build_constraints = 1
         let g:go_highlight_types = 1
         let g:go_highlight_functions = 1
+        let g:go_fmt_command = "goimports"
+        let g:go_fmt_fail_silently = 1
     "}
 
     " fzf {
