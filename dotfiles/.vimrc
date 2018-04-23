@@ -156,6 +156,14 @@
 
         au BufWritePost *.tex call CompileTex()
 
+        function! CompileMarkdown()
+            let l:outfile = expand()
+            !pandoc % -o %.".pdf"
+            redraw!
+        endfunction
+
+        au BufWritePost *.md call CompileMarkdown()
+
         " open :help vertically
         command! -nargs=* -complete=help Help vertical belowright help <args> 
         autocmd FileType help wincmd L
@@ -334,9 +342,11 @@
 
     " Goes upwards from the current file's directory to find a main.go file
     " and execute it using :GoRun
+    " Also avoids *_test.go files
     function! s:find_main_file()
         let l:main_dir = fnamemodify(findfile('main.go', expand("%:p") . ";"), ":h")
-        execute '!go run '.  l:main_dir . '/*.go'
+        let l:files = system("ls ". l:main_dir . " | grep .go | grep -v '_test.go' | tr '\n' ' ' ")
+        execute '!go run '.  l:main_dir . '/' . l:files
     endfunction
 
     augroup go
