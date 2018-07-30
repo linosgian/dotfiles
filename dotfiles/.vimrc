@@ -4,7 +4,6 @@
     call plug#begin('~/.vim/plugged')
         Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
         Plug 'junegunn/fzf.vim'
-        Plug 'fatih/molokai'
         Plug 'tpope/vim-fugitive'
         Plug 'fatih/vim-go'
         Plug 'itchyny/lightline.vim'
@@ -19,6 +18,8 @@
         Plug 'w0ng/vim-hybrid'
         Plug 'cocopon/lightline-hybrid.vim'
         Plug 'tpope/vim-markdown'
+        Plug 'skywind3000/asyncrun.vim'
+        Plug 'tikhomirov/vim-glsl'
     call plug#end()
 "}
 
@@ -33,7 +34,7 @@
         set noerrorbells " No annoying error bells
         set updatetime=300
         set nospell " Disable spell-checking
-        set encoding=utf-8              " set default encoding to utf-8
+        set encoding=utf-8 " set default encoding to utf-8
         set lazyredraw " an optimization for plugin redraw.
 
         " Time out on key codes but not mappings.
@@ -71,6 +72,7 @@
 
     " Visuals {
         set number " Enable line numbering
+        set relativenumber " Enable relative numbering
         set ruler
         let g:loaded_matchparen=1 " Stop hightlighting matching brackets when the cursors on them
         set mouse=a " Enable mouse
@@ -131,7 +133,7 @@
         if !isdirectory($HOME."/.vim/undo-dir")
             call mkdir($HOME."/.vim/undo-dir", "", 0700)
         endif
-        set undodir=~/.vim/undo-dir " Save undo to /tmp so everything gets deleted upon reboot
+        set undodir=~/.vim/undo-dir 
         set undofile " Enable persistent undo ( writes to disk )
 
         set noswapfile " Disable swap files
@@ -148,20 +150,23 @@
 
     " Custom commands {
         " Compile latex upon saving
+        " TODO: make this asynchronous
         function! CompileTex()
-            !pdflatex %
+            AsyncRun! pdflatex %
             redraw!
         endfunction
 
         au BufWritePost *.tex call CompileTex()
 
         function! CompileMarkdown()
-            let l:outfile = expand()
-            !pandoc % -o %.".pdf"
+            let l:outfile = expand("%:r")
+            let l:command = "!pandoc ". expand("%"). " -o " . l:outfile . ".pdf"
+            AsyncRun! pandoc "%" -o "%<" ".pdf"
             redraw!
         endfunction
 
-        au BufWritePost *.md call CompileMarkdown()
+        " Asynchronously convert the markdown file to pdf
+        au BufWritePost *.md :AsyncRun! pandoc % -o %<.pdf
 
         " open :help vertically
         command! -nargs=* -complete=help Help vertical belowright help <args> 
@@ -215,9 +220,13 @@
         autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=4 shiftwidth=4 softtabstop=4
         autocmd BufNewFile,BufRead *.tex setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
         autocmd BufNewFile,BufRead *.js setlocal expandtab tabstop=4 shiftwidth=4 softtabstop=4
-        autocmd BufNewFile,BufRead *.php setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
+        autocmd BufNewFile,BufRead *.php setlocal expandtab tabstop=4 shiftwidth=4 softtabstop=4
+        autocmd BufNewFile,BufRead *.blade.php setlocal noexpandtab tabstop=2 shiftwidth=2 softtabstop=2
+        autocmd BufNewFile,BufRead *.blade.php setlocal noexpandtab tabstop=2 shiftwidth=2 softtabstop=2
         autocmd BufNewFile,BufRead Vagrantfile setlocal expandtab tabstop=2 shiftwidth=2
-        autocmd FileType json setlocal expandtab shiftwidth=2 tabstop=2
+        autocmd FileType json setlocal noexpandtab shiftwidth=2 tabstop=2
+        autocmd FileType yaml setlocal expandtab shiftwidth=2 tabstop=2
+        autocmd FileType glsl setlocal noexpandtab shiftwidth=4 tabstop=4
         autocmd BufNewFile,BufRead *.vim setlocal expandtab shiftwidth=2 tabstop=2
         augroup filetypedetect
             autocmd BufNewFile,BufRead .tmux.conf*,tmux.conf* setf tmux
@@ -381,13 +390,10 @@
 " Plugins {
     " NERDTree{
         let NERDTreeShowHidden=1
+        let NERDTreeRespectWildIgnore=1
     " }
     " Bufkill {
         let g:BufKillCreateMappings=0
-    " }
-    " python-jedi {
-        let g:jedi#completions_enabled = 0
-        let g:jedi#goto_definitions_command = "gd"
     " }
     " vim-go {
         let g:go_fmt_command = "goimports"
@@ -396,7 +402,7 @@
         let g:go_highlight_space_tab_error = 0
         let g:go_highlight_array_whitespace_error = 0
         let g:go_highlight_trailing_whitespace_error = 0
-        let g:go_highlight_extra_types = 0
+        let g:go_highlight_extra_types = 1
         let g:go_highlight_build_constraints = 1
         let g:go_highlight_types = 1
         let g:go_highlight_functions = 1

@@ -40,3 +40,10 @@ export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow --glob "!.g
 
 export DOCKER_API_VERSION=1.34
 source ~/.zshrc_local
+
+alias urldecode='python -c "import sys, urllib as ul; \
+    print ul.unquote_plus(sys.argv[1])"'
+alias urlencode='python -c "import sys, urllib as ul; \
+    print ul.quote_plus(sys.argv[1])"'
+# opens up the pdf with the latest 'last modified' timestamp and removes it from the shell job list
+alias evincel='evince ~/Downloads/$(cd Downloads; ls -t *.pdf | head -n1) 2&>1 &; disown'
