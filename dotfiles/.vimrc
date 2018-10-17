@@ -17,9 +17,12 @@
         Plug 'mgee/lightline-bufferline'
         Plug 'w0ng/vim-hybrid'
         Plug 'cocopon/lightline-hybrid.vim'
-        Plug 'tpope/vim-markdown'
         Plug 'skywind3000/asyncrun.vim'
         Plug 'tikhomirov/vim-glsl'
+        Plug 'SirVer/ultisnips'
+        Plug 'godlygeek/tabular'
+        Plug 'plasticboy/vim-markdown'
+        " Plug 'liuchengxu/vim-which-key' This is nice for beginners
     call plug#end()
 "}
 
@@ -72,7 +75,7 @@
 
     " Visuals {
         set number " Enable line numbering
-        set relativenumber " Enable relative numbering
+        " set relativenumber " Enable relative numbering
         set ruler
         let g:loaded_matchparen=1 " Stop hightlighting matching brackets when the cursors on them
         set mouse=a " Enable mouse
@@ -82,6 +85,11 @@
         set listchars=tab:▸\ ,trail:·,extends:❯,precedes:❮
         set showcmd " Prints the commands you type on the fly ( bottom right corner )
         set noshowmode " Shows the mode you are currently in
+        set foldmethod=syntax
+        set nofoldenable
+        set foldlevel=99
+        set conceallevel=2
+
 
         " Wrapping {
             " Avoid line wrapping
@@ -150,7 +158,6 @@
 
     " Custom commands {
         " Compile latex upon saving
-        " TODO: make this asynchronous
         function! CompileTex()
             AsyncRun! pdflatex %
             redraw!
@@ -214,6 +221,16 @@
         function! s:CloseAllBuffers()
             exe ":wa! | :%bd | e # | bd #"
         endfunction
+
+        " Naive go-to definition for python using ripgrep
+        " Looks for 'def <function-name-under-cursor>('
+        function! s:GotoDefinitionPython()
+            let cword= expand("<cword>")
+            let output=system("rg --line-number 'def ". cword . "\\(' " . s:find_git_root())
+            let tokens=split(output, ':') 
+            silent exe "edit +". tokens[1]. " " .tokens[0]
+        endfunction
+
     "}
 
     " Filetypes
@@ -224,7 +241,8 @@
         autocmd BufNewFile,BufRead *.blade.php setlocal noexpandtab tabstop=2 shiftwidth=2 softtabstop=2
         autocmd BufNewFile,BufRead *.blade.php setlocal noexpandtab tabstop=2 shiftwidth=2 softtabstop=2
         autocmd BufNewFile,BufRead Vagrantfile setlocal expandtab tabstop=2 shiftwidth=2
-        autocmd FileType json setlocal noexpandtab shiftwidth=2 tabstop=2
+        autocmd FileType json setlocal expandtab shiftwidth=2 tabstop=2
+        autocmd FileType sh   setlocal noexpandtab shiftwidth=4 tabstop=4
         autocmd FileType yaml setlocal expandtab shiftwidth=2 tabstop=2
         autocmd FileType glsl setlocal noexpandtab shiftwidth=4 tabstop=4
         autocmd BufNewFile,BufRead *.vim setlocal expandtab shiftwidth=2 tabstop=2
@@ -247,6 +265,13 @@
 
     " Search and replace all occurences of current word
     :nnoremap <Leader>sr :%s/\<<C-r><C-w>\>/
+
+
+    " Python specific commands
+    augroup python
+        " Python go to definition (naive)
+        autocmd FileType python nnoremap <Leader>gd :call <SID>GotoDefinitionPython()<CR>
+    augroup END
 
     nmap <Leader>1 <Plug>lightline#bufferline#go(1)
     nmap <Leader>2 <Plug>lightline#bufferline#go(2)
@@ -372,12 +397,14 @@
         autocmd FileType go nmap <silent> <Leader>l <Plug>(go-metalinter)
 
         autocmd FileType go nmap <silent> <leader>b :<C-u>call <SID>build_go_files()<CR>
+        autocmd FileType go nmap <silent> <leader>p :cprevious<CR>
+        autocmd FileType go nmap <silent> <leader>n :cnext<CR>
         autocmd FileType go nmap <silent> <leader>t  <Plug>(go-test)
         autocmd FileType go nmap <silent> <leader>r  :call <SID>find_main_file()<CR>
         autocmd FileType go nmap <silent> <leader>lr  :GoRun %<CR>
         autocmd FileType go nmap <silent> <leader>e  <Plug>(go-install)
 
-        autocmd FileType go nmap <silent> <Leader>c :cclose<CR>
+        autocmd FileType go nmap <silent> <Leader>c :cclose<CR>:lclose<CR>
 
         " I like these more!
         autocmd Filetype go command! -bang A call go#alternate#Switch(<bang>0, 'edit')
@@ -398,7 +425,7 @@
     " vim-go {
         let g:go_fmt_command = "goimports"
         let g:go_def_mode = 'godef'
-        let g:go_fmt_fail_silently = 1
+        let g:go_fmt_fail_silently = 0
         let g:go_highlight_space_tab_error = 0
         let g:go_highlight_array_whitespace_error = 0
         let g:go_highlight_trailing_whitespace_error = 0
@@ -406,8 +433,6 @@
         let g:go_highlight_build_constraints = 1
         let g:go_highlight_types = 1
         let g:go_highlight_functions = 1
-        let g:go_fmt_command = "goimports"
-        let g:go_fmt_fail_silently = 1
     "}
 
     " fzf {
@@ -432,6 +457,12 @@
         let g:lightline#bufferline#show_number=2
         let g:lightline#bufferline#min_buffer_count=0
         let g:lightline#bufferline#filename_modifier=":p:t"
+    " }
+    " vim-markdown {
+        let g:vim_markdown_toc_autofit = 1
+        let g:vim_markdown_autowrite = 1
+        let g:vim_markdown_no_extensions_in_markdown = 1
+        let g:vim_markdown_math = 1
     " }
 "}
 
