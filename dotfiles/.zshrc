@@ -35,6 +35,9 @@ export FZF_DEFAULT_COMMAND='rg --files --hidden --follow --glob "!.git/*"'
 export DOCKER_API_VERSION=1.34
 
 # Aliases
+alias vu="vagrant up"
+alias vh="vagrant halt"
+alias vssh="vagrant ssh"
 alias l="ls -ahl"
 alias c="clear"
 alias vssh="vagrant ssh"

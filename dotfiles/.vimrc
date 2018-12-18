@@ -235,6 +235,7 @@
 
     " Filetypes
         autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=4 shiftwidth=4 softtabstop=4
+        autocmd BufNewFile,BufRead *.c setlocal  expandtab tabstop=4 shiftwidth=4 softtabstop=4
         autocmd BufNewFile,BufRead *.tex setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
         autocmd BufNewFile,BufRead *.js setlocal expandtab tabstop=4 shiftwidth=4 softtabstop=4
         autocmd BufNewFile,BufRead *.php setlocal expandtab tabstop=4 shiftwidth=4 softtabstop=4
@@ -266,6 +267,7 @@
     " Search and replace all occurences of current word
     :nnoremap <Leader>sr :%s/\<<C-r><C-w>\>/
 
+    nmap <silent> <Leader>c :cclose<CR>:lclose<CR>
 
     " Python specific commands
     augroup python
@@ -415,6 +417,9 @@
 "}
 
 " Plugins {
+    " vimtex{
+        let g:vimtex_latexmk_enabled=0
+    " }
     " NERDTree{
         let NERDTreeShowHidden=1
         let NERDTreeRespectWildIgnore=1
