@@ -29,7 +29,7 @@ fi
 installs="zsh git xclip"
 
 # CHECK IF TMUX is > 2.5
-which "tmux" || install_tmux_2_5()
+which "tmux" || install_tmux_2_5
 eval $pkgmanager$installs
 
 chsh -s $(which zsh)
@@ -49,6 +49,6 @@ ln -s $PWD/dotfiles/.tmux.conf ~/.tmux.conf
 # Oh-my-zsh creates a sample .zshrc already, so remove it.
 rm ~/.zshrc
 touch ~/.zshrc_local
-ln -s $PWD/dotfiles/zshrc ~/.zshrc
-ln -s $PWD/dotfiles/gitconfig ~/.gitconfig
+ln -s $PWD/dotfiles/.zshrc ~/.zshrc
+ln -s $PWD/dotfiles/.gitconfig ~/.gitconfig
 ln -s $PWD/dotfiles/honukai.zsh-theme $HOME/.oh-my-zsh/themes/

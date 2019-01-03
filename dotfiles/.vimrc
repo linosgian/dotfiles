@@ -332,6 +332,9 @@
     nnoremap n nzzzv
     nnoremap N Nzzzv
 
+    " Centers screen while searching for the word under cursor
+    nnoremap * *zz
+
     " Act like D and C (Yank the current line)
     nnoremap Y y$
 
