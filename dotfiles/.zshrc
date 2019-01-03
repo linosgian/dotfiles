@@ -66,4 +66,11 @@ source ~/.zshrc_local
 setopt HIST_IGNORE_ALL_DUPS
 
 export HISTFILE=/home/lgian/.zsh_history
+export EDITOR="vim"
+export NNN_USE_EDITOR=1
 alias notes='cd ~/Nextcloud/Notes/ && vim index.md'
+
+# Startx on login
+if [[ ! $DISPLAY && $XDG_VTNR -eq 1  ]]; then
+	exec startx
+fi

@@ -230,6 +230,8 @@
             let tokens=split(output, ':') 
             silent exe "edit +". tokens[1]. " " .tokens[0]
         endfunction
+        command W :execute ':silent w !sudo tee % > /dev/null' | :edit!
+        command Wq :execute ':silent w !sudo tee % > /dev/null' | :edit! | quit
 
     "}
 

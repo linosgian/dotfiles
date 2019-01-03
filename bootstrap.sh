@@ -26,7 +26,7 @@ else
     pkgmanager="sudo apt-get install -y "
 fi
 
-installs="zsh git xclip"
+installs="zsh git xclip gcc make"
 
 # CHECK IF TMUX is > 2.5
 which "tmux" || install_tmux_2_5
