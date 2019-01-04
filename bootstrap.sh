@@ -41,10 +41,16 @@ git clone https://github.com/zsh-users/zsh-syntax-highlighting $HOME/.oh-my-zsh/
 git clone https://github.com/zsh-users/zsh-autosuggestions $HOME/.oh-my-zsh/custom/plugins/zsh-autosuggestions
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 
+# This will install all tmux plugins
+$HOME/.tmux/plugins/tpm/scripts/install_plugins.sh
+
 mkdir -p ~/.vim/after/plugin
 ln -s $PWD/dotfiles/after/hifix.vim ~/.vim/after/plugin
 ln -s $PWD/dotfiles/.vimrc ~/.vimrc
 ln -s $PWD/dotfiles/.tmux.conf ~/.tmux.conf
+
+# Install all vim plugins
+vim +PlugInstall +qall
 
 # Oh-my-zsh creates a sample .zshrc already, so remove it.
 rm ~/.zshrc
