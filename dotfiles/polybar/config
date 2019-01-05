@@ -1,0 +1,194 @@
+[bar/top]
+width = 100%
+height = 26
+
+tray-position = right
+
+background = #ff2f343f
+foreground = #ccffffff
+
+spacing = 0
+
+padding-right = 2
+module-margin = 1
+underline-size = 2
+
+font-0 = Inconsolata:style=Bold:size=10;-1
+font-1 = MaterialIcons:size=10;0
+font-2 = Termsynu:size=8:antialias=false;-2
+font-3 = FontAwesome:size=10;0
+
+modules-right = keyboard pulseaudio wireless-network wired-network battery memory cpu temperature
+modules-center = date
+modules-left = i3
+
+separator = |
+
+; [module/backlight]
+; type = internal/xbacklight
+; format = <ramp>
+
+; ramp-0 = 
+; ramp-1 = 
+; ramp-2 = 
+
+[module/temperature]
+type = internal/temperature
+
+interval = 1
+thermal-zone = 0
+hwmon-path = /sys/devices/platform/coretemp.0/hwmon/hwmon1/temp1_input
+
+warn-temperature = 70
+label =  %temperature-c:2%
+format-warn =  <label-warn>
+format-warn-underline = #f00
+format-underline-size = #f50a4d
+format-spacing = 1
+
+[module/keyboard]
+type = internal/xkeyboard
+
+; List of indicators to ignore
+blacklist-0 = num lock
+blacklist-1 = scroll lock
+blacklist-2 = caps lock
+label-layout =  %layout%
+
+[module/battery]
+type = internal/battery
+full-at = 98
+battery = BAT1
+
+time-format = %H:%M
+format-charging = <animation-charging> <label-charging>
+label-charging = %percentage:3%%
+format-discharging = <ramp-capacity> <label-discharging>
+label-discharging = %percentage:3%%
+format-full = <ramp-capacity> <label-full>
+label-full = %percentage:3%%
+
+ramp-capacity-0 = 
+ramp-capacity-0-underline = #f53c3c
+ramp-capacity-1 = 
+ramp-capacity-1-underline = #f53c3c
+ramp-capacity-2 = 
+ramp-capacity-2-underline = #ffa900
+ramp-capacity-3 = 
+ramp-capacity-4 = 
+
+animation-charging-0 = 
+animation-charging-1 = 
+animation-charging-2 = 
+animation-charging-3 = 
+animation-charging-4 = 
+animation-charging-framerate = 750
+
+[module/i3]
+type = internal/i3
+
+ws-icon-0 = 1;
+ws-icon-1 = 2;
+ws-icon-2 = 3;
+ws-icon-3 = 4;
+ws-icon-4 = 5;
+ws-icon-5 = 6;
+ws-icon-8 = 7;
+ws-icon-6 = 8;
+ws-icon-7 = 9;
+; ws-icon-9 = 10;
+ws-icon-default = 
+
+format = <label-state> <label-mode>
+
+label-mode = %mode%
+label-mode-padding = 2
+label-mode-background = #e60053
+
+label-focused = %index%: %icon%
+label-focused-foreground = #ffffff
+label-focused-background = #3f3f3f
+label-focused-underline = #fba922
+label-focused-padding = 2
+
+label-unfocused = %index%: %icon%
+label-unfocused-padding = 2
+
+label-visible = %index%: %icon%
+label-visible-underline = #555555
+label-visible-padding = 2
+
+label-urgent = %index%: %icon%
+label-urgent-background = #bd2c40
+label-urgent-padding = 2
+
+
+[module/cpu]
+type = internal/cpu
+interval = 1.0
+format = <label>
+label =  %percentage:2%%
+label-warn-underline = #f00
+
+[module/date]
+type = internal/date
+date =  %a %b%e, %H:%M%
+format = %{A1:ls:}<label>%{A}
+format-underline = #8fa993
+
+[module/memory]
+type = internal/memory
+format = <label>
+interval = 2
+
+label =  %gb_used%
+
+[module/wireless-network]
+type = internal/network
+interface = wlp3s0
+interval = 3.0
+ping-interval = 10
+
+format-connected = <label-connected>
+label-connected =  %local_ip%
+label-disconnected =  
+label-disconnected-foreground = #66
+
+animation-packetloss-0 = 
+animation-packetloss-0-foreground = #ffa64c
+animation-packetloss-1 = 
+animation-packetloss-1-foreground = ${bar/top.foreground}
+animation-packetloss-framerate = 500
+
+[module/filesystem]
+type = internal/fs
+
+mount-0 = /
+label-mounted = %mountpoint%: %free%
+
+[module/wired-network]
+type = internal/network
+interface = enp2s0
+interval = 3.0
+
+label-connected =    %{T3}%local_ip%%{T-}
+label-disconnected-foreground = #66
+
+[module/pulseaudio]
+type = internal/pulseaudio
+
+# Make the headphones the default sink here.
+sink = bluez_sink.F0_13_C3_97_43_A7.a2dp_sink
+use-ui-max = true
+
+format-volume = <ramp-volume> <label-volume>
+label-volume = %percentage:3%%
+label-muted =  
+label-muted-foreground = #66
+
+ramp-volume-0 = 
+ramp-volume-1 = 
+ramp-volume-2 = 
+ramp-volume-3 = 
+
+; vim:ft=dosini
