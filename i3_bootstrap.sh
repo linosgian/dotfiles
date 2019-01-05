@@ -1,6 +1,6 @@
 #!/bin/bash
 
-sudo apt install sudo git feh i3 xorg pulseaudio vim curl \
+sudo apt install sudo git feh i3 libnotify xorg pulseaudio vim curl \
 	vim-gtk make gcc gnome-terminal xserver-xorg-input-libinput xserver-xorg-input-evdev \
 	xserver-xorg-input-mouse xbacklight pavucontrol lxappearance \
 	arc-theme python3-udiskie compton htop arandr network-manager-gnome gnome-keyring
@@ -26,3 +26,5 @@ sudo apt-get install cmake cmake-data libcairo2-dev libxcb1-dev libxcb-ewmh-dev 
 # .xinitrc .Xresources .config/* .compton.conf
 # Install i3-gaps
 # Lock script
+# Also keep the .local/share/applications/vim-usercreated-2.desktop
+# and gnome-usercreated-1.desktop for directories and vim!

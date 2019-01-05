@@ -67,6 +67,8 @@ setopt HIST_IGNORE_ALL_DUPS
 
 export HISTFILE=/home/lgian/.zsh_history
 export EDITOR="vim"
+export TERMINAL="gnome-terminal -e"
+export VISUAL="vim"
 export NNN_USE_EDITOR=1
 alias notes='cd ~/Nextcloud/Notes/ && vim index.md'
 
