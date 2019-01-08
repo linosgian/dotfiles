@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# NOTE TO SELF: dont mess with fontconfig, it messes up qt5 applications
 sudo apt install sudo git feh i3 libnotify xorg pulseaudio vim curl \
 	vim-gtk make gcc gnome-terminal xserver-xorg-input-libinput xserver-xorg-input-evdev \
 	xserver-xorg-input-mouse xbacklight pavucontrol lxappearance \
