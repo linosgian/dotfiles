@@ -11,7 +11,7 @@
     hide_edge_borders both
 
     # All needed colors
-    set $bg-color            #b77305
+    set $bg-color            #8fa993
     set $inactive-bg-color   #2f343f
     set $text-color          #f3f4f5
     set $inactive-text-color #ffffff
@@ -19,22 +19,22 @@
 
     # window colors
     #                       border              background         text                 indicator
-    client.focused          $bg-color           $bg-color          $text-color          #00ff00
-    client.unfocused        $inactive-bg-color  $inactive-bg-color $inactive-text-color #00ff00
-    client.focused_inactive $inactive-bg-color  $inactive-bg-color $inactive-text-color #00ff00
-    client.urgent           $urgent-bg-color    $urgent-bg-color   $text-color          #00ff00
+    client.focused          $bg-color           $bg-color          $text-color          $bg-color
+    client.unfocused        $inactive-bg-color  $inactive-bg-color $inactive-text-color $bg-color
+    client.focused_inactive $inactive-bg-color  $inactive-bg-color $inactive-text-color $bg-color
+    client.urgent           $urgent-bg-color    $urgent-bg-color   $text-color          $bg-color
 # }
 
 # Binds {
     # Lock/Logout/Shutdown etc..
-    set $mode_system System (l) lock, (e) logout, (s) suspend, (h) hibernate, (r) reboot, (Shift+s) shutdown
+    set $mode_system System (l) lock, (d) suspend, (h) hibernate, (r) reboot, (s) shutdown
     mode "$mode_system" {
         bindsym l exec --no-startup-id  $HOME/.config/i3/i3lock_multimonitor.sh -i $HOME/Pictures/wallpaper.jpg, mode "default"
-        bindsym e exec --no-startup-id i3exit logout, mode "default"
-        bindsym s exec --no-startup-id i3exit suspend, mode "default"
+        # bindsym e exec --no-startup-id i3exit logout, mode "default"
+        bindsym d exec --no-startup-id i3exit suspend, mode "default"
         bindsym h exec --no-startup-id i3exit hibernate, mode "default"
         bindsym r exec --no-startup-id i3exit reboot, mode "default"
-        bindsym Shift+s exec --no-startup-id i3exit shutdown, mode "default"
+        bindsym s exec --no-startup-id i3exit shutdown, mode "default"
 
         # back to normal: Enter or Escape
         bindsym Return mode "default"
@@ -54,6 +54,9 @@
 
     # start rofi ( program launcher )
     bindsym $mod+d exec --no-startup-id rofi -show drun
+
+    # rofi-xrandr menu
+    bindsym $mod+p exec --no-startup-id $HOME/.config/i3/xrandr-rofi.sh
 
     # change focus
     bindsym $mod+h focus left
@@ -77,6 +80,7 @@
     # bindsym $mod+u resize grow height 5 px or 5 ppt
     # bindsym $mod+i resize shrink height 5 px or 5 ppt
     # bindsym $mod+y resize grow width 5 px or 5 ppt
+    bindsym $mod+o exec --no-startup-id xdg-open "$(rg --files --hidden --vimgrep --no-ignore-vcs | rofi -dmenu -i -matching fuzzy -tokenize)" &> /dev/null &
 
     # split in vertical orientation toggle
     bindsym $mod+v split toggle
@@ -170,6 +174,7 @@
     exec --no-startup-id compton
     exec --no-startup-id "xset dpms 300 600 1000" # Sets standby / suspend / off timers
     exec --no-startup-id gnome-terminal --title "asdfqwertyzxcv"
+    exec --no-startup-id $HOME/.config/i3/battery_dunst.sh
     exec_always --no-startup-id $HOME/.config/polybar/launch.sh
     exec_always --no-startup-id feh --bg-scale ~/Pictures/wallpaper.jpg
 
@@ -182,7 +187,7 @@
 
 # Window-specific configs {
     # Disable titlebars / Needed by i3-gaps
-    for_window [class="^.*"] border pixel 0
+    for_window [class="^.*"] border pixel 1
 
     # Scratchpad. Title can be found anywhere so I gave it something arbitrary
     # NOTE: If I switch to urxvt, i would be able to change the instance's WM_CLASS

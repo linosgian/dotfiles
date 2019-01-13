@@ -1,5 +1,5 @@
 [bar/top]
-monitor = ${env:MONITOR:}
+monitor = ${env:MONITOR:LVDS1}
 width = 100%
 height = 26
 
@@ -137,7 +137,7 @@ label-warn-underline = #f00
 
 [module/date]
 type = internal/date
-date =  %a %b%e, %H:%M%
+date =  %a %b %e, %H:%M%
 format = %{A1:ls:}<label>%{A}
 format-underline = #8fa993
 
