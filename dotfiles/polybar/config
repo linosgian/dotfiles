@@ -1,4 +1,5 @@
 [bar/top]
+monitor = ${env:MONITOR:LVDS1}
 width = 100%
 height = 26
 
@@ -20,7 +21,7 @@ font-3 = FontAwesome:size=10;0
 
 modules-right = keyboard pulseaudio wireless-network wired-network battery memory cpu temperature
 modules-center = date
-modules-left = i3
+modules-left = i3 updates
 
 separator = |
 
@@ -31,6 +32,13 @@ separator = |
 ; ramp-0 = 
 ; ramp-1 = 
 ; ramp-2 = 
+
+[module/updates]
+type = custom/script
+exec = $HOME/.config/polybar/update_repos.sh
+interval = 18000
+format-underline = #268bd2
+format-prefix = " "
 
 [module/temperature]
 type = internal/temperature
@@ -84,8 +92,12 @@ animation-charging-3 = 
 animation-charging-4 = 
 animation-charging-framerate = 750
 
+[settings]
+screenchange-reload = true
+
 [module/i3]
 type = internal/i3
+pin-workspaces = true
 
 ws-icon-0 = 1;
 ws-icon-1 = 2;
@@ -132,7 +144,7 @@ label-warn-underline = #f00
 
 [module/date]
 type = internal/date
-date =  %a %b%e, %H:%M%
+date =  %a %b %e, %H:%M%
 format = %{A1:ls:}<label>%{A}
 format-underline = #8fa993
 

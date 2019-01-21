@@ -246,6 +246,7 @@
         autocmd BufNewFile,BufRead *.blade.php setlocal noexpandtab tabstop=2 shiftwidth=2 softtabstop=2
         autocmd BufNewFile,BufRead Vagrantfile setlocal expandtab tabstop=2 shiftwidth=2
         autocmd FileType json setlocal expandtab shiftwidth=2 tabstop=2
+        autocmd FileType conf setlocal expandtab shiftwidth=4 tabstop=4
         autocmd FileType sh   setlocal noexpandtab shiftwidth=4 tabstop=4
         autocmd FileType yaml setlocal expandtab shiftwidth=2 tabstop=2
         autocmd FileType glsl setlocal noexpandtab shiftwidth=4 tabstop=4
@@ -479,3 +480,4 @@
 
 " Fix lightline issue, where if lazyredraw is set, it doesnt appear
 autocmd VimEnter * redraw
+set clipboard=unnamedplus

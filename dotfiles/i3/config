@@ -1,171 +1,203 @@
-# Alt as the Mod key
-set $mod Mod1
+# Basic config {
+    set $mod Mod1
+    font pango: Fira Mono 9
+    floating_modifier $mod
 
-# Font for window titles. Will also be used by the bar unless a different font
-# is used in the bar {} block below.
-font pango: Fira Mono 9
+    # Requires i3-gaps
+    gaps inner 7
+    # gaps outer 4
+    # smart_gaps on # This is cool but evince workspace is annoying with it
 
-# Use Mouse+$mod to drag floating windows to their wanted position
-floating_modifier $mod
+    hide_edge_borders both
 
-# Lock/Logout/Shutdown etc..
-set $mode_system System (l) lock, (e) logout, (s) suspend, (h) hibernate, (r) reboot, (Shift+s) shutdown
-mode "$mode_system" {
-    bindsym l exec --no-startup-id  $HOME/.config/i3/i3lock_multimonitor.sh -i $HOME/Pictures/wallpaper.jpg, mode "default"
-    bindsym e exec --no-startup-id i3exit logout, mode "default"
-    bindsym s exec --no-startup-id i3exit suspend, mode "default"
-    bindsym h exec --no-startup-id i3exit hibernate, mode "default"
-    bindsym r exec --no-startup-id i3exit reboot, mode "default"
-    bindsym Shift+s exec --no-startup-id i3exit shutdown, mode "default"
+    # All needed colors
+    set $bg-color            #8fa993
+    set $inactive-bg-color   #2f343f
+    set $text-color          #f3f4f5
+    set $inactive-text-color #ffffff
+    set $urgent-bg-color     #E53935
 
-    # back to normal: Enter or Escape
-    bindsym Return mode "default"
-    bindsym Escape mode "default"
-}
-bindsym $mod+r mode "$mode_system"
+    # window colors
+    #                       border              background         text                 indicator
+    client.focused          $bg-color           $bg-color          $text-color          $bg-color
+    client.unfocused        $inactive-bg-color  $inactive-bg-color $inactive-text-color $bg-color
+    client.focused_inactive $inactive-bg-color  $inactive-bg-color $inactive-text-color $bg-color
+    client.urgent           $urgent-bg-color    $urgent-bg-color   $text-color          $bg-color
+# }
 
-# start a terminal
-bindsym $mod+Return exec i3-sensible-terminal
+# Binds {
+    # Lock/Logout/Shutdown etc..
+    set $mode_system System (l) lock, (d) suspend, (h) hibernate, (r) reboot, (s) shutdown
+    mode "$mode_system" {
+        bindsym l exec --no-startup-id  $HOME/.config/i3/i3lock_multimonitor.sh -i $HOME/Pictures/wallpaper.jpg, mode "default"
+        # bindsym e exec --no-startup-id i3exit logout, mode "default"
+        bindsym d exec --no-startup-id i3exit suspend, mode "default"
+        bindsym h exec --no-startup-id i3exit hibernate, mode "default"
+        bindsym r exec --no-startup-id i3exit reboot, mode "default"
+        bindsym s exec --no-startup-id i3exit shutdown, mode "default"
 
-# Screenshot
-bindsym --release Print exec scrot -s
-bindsym Shift+Print exec scrot
+        # back to normal: Enter or Escape
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+    }
+    bindsym $mod+r mode "$mode_system"
 
-# kill focused window
-bindsym $mod+q kill
+    # start a terminal
+    bindsym $mod+Return exec i3-sensible-terminal
 
-# start rofi ( program launcher )
-bindsym $mod+d exec --no-startup-id rofi -show drun
+    # Screenshot
+    bindsym --release Print exec scrot -s
+    bindsym Shift+Print exec scrot
 
-# change focus
-bindsym $mod+h focus left
-bindsym $mod+j focus down
-bindsym $mod+k focus up
-bindsym $mod+l focus right
+    # kill focused window
+    bindsym $mod+q kill
 
-# move focused window
-bindsym $mod+Shift+h move left
-bindsym $mod+Shift+j move down
-bindsym $mod+Shift+k move up
-bindsym $mod+Shift+l move right
+    # start rofi ( program launcher )
+    bindsym $mod+d exec --no-startup-id rofi -show drun
 
-# Screen brightness function keys
-bindsym XF86MonBrightnessUp exec xbacklight -inc 10 # increase screen brightness
-bindsym XF86MonBrightnessDown exec xbacklight -dec 10 # decrease screen brightness
+    # rofi-xrandr menu
+    bindsym $mod+p exec --no-startup-id $HOME/.config/i3/xrandr-rofi.sh
 
-# resize windows without resize mode. Move one row upwards from hjkl.
-# bindsym $mod+o resize shrink width 5 px or 5 ppt
-# bindsym $mod+u resize grow height 5 px or 5 ppt
-# bindsym $mod+i resize shrink height 5 px or 5 ppt
-# bindsym $mod+y resize grow width 5 px or 5 ppt
+    # change focus
+    bindsym $mod+h focus left
+    bindsym $mod+j focus down
+    bindsym $mod+k focus up
+    bindsym $mod+l focus right
 
-# split in vertical orientation toggle
-bindsym $mod+v split toggle
+    # move focused window
+    bindsym $mod+Shift+h move left
+    bindsym $mod+Shift+j move down
+    bindsym $mod+Shift+k move up
+    bindsym $mod+Shift+l move right
 
-# enter fullscreen mode for the focused container
-bindsym $mod+f fullscreen toggle
+    # Screen brightness function keys
+    bindsym XF86MonBrightnessUp exec xbacklight -inc 10 # increase screen brightness
+    bindsym XF86MonBrightnessDown exec xbacklight -dec 10 # decrease screen brightness
 
-# change container layout (stacked, tabbed, toggle split)
-bindsym $mod+s layout stacking
-bindsym $mod+w layout tabbed
-bindsym $mod+e layout toggle split
+    # resize windows without resize mode. Move one row upwards from hjkl.
+    # TODO: Go back to resize mode ??
+    # bindsym $mod+o resize shrink width 5 px or 5 ppt
+    # bindsym $mod+u resize grow height 5 px or 5 ppt
+    # bindsym $mod+i resize shrink height 5 px or 5 ppt
+    # bindsym $mod+y resize grow width 5 px or 5 ppt
+    bindsym $mod+o exec --no-startup-id xdg-open "$(rg --files --hidden --vimgrep --no-ignore-vcs | rofi -dmenu -i -matching fuzzy -tokenize)" &> /dev/null &
 
-# toggle tiling / floating
-bindsym $mod+Shift+space floating toggle
+    # split in vertical orientation toggle
+    bindsym $mod+v split toggle
 
-# change focus between tiling / floating windows
-bindsym $mod+space focus mode_toggle
+    # enter fullscreen mode for the focused container
+    bindsym $mod+f fullscreen toggle
 
-# switch to workspace
-bindsym $mod+1 workspace 1
-bindsym $mod+2 workspace 2
-bindsym $mod+3 workspace 3
-bindsym $mod+4 workspace 4
-bindsym $mod+5 workspace 5
-bindsym $mod+6 workspace 6
-bindsym $mod+7 workspace 7
-bindsym $mod+8 workspace 8
-bindsym $mod+9 workspace 9
-bindsym $mod+0 workspace 10
+    # change container layout (stacked, tabbed, toggle split)
+    bindsym $mod+s layout stacking
+    bindsym $mod+w layout tabbed
+    bindsym $mod+e layout toggle split
 
-# move focused container to workspace
-bindsym $mod+Shift+1 move container to workspace 1
-bindsym $mod+Shift+2 move container to workspace 2
-bindsym $mod+Shift+3 move container to workspace 3
-bindsym $mod+Shift+4 move container to workspace 4
-bindsym $mod+Shift+5 move container to workspace 5
-bindsym $mod+Shift+6 move container to workspace 6
-bindsym $mod+Shift+7 move container to workspace 7
-bindsym $mod+Shift+8 move container to workspace 8
-bindsym $mod+Shift+9 move container to workspace 9
-bindsym $mod+Shift+0 move container to workspace 10
+    # toggle tiling / floating
+    bindsym $mod+Shift+space floating toggle
 
-# Application assingments
-assign [class="Google-chrome"] 2
-assign [class="Thunderbird"] 3
-assign [class="Pidgin"] 4
-assign [class="Transmission-gtk"] 8
-assign [class="vlc"] 9
+    # change focus between tiling / floating windows
+    bindsym $mod+space focus mode_toggle
 
-# # Requires i3-gaps
-# gaps inner 7
-gaps inner 5
-gaps outer 3
-smart_gaps on
+    # switch to workspace
+    bindsym $mod+1 workspace 1
+    bindsym $mod+2 workspace 2
+    bindsym $mod+3 workspace 3
+    bindsym $mod+4 workspace 4
+    bindsym $mod+5 workspace 5
+    bindsym $mod+6 workspace 6
+    bindsym $mod+7 workspace 7
+    bindsym $mod+8 workspace 8
+    bindsym $mod+9 workspace 9
+    bindsym $mod+0 workspace 10
 
+    # move focused container to workspace
+    bindsym $mod+Shift+1 move container to workspace 1
+    bindsym $mod+Shift+2 move container to workspace 2
+    bindsym $mod+Shift+3 move container to workspace 3
+    bindsym $mod+Shift+4 move container to workspace 4
+    bindsym $mod+Shift+5 move container to workspace 5
+    bindsym $mod+Shift+6 move container to workspace 6
+    bindsym $mod+Shift+7 move container to workspace 7
+    bindsym $mod+Shift+8 move container to workspace 8
+    bindsym $mod+Shift+9 move container to workspace 9
+    bindsym $mod+Shift+0 move container to workspace 10
 
-# reload the configuration file
-bindsym $mod+Shift+c reload
-# restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
-bindsym $mod+Shift+r restart
-# exit i3 (logs you out of your X session)
-bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
+    # reload the configuration file
+    bindsym $mod+Shift+c reload
+    # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
+    bindsym $mod+Shift+r restart
+    # exit i3 (logs you out of your X session)
+    bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
 
-bindsym $mod+u scratchpad show
+    bindsym $mod+u scratchpad show
 
+    # Pulse Audio controls
+    bindsym XF86AudioRaiseVolume exec --no-startup-id $HOME/.config/i3/i3volcontrol.sh up   #increase sound volume
+    bindsym XF86AudioLowerVolume exec --no-startup-id $HOME/.config/i3/i3volcontrol.sh down #decrease sound volume
+    bindsym XF86AudioMute exec --no-startup-id $HOME/.config/i3/i3volcontrol.sh mute # Toggle mute
 
-# Pulse Audio controls
-bindsym XF86AudioRaiseVolume exec --no-startup-id $HOME/.config/i3/i3volcontrol.sh up   #increase sound volume
-bindsym XF86AudioLowerVolume exec --no-startup-id $HOME/.config/i3/i3volcontrol.sh down #decrease sound volume
-bindsym XF86AudioMute exec --no-startup-id $HOME/.config/i3/i3volcontrol.sh mute # Toggle mute
+    # i3lock that works on multiple screens
+    bindsym Mod4+l exec $HOME/.config/i3/i3lock_multimonitor.sh -i ~/Pictures/wallpaper.jpg
+# }
 
-# i3lock
-bindsym Mod4+l exec $HOME/.config/i3/i3lock_multimonitor.sh -i ~/Pictures/wallpaper.jpg
+# Workspaces {
+    # Per-monitor config {
+        set $built_in_monitor "LVDS1"
+        set $external_monitor "HDMI1"
+        workspace 1 output $external_monitor
+        workspace 2 output $external_monitor
+        workspace 3 output $external_monitor
+        workspace 4 output $external_monitor
+        workspace 5 output $external_monitor
+        workspace 6 output $external_monitor
+        workspace 7 output $built_in_monitor
+        workspace 8 output $external_monitor
+        workspace 9 output $external_monitor
+    # }
 
-hide_edge_borders both
+    # Application assingments {
+        assign [class="Google-chrome"] 2
+        assign [class="Thunderbird"] 3
+        assign [class="Pidgin"] 4
+        assign [class="Evince"] 5
+        assign [class="VirtualBox Manager"] 7
+        assign [class="Transmission-gtk"] 8
+        assign [class="vlc"] 9
+    # }
+# }
 
-exec --no-startup-id nm-applet
-exec --no-startup-id blueman-applet
-exec --no-startup-id "setxkbmap -model pc105 -layout us,gr -option grp:win_space_toggle" # Set keyboard layout and how to switch
-exec --no-startup-id feh --bg-scale ~/Pictures/wallpaper.jpg
-exec --no-startup-id compton
-exec --no-startup-id "xset dpms 300 600 1000" # Sets standby / suspend / off timers
-exec_always --no-startup-id $HOME/.config/polybar/launch.sh
+# Execs {
+    exec --no-startup-id nm-applet
+    exec --no-startup-id blueman-applet
+    exec --no-startup-id "setxkbmap -model pc105 -layout us,gr -option grp:win_space_toggle" # Set keyboard layout and how to switch
+    exec --no-startup-id compton
+    exec --no-startup-id "xset dpms 300 600 1000" # Sets standby / suspend / off timers
+    exec --no-startup-id gnome-terminal --title "asdfqwertyzxcv"
+    exec --no-startup-id $HOME/.config/i3/battery_dunst.sh
+    exec_always --no-startup-id $HOME/.config/polybar/launch.sh
+    exec_always --no-startup-id feh --bg-scale ~/Pictures/wallpaper.jpg
 
-# Disable titlebars / Needed by i3-gaps
-for_window [class="^.*"] border pixel 0
+    exec --no-startup-id xidlehook \
+    --not-when-fullscreen --not-when-audio \
+    --timer normal 590 "notify-send 'Suspending in 10 seconds'" '' \
+    --timer normal 600 "systemctl suspend" ''
 
-# All needed colors
-set $bg-color            #b77305
-set $inactive-bg-color   #2f343f
-set $text-color          #f3f4f5
-set $inactive-text-color #676E7D
-set $urgent-bg-color     #E53935
+# }
 
-# window colors
-# NOTE: Not sure if needed anywhere.
-#                       border              background         text                 indicator
-client.focused          $bg-color           $bg-color          $text-color          #00ff00
-client.unfocused        $inactive-bg-color $inactive-bg-color $inactive-text-color #00ff00
-client.focused_inactive $inactive-bg-color $inactive-bg-color $inactive-text-color #00ff00
-client.urgent $urgent-bg-color $urgent-bg-color $text-color #00ff00
+# Window-specific configs {
+    # Disable titlebars / Needed by i3-gaps
+    for_window [class="^.*"] border pixel 1
 
-# Scratchpad. Title can be found anywhere so I gave it something arbitrary
-# NOTE: If I switch to urxvt, i would be able to change the instance's WM_CLASS
-for_window [title="asdfqwertyzxcv"] floating enable
-for_window [title="asdfqwertyzxcv"] resize set 625 450
-for_window [title="asdfqwertyzxcv"] move scratchpad
-for_window [title="asdfqwertyzxcv"] border pixel 2
-for_window [title="asdfqwertyzxcv"] sticky enable
+    # Scratchpad. Title can be found anywhere so I gave it something arbitrary
+    # NOTE: If I switch to urxvt, i would be able to change the instance's WM_CLASS
+    for_window [title="asdfqwertyzxcv"] floating enable
+    for_window [title="asdfqwertyzxcv"] resize set 625 450
+    for_window [title="asdfqwertyzxcv"] move scratchpad
+    for_window [title="asdfqwertyzxcv"] border pixel 2
+    for_window [title="asdfqwertyzxcv"] sticky enable
 
-exec_always --no-startup-id gnome-terminal --title "asdfqwertyzxcv"
+    # For evince and virtualbox switch to tabbed view
+    for_window [workspace=5] layout tabbed
+    for_window [workspace=7] layout tabbed
+# }
