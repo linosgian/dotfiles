@@ -45,6 +45,9 @@ sudo apt install firmware-atheros pulseaudio-module-bluetooth
 sudo apt-get install cmake cmake-data libcairo2-dev libxcb1-dev libxcb-ewmh-dev libxcb-icccm4-dev libxcb-image0-dev libxcb-randr0-dev libxcb-util0-dev libxcb-xkb-dev pkg-config python-xcbgen xcb-proto libxcb-xrm-dev i3-wm libasound2-dev libmpdclient-dev libiw-dev libcurl4-openssl-dev libpulse-dev libxcb1-dev libxcb-util0-dev libxcb-randr0-dev libxcb-composite0-dev
 # do the https://github.com/jaagr/polybar/wiki/Compiling
 
+# Needed by battery-dunst
+sudo apt install acpi
+
 # keep touchpad.conf from /etc/X11/xorg.conf.d/30-touchpad.conf
 # Install i3-gaps
 # Systemd lock!

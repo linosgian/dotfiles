@@ -1,6 +1,6 @@
 #!/bin/sh
 lock() {
-    i3lock
+	$HOME/.config/i3/i3lock_multimonitor.sh -i $HOME/Pictures/wallpaper.jpg
 }
 
 case "$1" in
@@ -11,7 +11,7 @@ case "$1" in
         i3-msg exit
         ;;
     suspend)
-        lock && systemctl suspend
+        systemctl suspend
         ;;
     hibernate)
         lock && systemctl hibernate

@@ -4,7 +4,7 @@
     floating_modifier $mod
 
     # Requires i3-gaps
-    gaps inner 7
+    # gaps inner 7
     # gaps outer 4
     # smart_gaps on # This is cool but evince workspace is annoying with it
 
@@ -31,10 +31,10 @@
     mode "$mode_system" {
         bindsym l exec --no-startup-id  $HOME/.config/i3/i3lock_multimonitor.sh -i $HOME/Pictures/wallpaper.jpg, mode "default"
         # bindsym e exec --no-startup-id i3exit logout, mode "default"
-        bindsym d exec --no-startup-id i3exit suspend, mode "default"
-        bindsym h exec --no-startup-id i3exit hibernate, mode "default"
-        bindsym r exec --no-startup-id i3exit reboot, mode "default"
-        bindsym s exec --no-startup-id i3exit shutdown, mode "default"
+        bindsym d exec --no-startup-id $HOME/.config/i3/i3exit suspend, mode "default"
+        bindsym h exec --no-startup-id $HOME/.config/i3/i3exit hibernate, mode "default"
+        bindsym r exec --no-startup-id $HOME/.config/i3/i3exit reboot, mode "default"
+        bindsym s exec --no-startup-id $HOME/.config/i3/i3exit shutdown, mode "default"
 
         # back to normal: Enter or Escape
         bindsym Return mode "default"
@@ -71,8 +71,8 @@
     bindsym $mod+Shift+l move right
 
     # Screen brightness function keys
-    bindsym XF86MonBrightnessUp exec xbacklight -inc 10 # increase screen brightness
-    bindsym XF86MonBrightnessDown exec xbacklight -dec 10 # decrease screen brightness
+    bindsym F4 exec xbacklight -inc 10 # increase screen brightness
+    bindsym F3 exec xbacklight -dec 10 # decrease screen brightness
 
     # resize windows without resize mode. Move one row upwards from hjkl.
     # TODO: Go back to resize mode ??
@@ -80,7 +80,7 @@
     # bindsym $mod+u resize grow height 5 px or 5 ppt
     # bindsym $mod+i resize shrink height 5 px or 5 ppt
     # bindsym $mod+y resize grow width 5 px or 5 ppt
-    bindsym $mod+o exec --no-startup-id xdg-open "$(rg --files --hidden --vimgrep --no-ignore-vcs | rofi -dmenu -i -matching fuzzy -tokenize)" &> /dev/null &
+    bindsym $mod+o exec --no-startup-id xdg-open "$(rg --files --vimgrep -g '*.jpg' -g '*.png' -g '*.pdf' -g '*.mkv' --no-ignore-vcs | rofi -dmenu -i -matching fuzzy -tokenize)" &> /dev/null &
 
     # split in vertical orientation toggle
     bindsym $mod+v split toggle
@@ -159,7 +159,8 @@
     # Application assingments {
         assign [class="Google-chrome"] 2
         assign [class="Thunderbird"] 3
-        assign [class="Pidgin"] 4
+        # assign [class="Pidgin"] 4 # Not using this anymore
+        assign [class="Psi"] 4
         assign [class="Evince"] 5
         assign [class="VirtualBox Manager"] 7
         assign [class="Transmission-gtk"] 8
@@ -192,7 +193,7 @@
     # Scratchpad. Title can be found anywhere so I gave it something arbitrary
     # NOTE: If I switch to urxvt, i would be able to change the instance's WM_CLASS
     for_window [title="asdfqwertyzxcv"] floating enable
-    for_window [title="asdfqwertyzxcv"] resize set 625 450
+    for_window [title="asdfqwertyzxcv"] resize set 1920x1080
     for_window [title="asdfqwertyzxcv"] move scratchpad
     for_window [title="asdfqwertyzxcv"] border pixel 2
     for_window [title="asdfqwertyzxcv"] sticky enable

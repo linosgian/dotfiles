@@ -94,7 +94,7 @@ function gen_entries()
 }
 
 # Call menu
-SEL=$( gen_entries | rofi -dmenu -p "Choose monitor setup:" -a 0 -no-custom  | awk '{print $1}' )
+SEL=$( gen_entries | rofi -dmenu -p "Choose monitor setup" -a 0 -no-custom  | awk '{print $1}' )
 
 [[ -z $SEL ]] && exit
 

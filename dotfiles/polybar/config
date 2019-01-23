@@ -1,9 +1,11 @@
 [bar/top]
-monitor = ${env:MONITOR:LVDS1}
+monitor = ${env:MONITOR:eDP1}
 width = 100%
-height = 26
+height = 45
+dpi = 200
 
 tray-position = right
+tray-maxsize = 35
 
 background = #ff2f343f
 foreground = #ccffffff
@@ -12,26 +14,34 @@ spacing = 0
 
 padding-right = 2
 module-margin = 1
-underline-size = 2
+underline-size = 4
 
 font-0 = Inconsolata:style=Bold:size=10;-1
 font-1 = MaterialIcons:size=10;0
 font-2 = Termsynu:size=8:antialias=false;-2
 font-3 = FontAwesome:size=10;0
 
-modules-right = keyboard pulseaudio wireless-network wired-network battery memory cpu temperature
+modules-right = keyboard backlight pulseaudio openvpn wireless-network wired-network battery memory cpu temperature
 modules-center = date
-modules-left = i3 updates
+modules-left = i3
 
 separator = |
 
-; [module/backlight]
-; type = internal/xbacklight
-; format = <ramp>
+[module/backlight]
+type = internal/xbacklight
+format = <ramp> <label>
 
-; ramp-0 = 
-; ramp-1 = 
-; ramp-2 = 
+label = %percentage:3%%
+
+ramp-0 = 
+ramp-1 = 
+ramp-2 = 
+
+[module/openvpn]
+type = custom/script
+exec = $HOME/.config/polybar/openvpn.sh
+exec-if = pgrep -x openvpn
+interval = 60
 
 [module/updates]
 type = custom/script
@@ -45,7 +55,7 @@ type = internal/temperature
 
 interval = 1
 thermal-zone = 0
-hwmon-path = /sys/devices/platform/coretemp.0/hwmon/hwmon1/temp1_input
+hwmon-path = /sys/devices/platform/coretemp.0/hwmon/hwmon2/temp1_input
 
 warn-temperature = 70
 label =  %temperature-c:2%
@@ -66,7 +76,7 @@ label-layout =  %layout%
 [module/battery]
 type = internal/battery
 full-at = 98
-battery = BAT1
+battery = BAT0
 
 time-format = %H:%M
 format-charging = <animation-charging> <label-charging>
@@ -79,9 +89,8 @@ label-full = %percentage:3%%
 ramp-capacity-0 = 
 ramp-capacity-0-underline = #f53c3c
 ramp-capacity-1 = 
-ramp-capacity-1-underline = #f53c3c
+ramp-capacity-1-underline = #ffa900
 ramp-capacity-2 = 
-ramp-capacity-2-underline = #ffa900
 ramp-capacity-3 = 
 ramp-capacity-4 = 
 
@@ -157,7 +166,7 @@ label =  %gb_used%
 
 [module/wireless-network]
 type = internal/network
-interface = wlp3s0
+interface = wlp108s0
 interval = 3.0
 ping-interval = 10
 
@@ -180,10 +189,10 @@ label-mounted = %mountpoint%: %free%
 
 [module/wired-network]
 type = internal/network
-interface = enp2s0
+interface = enx3c18a07755b9
 interval = 3.0
 
-label-connected =    %{T3}%local_ip%%{T-}
+label-connected =  %local_ip%
 label-disconnected-foreground = #66
 
 [module/pulseaudio]
