@@ -6,7 +6,6 @@ rofi.fullscreen: false
 rofi.bw: 2
 rofi.separator-style: solid
 rofi.hide-scrollbar: true
-rofi.dpi: 220
 !rofi.show-match: false
 !rofi.auto-select: true
 

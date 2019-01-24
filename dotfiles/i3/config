@@ -71,8 +71,8 @@
     bindsym $mod+Shift+l move right
 
     # Screen brightness function keys
-    bindsym F4 exec xbacklight -inc 10 # increase screen brightness
-    bindsym F3 exec xbacklight -dec 10 # decrease screen brightness
+    bindsym F4 exec xbacklight -inc 5 # increase screen brightness
+    bindsym F3 exec xbacklight -dec 5 # decrease screen brightness
 
     # resize windows without resize mode. Move one row upwards from hjkl.
     # TODO: Go back to resize mode ??
@@ -80,7 +80,7 @@
     # bindsym $mod+u resize grow height 5 px or 5 ppt
     # bindsym $mod+i resize shrink height 5 px or 5 ppt
     # bindsym $mod+y resize grow width 5 px or 5 ppt
-    bindsym $mod+o exec --no-startup-id xdg-open "$(rg --files --vimgrep -g '*.jpg' -g '*.png' -g '*.pdf' -g '*.mkv' --no-ignore-vcs | rofi -dmenu -i -matching fuzzy -tokenize)" &> /dev/null &
+    bindsym $mod+o exec --no-startup-id xdg-open "$(rg --files --vimgrep -g '!*cache*' -g '!*playground*' -g '*.jpg' -g '*.png' -g '*.pdf' -g '*.mkv' -g '*.ts' --no-ignore-vcs | rofi -dmenu -i -matching fuzzy -tokenize)" &> /dev/null &
 
     # split in vertical orientation toggle
     bindsym $mod+v split toggle
@@ -143,13 +143,13 @@
 
 # Workspaces {
     # Per-monitor config {
-        set $built_in_monitor "LVDS1"
+        set $built_in_monitor "eDP1"
         set $external_monitor "HDMI1"
         workspace 1 output $external_monitor
         workspace 2 output $external_monitor
-        workspace 3 output $external_monitor
-        workspace 4 output $external_monitor
-        workspace 5 output $external_monitor
+        workspace 3 output $built_in_monitor
+        workspace 4 output $built_in_monitor
+        workspace 5 output $built_in_monitor
         workspace 6 output $external_monitor
         workspace 7 output $built_in_monitor
         workspace 8 output $external_monitor
@@ -183,6 +183,9 @@
     --not-when-fullscreen --not-when-audio \
     --timer normal 590 "notify-send 'Suspending in 10 seconds'" '' \
     --timer normal 600 "systemctl suspend" ''
+    
+    # Sets up xrandr for both monitors and restarts i3
+    exec --no-startup-id $HOME/.config/i3/startup_xrandr.sh
 
 # }
 
