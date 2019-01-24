@@ -54,6 +54,7 @@
         endif
 
         set hidden " Handles buffers better.
+        set clipboard=unnamedplus
     "}
     set backspace=indent,eol,start " Make backspace work as 'intented'
 	set shiftround " 'Smart indent'
@@ -249,7 +250,7 @@
         autocmd FileType sh   setlocal noexpandtab shiftwidth=4 tabstop=4
         autocmd FileType yaml setlocal expandtab shiftwidth=2 tabstop=2
         autocmd FileType glsl setlocal noexpandtab shiftwidth=4 tabstop=4
-        autocmd BufNewFile,BufRead *.vim setlocal expandtab shiftwidth=2 tabstop=2
+        " autocmd BufNewFile,BufRead *.vim setlocal expandtab shiftwidth=2 tabstop=2
         augroup filetypedetect
             autocmd BufNewFile,BufRead .tmux.conf*,tmux.conf* setf tmux
             autocmd BufNewFile,BufRead Vagrantfile setf ruby
@@ -323,12 +324,12 @@
     noremap L $
 
     " Page-down 
-    nnoremap <Space> <c-d>zz
-    vnoremap <Space> <c-d>zz
+    nnoremap <c-u> <c-u>zz
+    vnoremap <c-u> <c-u>zz
     " This can be triggered by <C-Space> as well
     " For more: https://stackoverflow.com/questions/24983372/what-does-ctrlspace-do-in-vim
-    nnoremap <C-@> <C-u>zz 
-    vnoremap <C-@> <C-u>zz 
+    nnoremap <C-d> <C-d>zz 
+    vnoremap <C-d> <C-d>zz 
 
     " Search mappings: These will make it so that going to the next one in a
     " search will center on the line it's found in.
@@ -373,7 +374,7 @@
     nmap <Tab> :bnext<CR>
 
     " close buffers but not their windows (bufkill)
-    nmap <C-D> :BD<CR>
+    nmap <leader>d :BD<CR>
 
     function! s:build_go_files()
     let l:file = expand('%')
