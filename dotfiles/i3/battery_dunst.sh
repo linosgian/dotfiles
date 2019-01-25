@@ -11,14 +11,14 @@ do
 	if [[ $DISCHARGING ]]; then
 		CAPACITY=$(echo $BATTINFO | cut -f 4 -d " " | tr -d "%,")
 		if [[ $CAPACITY -gt $SAFE_PERCENT ]]; then
-			SLEEP_TIME=10
+			SLEEP_TIME=15
 		else 
-			SLEEP_TIME=5
+			SLEEP_TIME=10
 			if [[ $CAPACITY -le $CRITICAL_PERCENT ]]; then
 				SLEEP_TIME=1
 				/usr/bin/notify-send "critically low battery" "$BATTINFO"
 			elif [[ $CAPACITY -le $DANGER_PERCENT ]]; then
-				SLEEP_TIME=1
+				SLEEP_TIME=5
 				/usr/bin/notify-send "low battery" "$BATTINFO"
 			fi
 		fi

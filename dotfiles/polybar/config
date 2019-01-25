@@ -2,10 +2,10 @@
 monitor = ${env:MONITOR}
 width = 100%
 height = 25
-dpi = 100
+dpi = 115
 
 tray-position = right
-tray-maxsize = 15
+tray-maxsize = 20
 
 background = #ff2f343f
 foreground = #ccffffff
@@ -23,15 +23,14 @@ font-3 = FontAwesome:size=10;0
 
 modules-right = keyboard backlight pulseaudio openvpn wireless-network wired-network battery memory cpu temperature
 modules-center = date
-modules-left = i3
+modules-left = i3 radio
 
 separator = |
 
 [bar/top]
-monitor = ${env:MONITOR:eDP1}
+monitor = ${env:MONITOR}
 width = 100%
 height = 25
-; dpi = 200
 
 tray-position = right
 tray-maxsize = 15
@@ -52,7 +51,7 @@ font-3 = FontAwesome:size=10;0
 
 modules-right = keyboard backlight pulseaudio openvpn wireless-network wired-network battery memory cpu temperature
 modules-center = date
-modules-left = i3
+modules-left = i3 radio
 
 separator = |
 
@@ -71,6 +70,14 @@ type = custom/script
 exec = $HOME/.config/polybar/openvpn.sh
 exec-if = pgrep -x openvpn
 interval = 60
+
+[module/radio]
+type = custom/script
+exec = $HOME/.config/polybar/pepper.sh
+exec-if=pactl list sink-inputs | grep "google-chrome" > /dev/null
+interval = 30
+format-underline = #8fa993
+format-prefix = " "
 
 [module/updates]
 type = custom/script
