@@ -76,10 +76,11 @@
 
     # resize windows without resize mode. Move one row upwards from hjkl.
     # TODO: Go back to resize mode ??
-    # bindsym $mod+o resize shrink width 5 px or 5 ppt
-    # bindsym $mod+u resize grow height 5 px or 5 ppt
-    # bindsym $mod+i resize shrink height 5 px or 5 ppt
-    # bindsym $mod+y resize grow width 5 px or 5 ppt
+    bindsym $mod+Right resize shrink width 5 px or 5 ppt
+    bindsym $mod+Up resize grow height 5 px or 5 ppt
+    bindsym $mod+Down resize shrink height 5 px or 5 ppt
+    bindsym $mod+Left resize grow width 5 px or 5 ppt
+
     bindsym $mod+o exec --no-startup-id xdg-open "$(rg --files --vimgrep -g '!*cache*' -g '!*playground*' -g '*.jpg' -g '*.png' -g '*.pdf' -g '*.mkv' -g '*.ts' --no-ignore-vcs | rofi -dmenu -i -matching fuzzy -tokenize)" &> /dev/null &
 
     # split in vertical orientation toggle
