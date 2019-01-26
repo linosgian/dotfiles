@@ -1,7 +1,8 @@
 # Basic config {
     set $mod Mod1
-    font pango: Fira Mono 9
     floating_modifier $mod
+
+    font pango: Fira Mono 9
 
     hide_edge_borders both
 
@@ -169,7 +170,7 @@
     exec --no-startup-id "setxkbmap -model pc105 -layout us,gr -option grp:win_space_toggle" # Set keyboard layout and how to switch
     exec --no-startup-id compton
     exec --no-startup-id "xset dpms 300 600 1000" # Sets standby / suspend / off timers
-    exec --no-startup-id gnome-terminal --title "asdfqwertyzxcv"
+    exec --no-startup-id gnome-terminal --title "asdfqwertyzxcv" # Hacky way to distinguish scratchpad
     exec --no-startup-id $HOME/.config/i3/battery_dunst.sh
     exec_always --no-startup-id $HOME/.config/polybar/launch.sh
     exec_always --no-startup-id feh --bg-scale ~/Pictures/wallpaper.jpg
