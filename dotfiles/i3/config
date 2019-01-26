@@ -3,11 +3,6 @@
     font pango: Fira Mono 9
     floating_modifier $mod
 
-    # Requires i3-gaps
-    # gaps inner 7
-    # gaps outer 4
-    # smart_gaps on # This is cool but evince workspace is annoying with it
-
     hide_edge_borders both
 
     # All needed colors
@@ -27,6 +22,7 @@
 
 # Binds {
     # Lock/Logout/Shutdown etc..
+    # TODO: Switch to rofi??
     set $mode_system System (l) lock, (d) suspend, (h) hibernate, (r) reboot, (s) shutdown
     mode "$mode_system" {
         bindsym l exec --no-startup-id  $HOME/.config/i3/i3lock_multimonitor.sh -i $HOME/Pictures/wallpaper.jpg, mode "default"
@@ -46,8 +42,8 @@
     bindsym $mod+Return exec i3-sensible-terminal
 
     # Screenshot
-    bindsym --release Print exec scrot -s
-    bindsym Shift+Print exec scrot
+    bindsym --release Print exec scrot -s ~/Pictures/Screenshots/%b%d::%H%M%S.png -e 'notify-send "Screenshot taken:" "$f"'
+    bindsym Shift+Print exec scrot ~/Pictures/Screenshots/%b%d::%H%M%S.png -e 'notify-send "Screenshot taken:" "$f"'
 
     # kill focused window
     bindsym $mod+q kill
@@ -74,8 +70,7 @@
     bindsym XF86MonBrightnessUp exec xbacklight -inc 5 # increase screen brightness
     bindsym XF86MonBrightnessDown exec xbacklight -dec 5 # decrease screen brightness
 
-    # resize windows without resize mode. Move one row upwards from hjkl.
-    # TODO: Go back to resize mode ??
+    # resize windows without resize mode.
     bindsym $mod+Right resize shrink width 5 px or 5 ppt
     bindsym $mod+Up resize grow height 5 px or 5 ppt
     bindsym $mod+Down resize shrink height 5 px or 5 ppt
@@ -160,7 +155,6 @@
     # Application assingments {
         assign [class="Google-chrome"] 2
         assign [class="Thunderbird"] 3
-        # assign [class="Pidgin"] 4 # Not using this anymore
         assign [class="Psi"] 4
         assign [class="Evince"] 5
         assign [class="VirtualBox Manager"] 7
@@ -191,8 +185,7 @@
 # }
 
 # Window-specific configs {
-    # Disable titlebars / Needed by i3-gaps
-    for_window [class="^.*"] border pixel 1
+    for_window [class="^.*"] border pixel 2
 
     # Scratchpad. Title can be found anywhere so I gave it something arbitrary
     # NOTE: If I switch to urxvt, i would be able to change the instance's WM_CLASS
