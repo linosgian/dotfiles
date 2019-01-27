@@ -2,15 +2,13 @@
 export ZSH=$HOME/.oh-my-zsh
 
 ZSH_THEME="honukai"
-
-
 # Uncomment the following line to enable command auto-correction.
 # ENABLE_CORRECTION="true"
 
 HIST_STAMPS="dd.mm.yyyy"
 
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(ssh-agent git k zsh-autosuggestions zsh-syntax-highlighting )
+plugins=(ssh-agent zsh-autosuggestions zsh-syntax-highlighting)
 
 zstyle :omz:plugins:ssh-agent identities id_rsa
 zstyle :omz:plugins:ssh-agent lifetime 4h
@@ -19,11 +17,8 @@ source $ZSH/oh-my-zsh.sh
 # Preferred editor for local and remote sessions
 export EDITOR='vim'
 
-# Compilation flags
-# export ARCHFLAGS="-arch x86_64"
-
 # ssh
-export SSH_KEY_PATH="~/.ssh/rsa_id"
+export SSH_KEY_PATH="~/.ssh/id_rsa"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
@@ -50,7 +45,6 @@ alias urldecode='python -c "import sys, urllib as ul; \
 alias urlencode='python -c "import sys, urllib as ul; \
     print ul.quote_plus(sys.argv[1])"'
 # opens up the pdf with the latest 'last modified' timestamp and removes it from the shell job list
-alias evincel='evince ~/Downloads/$(cd Downloads; ls -t *.pdf | head -n1) 2&>1 &; disown'
 alias ta='tmux attach -t'
 alias ts='tmux new-session -s'
 
@@ -62,9 +56,8 @@ compdef evinced=evince
 nd() {
 	nautilus $@ 2&>1 &; disown
 }
-
 compdef nd=nautilus
-source ~/.zshrc_local
+
 # Added this to avoid duplicates on fzf
 setopt HIST_IGNORE_ALL_DUPS
 
@@ -73,8 +66,8 @@ export EDITOR="vim"
 export TERMINAL="gnome-terminal -e"
 export VISUAL="vim"
 export NNN_USE_EDITOR=1
-alias notes='cd ~/Nextcloud/Notes/ && vim index.md'
 
+source ~/.zshrc_local
 # Startx on login
 if [[ ! $DISPLAY && $XDG_VTNR -eq 1  ]]; then
 	exec startx
