@@ -10,8 +10,10 @@ ZSH_THEME="honukai"
 HIST_STAMPS="dd.mm.yyyy"
 
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git k zsh-autosuggestions zsh-syntax-highlighting )
+plugins=(ssh-agent git k zsh-autosuggestions zsh-syntax-highlighting )
 
+zstyle :omz:plugins:ssh-agent identities id_rsa
+zstyle :omz:plugins:ssh-agent lifetime 4h
 source $ZSH/oh-my-zsh.sh
 
 # Preferred editor for local and remote sessions

@@ -183,6 +183,12 @@
     # Sets up xrandr for both monitors and restarts i3
     exec --no-startup-id $HOME/.config/i3/startup_xrandr.sh
 
+    # Applications on startup
+    exec --no-startup-id thunderbird
+    exec --no-startup-id psi-plus
+    # On boot start a new tmux session on workspace 1
+    exec --no-startup-id i3-msg 'workspace 1; exec gnome-terminal -- "tmux"'
+
 # }
 
 # Window-specific configs {
