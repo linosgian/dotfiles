@@ -75,7 +75,7 @@ interval = 60
 
 [module/radio]
 type = custom/script
-exec = $HOME/.config/polybar/pepper.sh
+exec = python3 $HOME/.config/polybar/pepper.py
 exec-if=pactl list sink-inputs | grep "google-chrome" > /dev/null
 interval = 30
 format-underline = #8fa993
