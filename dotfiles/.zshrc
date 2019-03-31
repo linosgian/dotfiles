@@ -11,7 +11,7 @@ HIST_STAMPS="dd.mm.yyyy"
 plugins=(ssh-agent zsh-autosuggestions zsh-syntax-highlighting)
 
 zstyle :omz:plugins:ssh-agent identities id_rsa
-zstyle :omz:plugins:ssh-agent lifetime 4h
+zstyle :omz:plugins:ssh-agent lifetime 24h
 source $ZSH/oh-my-zsh.sh
 
 # Preferred editor for local and remote sessions
@@ -66,6 +66,17 @@ export EDITOR="vim"
 export TERMINAL="gnome-terminal -e"
 export VISUAL="vim"
 export NNN_USE_EDITOR=1
+
+############# Colored Manpages ###########
+export LESS_TERMCAP_mb=$'\e[1;31m'     # begin bold
+export LESS_TERMCAP_md=$'\e[1;33m'     # begin blink
+export LESS_TERMCAP_so=$'\e[01;44;37m' # begin reverse video
+export LESS_TERMCAP_us=$'\e[01;37m'    # begin underline
+export LESS_TERMCAP_me=$'\e[0m'        # reset bold/blink
+export LESS_TERMCAP_se=$'\e[0m'        # reset reverse video
+export LESS_TERMCAP_ue=$'\e[0m'        # reset underline
+export GROFF_NO_SGR=1                  # for konsole and gnome-terminal
+##########################################
 
 source ~/.zshrc_local
 # Startx on login

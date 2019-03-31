@@ -1,6 +1,6 @@
 [global]
     font = Inconsolata 11
-    allow_markup = yes
+    allow_markup = no
 
     # The format of the message.  Possible variables are:
     #   %a  appname

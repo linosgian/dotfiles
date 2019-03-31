@@ -3,9 +3,9 @@ monitor = ${env:MONITOR}
 width = 100%
 height = 25
 dpi = 115
-wm-restack = i3
 
-tray-position = right
+; This might break thi built-in monitor only
+tray-position = ${env:TRAY_POSITION_BUILT:right}
 tray-maxsize = 19
 
 background = #ff2f343f
@@ -50,10 +50,11 @@ font-0 = Inconsolata:style=Bold:size=10;-1
 font-1 = MaterialIcons:size=10;0
 font-2 = Termsynu:size=8:antialias=false;-2
 font-3 = FontAwesome:size=10;0
+font-4 = Noto Sans Mono:style=Regular:size=8;0
 
 modules-right = keyboard backlight pulseaudio openvpn wireless-network wired-network battery memory cpu temperature
 modules-center = date
-modules-left = i3 radio
+modules-left = i3 
 
 separator = |
 
@@ -76,17 +77,10 @@ interval = 60
 [module/radio]
 type = custom/script
 exec = python3 $HOME/.config/polybar/pepper.py
-exec-if=pactl list sink-inputs | grep "google-chrome" > /dev/null
+exec-if=pacmd list-sink-inputs | grep "google-chrome" -B 14 | grep "state: RUNNING" > /dev/null
 interval = 30
 format-underline = #8fa993
 format-prefix = " "
-
-[module/updates]
-type = custom/script
-exec = $HOME/.config/polybar/update_repos.sh
-interval = 18000
-format-underline = #268bd2
-format-prefix = " "
 
 [module/temperature]
 type = internal/temperature
@@ -96,11 +90,15 @@ thermal-zone = 0
 hwmon-path = /sys/devices/platform/coretemp.0/hwmon/hwmon2/temp1_input
 
 warn-temperature = 70
-label =  %temperature-c:2%
+label =   %temperature-c:2% 
+format = %{A1:killall -SIGUSR1 dunst:}%{A3:killall -SIGUSR2 dunst:}<label>%{A}%{A}
 format-warn =  <label-warn>
 format-warn-underline = #f00
 format-underline-size = #f50a4d
 format-spacing = 1
+click-right = killall -SIGUSR2 dunst # Disable
+click-left = killall -SIGUSR1 dunst # Enable
+
 
 [module/keyboard]
 type = internal/xkeyboard
@@ -204,7 +202,7 @@ label =  %gb_used%
 
 [module/wireless-network]
 type = internal/network
-interface = wlp108s0
+interface = wlan0
 interval = 3.0
 ping-interval = 10
 
@@ -227,7 +225,7 @@ label-mounted = %mountpoint%: %free%
 
 [module/wired-network]
 type = internal/network
-interface = enx3c18a07755b9
+interface = eth0
 interval = 3.0
 
 label-connected =  %local_ip%
@@ -237,7 +235,7 @@ label-disconnected-foreground = #66
 type = internal/pulseaudio
 
 # Make the headphones the default sink here.
-sink = bluez_sink.F0_13_C3_97_43_A7.a2dp_sink
+sink = bluez_sink.00_16_94_28_53_8E.a2dp_sink
 use-ui-max = true
 
 format-volume = <ramp-volume> <label-volume>

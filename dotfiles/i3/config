@@ -44,7 +44,7 @@
 
     # Screenshot
     bindsym --release Print exec scrot -s ~/Pictures/Screenshots/%b%d::%H%M%S.png -e 'notify-send "Screenshot taken:" "$f"'
-    bindsym Shift+Print exec scrot ~/Pictures/Screenshots/%b%d::%H%M%S.png -e 'notify-send "Screenshot taken:" "$f"'
+    bindsym Control+Print exec scrot ~/Pictures/Screenshots/%b%d::%H%M%S.png -e 'notify-send "Screenshot taken:" "$f"'
 
     # kill focused window
     bindsym $mod+q kill
@@ -72,12 +72,12 @@
     bindsym XF86MonBrightnessDown exec xbacklight -dec 5 # decrease screen brightness
 
     # resize windows without resize mode.
-    bindsym $mod+Right resize shrink width 5 px or 5 ppt
-    bindsym $mod+Up resize grow height 5 px or 5 ppt
-    bindsym $mod+Down resize shrink height 5 px or 5 ppt
-    bindsym $mod+Left resize grow width 5 px or 5 ppt
+    bindsym $mod+ShiftRight resize shrink width 5 px or 5 ppt
+    bindsym $mod+Shift+Up resize grow height 5 px or 5 ppt
+    bindsym $mod+Shift+Down resize shrink height 5 px or 5 ppt
+    bindsym $mod+Shift+Left resize grow width 5 px or 5 ppt
 
-    bindsym $mod+o exec --no-startup-id xdg-open "$(rg --files --vimgrep -g '!*cache*' -g '!*playground*' -g '*.jpg' -g '*.png' -g '*.pdf' -g '*.mkv' -g '*.ts' --no-ignore-vcs | rofi -dmenu -i -matching fuzzy -tokenize)" &> /dev/null &
+    bindsym $mod+o exec --no-startup-id xdg-open "$(rg --files --vimgrep -g '!*cache*' -g '!*playground*' -g '*.mp4' -g '*.jpg' -g '*.png' -g '*.pdf' -g '*.mkv' -g '*.ts' --no-ignore-vcs | rofi -dmenu -i -matching fuzzy -tokenize)" &> /dev/null &
 
     # split in vertical orientation toggle
     bindsym $mod+v split toggle
@@ -148,7 +148,7 @@
         workspace 4 output $built_in_monitor
         workspace 5 output $built_in_monitor
         workspace 6 output $external_monitor
-        workspace 7 output $built_in_monitor
+        workspace 7 output $external_monitor
         workspace 8 output $external_monitor
         workspace 9 output $external_monitor
     # }
@@ -157,6 +157,7 @@
         assign [class="Google-chrome"] 2
         assign [class="Thunderbird"] 3
         assign [class="Psi"] 4
+        assign [class="Riot"] 4
         assign [class="Evince"] 5
         assign [class="VirtualBox Manager"] 7
         assign [class="Transmission-gtk"] 8
@@ -205,4 +206,5 @@
     # For evince and virtualbox switch to tabbed view
     for_window [workspace=5] layout tabbed
     for_window [workspace=7] layout tabbed
+    for_window [workspace=4] layout tabbed
 # }
