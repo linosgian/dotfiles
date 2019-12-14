@@ -23,7 +23,6 @@
 
 # Binds {
     # Lock/Logout/Shutdown etc..
-    # TODO: Switch to rofi??
     set $mode_system System (l) lock, (d) suspend, (h) hibernate, (r) reboot, (s) shutdown
     mode "$mode_system" {
         bindsym l exec --no-startup-id  $HOME/.config/i3/i3lock_multimonitor.sh -i $HOME/Pictures/wallpaper.jpg, mode "default"
@@ -77,7 +76,7 @@
     bindsym $mod+Shift+Down resize shrink height 5 px or 5 ppt
     bindsym $mod+Shift+Left resize grow width 5 px or 5 ppt
 
-    bindsym $mod+o exec --no-startup-id xdg-open "$(rg --files --vimgrep -g '!*cache*' -g '!*playground*' -g '*.mp4' -g '*.jpg' -g '*.png' -g '*.pdf' -g '*.mkv' -g '*.ts' --no-ignore-vcs | rofi -dmenu -i -matching fuzzy -tokenize)" &> /dev/null &
+    bindsym $mod+o exec --no-startup-id xdg-open "$(rg --sort modified --files --vimgrep -g '!*cache*' -g '!*yogurt*' -g '!*playground*' -g '!*go-old*' -g '!*go/*' -g '!*puppet/*' -g '*.mp4' -g '*.pdf' -g '*.mkv' --no-ignore-vcs | rofi -dmenu -i -matching fuzzy -tokenize)" &> /dev/null &
 
     # split in vertical orientation toggle
     bindsym $mod+v split toggle
@@ -140,25 +139,27 @@
 
 # Workspaces {
     # Per-monitor config {
-        set $built_in_monitor "eDP1"
-        set $external_monitor "HDMI1"
+        set $built_in_monitor "DP1-2"
+        set $external_monitor "DP1-1"
         workspace 1 output $external_monitor
         workspace 2 output $external_monitor
         workspace 3 output $built_in_monitor
         workspace 4 output $built_in_monitor
         workspace 5 output $built_in_monitor
         workspace 6 output $external_monitor
-        workspace 7 output $external_monitor
+        workspace 7 output $built_in_monitor
         workspace 8 output $external_monitor
         workspace 9 output $external_monitor
     # }
 
     # Application assingments {
         assign [class="Google-chrome"] 2
-        assign [class="Thunderbird"] 3
-        assign [class="Psi"] 4
+        assign [class="Firefox"] 2
+        assign [class="thunderbird"] 3
+        assign [class="Slack"] 4
         assign [class="Riot"] 4
         assign [class="Evince"] 5
+        assign [class="Oracle VM VirtualBox Manager"] 7
         assign [class="VirtualBox Manager"] 7
         assign [class="Transmission-gtk"] 8
         assign [class="vlc"] 9
@@ -168,10 +169,10 @@
 # Execs {
     exec --no-startup-id nm-applet
     exec --no-startup-id blueman-applet
-    exec --no-startup-id "setxkbmap -model pc105 -layout us,gr -option grp:win_space_toggle" # Set keyboard layout and how to switch
+    exec --no-startup-id "setxkbmap -model pc105 -layout us,gr -option grp:alt_g_toggle" # Set keyboard layout and how to switch
     exec --no-startup-id compton
     exec --no-startup-id "xset dpms 300 600 1000" # Sets standby / suspend / off timers
-    exec --no-startup-id gnome-terminal --title "asdfqwertyzxcv" # Hacky way to distinguish scratchpad
+    exec --no-startup-id gnome-terminal --title "asdfqwertyzxcv" -- "tmux" # Hacky way to distinguish scratchpad
     exec --no-startup-id $HOME/.config/i3/battery_dunst.sh
     exec_always --no-startup-id $HOME/.config/polybar/launch.sh
     exec_always --no-startup-id feh --bg-scale ~/Pictures/wallpaper.jpg
@@ -186,7 +187,7 @@
 
     # Applications on startup
     exec --no-startup-id thunderbird
-    exec --no-startup-id psi-plus
+    exec --no-startup-id slack
     # On boot start a new tmux session on workspace 1
     exec --no-startup-id i3-msg 'workspace 1; exec gnome-terminal -- "tmux"'
 

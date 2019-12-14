@@ -8,7 +8,7 @@ NUM_MONITORS=${#MONITORS[@]}
 COMMANDS=()
 CHOICHES=()
 
-EXTERN_ENABLED=$(cat /sys/class/drm/card0-HDMI-A-1/status)
+EXTERN_ENABLED=$(cat /sys/class/drm/card0-DP-*/status | grep -w "connected" -m1)
 
 
 declare -i index=0
@@ -22,17 +22,9 @@ index+=1
 
 if [ "$EXTERN_ENABLED" == "connected" ]; then
 	CHOICES[$index]="external only"
-	COMMANDS[$index]="xrandr --output HDMI1 --mode 1920x1080"
+	COMMANDS[$index]="xrandr --output DP1-2 --mode 1920x1080;sleep 1;\
+		xrandr --output DP1-1 --mode 1920x1080 --primary --right-of DP1-2"
 	index+=1
-
-	CHOICES[$index]="dual screen: built-in -> external"
-	COMMANDS[$index]="xrandr --output eDP1 --mode 1920x1080;sleep 1; \
-		xrandr --output HDMI1 --mode 1920x1080 --right-of eDP1"
-	index+=1
-
-	CHOICES[$index]="dual screen: external -> built-in"
-	COMMANDS[$index]="xrandr --output eDP1 --mode 1920x1080; sleep 1;\
-		xrandr --output HDMI1 --mode 1920x1080 --left-of eDP1"
 fi
 
 #TODO: Implement cloning

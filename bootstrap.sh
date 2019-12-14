@@ -16,10 +16,10 @@ function install_tmux_2_5(){
 	sudo mv tmux-${VERSION} /usr/local/src
 }
 
-if [[ -z $(which rg) ]]; then
-   echo "Please install ripgrep from https://github.com/BurntSushi/ripgrep then come back"
-   exit
-fi
+#if [[ -z $(which rg) ]]; then
+#   echo "Please install ripgrep from https://github.com/BurntSushi/ripgrep then come back"
+#   exit
+#fi
 if [[ ! -z $(which yum) ]]; then
     pkgmanager="sudo yum install -y "
 else

@@ -19,9 +19,12 @@
         Plug 'cocopon/lightline-hybrid.vim'
         Plug 'skywind3000/asyncrun.vim'
         Plug 'tikhomirov/vim-glsl'
-        Plug 'SirVer/ultisnips'
+        " Plug 'SirVer/ultisnips'
         Plug 'godlygeek/tabular'
         Plug 'plasticboy/vim-markdown'
+        Plug 'vim-ruby/vim-ruby'
+        Plug 'cespare/vim-toml'
+        Plug 'rodjek/vim-puppet'
         " Plug 'liuchengxu/vim-which-key' This is nice for beginners
     call plug#end()
 "}
@@ -164,17 +167,35 @@
             redraw!
         endfunction
 
-        au BufWritePost *.tex call CompileTex()
+        " au BufWritePost *.tex call CompileTex()
 
         function! CompileMarkdown()
             let l:outfile = expand("%:r")
             let l:command = "!pandoc ". expand("%"). " -o " . l:outfile . ".pdf"
-            AsyncRun! pandoc "%" -o "%<" ".pdf"
-            redraw!
+            AsyncRun! pandoc "%" -o "%<.pdf"
+        endfunction
+
+        au BufWritePost *.md call CompileMarkdown()
+
+        " Generates a github permalink out of the current file + commit (HEAD)
+        " + current line number
+        " TODO: Make this work for https:// origins also
+        " TODO: Add the ability to mark text in visual mode and create a
+        " block-permalink out of it
+        function! RemoteURL()
+            let l:remote = "https://" . system('git remote -v | tr : / | cut -f2 -d"@" | sed "s/\.git.*//" | head -n 1')[:-2]
+            let l:head = system('git rev-parse HEAD')
+            let l:project_root = system('git rev-parse --show-toplevel 2> /dev/null')[:-2]
+            let l:full_path = expand("%:p")
+            let l:relative_path = substitute(l:full_path, l:project_root, '', '')
+            let l:url =  l:remote . "/blob/" . l:head . l:relative_path . "#L". line(".")
+            let l:trimmed_url = substitute(l:url, '\n', '' , '')
+            " echo l:trimmed_url
+            let @+ = l:trimmed_url
         endfunction
 
         " Asynchronously convert the markdown file to pdf
-        au BufWritePost *.md :AsyncRun! pandoc % -o %<.pdf
+        " au BufWritePost *.md :AsyncRun! pandoc % -o %<.pdf
 
         " open :help vertically
         command! -nargs=* -complete=help Help vertical belowright help <args> 
@@ -234,18 +255,32 @@
         command W :execute ':silent w !sudo tee % > /dev/null' | :edit!
         command Wq :execute ':silent w !sudo tee % > /dev/null' | :edit! | quit
 
+        "Toggle spellchecking
+        function! ToggleSpellCheck()
+        set spell!
+        if &spell
+            echo "Spellcheck ON"
+        else
+            echo "Spellcheck OFF"
+        endif
+        endfunction
+
     "}
 
     " Filetypes
         autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=4 shiftwidth=4 softtabstop=4
         autocmd BufNewFile,BufRead *.c setlocal  expandtab tabstop=4 shiftwidth=4 softtabstop=4
+        autocmd BufNewFile,BufRead *.md setlocal tw=80
         autocmd BufNewFile,BufRead *.tex setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
-        autocmd BufNewFile,BufRead *.js setlocal expandtab tabstop=4 shiftwidth=4 softtabstop=4
+        autocmd BufNewFile,BufRead *.js setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
         autocmd BufNewFile,BufRead *.php setlocal expandtab tabstop=4 shiftwidth=4 softtabstop=4
         autocmd BufNewFile,BufRead *.blade.php setlocal noexpandtab tabstop=2 shiftwidth=2 softtabstop=2
         autocmd BufNewFile,BufRead *.blade.php setlocal noexpandtab tabstop=2 shiftwidth=2 softtabstop=2
         autocmd BufNewFile,BufRead Vagrantfile setlocal expandtab tabstop=2 shiftwidth=2
         autocmd FileType json setlocal expandtab shiftwidth=2 tabstop=2
+        autocmd FileType toml setlocal expandtab shiftwidth=4 tabstop=4
+        autocmd FileType cpp  setlocal expandtab shiftwidth=2 tabstop=2
+        autocmd FileType ruby setlocal expandtab shiftwidth=2 tabstop=2
         autocmd FileType conf setlocal expandtab shiftwidth=4 tabstop=4
         autocmd FileType sh   setlocal noexpandtab shiftwidth=4 tabstop=4
         autocmd FileType yaml setlocal expandtab shiftwidth=2 tabstop=2
@@ -267,6 +302,65 @@
 
 " Mappings {
     let mapleader = ","
+
+    " map Greek letters to the respective English ones
+    map ς s
+    map ε e
+    map ρ r
+    map τ t
+    map υ y
+    map θ u
+    map ι i
+    map ο o
+    map π p
+    map α a
+    map σ s
+    map δ d
+    map φ f
+    map γ g
+    map η h
+    map ξ j
+    map κ k
+    map λ l
+    map ζ z
+    map χ x
+    map ψ c
+    map ω v
+    map β b
+    map ν n
+    map μ m
+    map Ε e
+    map Ρ R
+    map Τ T
+    map Υ Y
+    map Θ U
+    map Ι I
+    map Ο O
+    map Π P
+    map Α A
+    map Σ S
+    map Δ D
+    map Φ F
+    map Γ G
+    map Η H
+    map Ξ J
+    map Κ K
+    map Λ L
+    map Ζ Z
+    map Χ X
+    map Ψ C
+    map Ω V
+    map Β B
+    map Ν N
+    map Μ M
+    map ¨ :
+    map ; :
+    nnoremap 'ψ :
+    nnoremap 'ς :write<CR>
+    nnoremap '; :quit<CR>
+    nnoremap ; :
+
+    nnoremap <silent> <F10> :call ToggleSpellCheck()<CR>
 
     " Search and replace all occurences of current word
     :nnoremap <Leader>sr :%s/\<<C-r><C-w>\>/
@@ -312,12 +406,13 @@
     map <silent> <leader>V :source ~/.vimrc<CR>:filetype detect<CR>:exe ":echo 'vimrc reloaded'"<CR>
 
     " Oh well..
-    map ; :
+    " map ; :
 
     " ctrlp-alike searching
     map <C-p> :Files <CR>
     map <C-g> :FindF <CR>
     map <C-e> :History<CR>
+    noremap <leader>u :call RemoteURL()<CR>
 
     " Start/End-of-line
     noremap H ^
@@ -372,6 +467,7 @@
 
     " switch buffers with tab
     nmap <Tab> :bnext<CR>
+    nmap <S-Tab> :bprevious<CR>
 
     " close buffers but not their windows (bufkill)
     nmap <leader>d :BD<CR>
@@ -475,6 +571,9 @@
         let g:vim_markdown_autowrite = 1
         let g:vim_markdown_no_extensions_in_markdown = 1
         let g:vim_markdown_math = 1
+    " }
+    " vim-ruby {
+        let ruby_no_expensive=1
     " }
 "}
 

@@ -14,13 +14,13 @@ do
 			SLEEP_TIME=15
 		else 
 			SLEEP_TIME=10
-			BATTINFO=$(upower -i /org/freedesktop/UPower/devices/battery_BAT0 | grep "time to" | awk '{print $4" "$5}')
+			# BATTINFO=$(upower -i /org/freedesktop/UPower/devices/battery_BAT0 | grep "time to" | awk '{print $4" "$5}')
 			if [[ $CAPACITY -le $CRITICAL_PERCENT ]]; then
 				SLEEP_TIME=1
-				/usr/bin/notify-send "Critically Low Battery" "Around $BATTINFO remaining"
+				/usr/bin/notify-send "Critically Low Battery" "$BATTINFO"
 			elif [[ $CAPACITY -le $DANGER_PERCENT ]]; then
 				SLEEP_TIME=5
-				/usr/bin/notify-send "Low Battery" "Around $BATTINFO remaining"
+				/usr/bin/notify-send "Low Battery" "$BATTINFO"
 			fi
 		fi
 	else

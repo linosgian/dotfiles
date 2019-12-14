@@ -32,11 +32,12 @@ export FZF_DEFAULT_COMMAND='rg --files --hidden --follow --glob "!.git/*"'
 export DOCKER_API_VERSION=1.34
 
 # Aliases
+alias aptul="sudo apt list --upgradable"
 alias nfzf="xdg-open \$(fzf)"
 alias vu="vagrant up"
 alias vh="vagrant halt"
 alias vssh="vagrant ssh"
-alias l="ls -ahl --color=always"
+alias l="ls -ahltr --color=always"
 alias c="clear"
 alias vssh="vagrant ssh"
 
@@ -64,6 +65,7 @@ setopt HIST_IGNORE_ALL_DUPS
 export HISTFILE=/home/lgian/.zsh_history
 export EDITOR="vim"
 export TERMINAL="gnome-terminal -e"
+export BROWSER="/usr/bin/firefox-esr"
 export VISUAL="vim"
 export NNN_USE_EDITOR=1
 

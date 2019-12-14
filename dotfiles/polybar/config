@@ -1,12 +1,11 @@
 [bar/built]
-monitor = ${env:MONITOR}
+monitor = ${env:MONITOR:eDP1}
 width = 100%
 height = 25
-dpi = 115
 
 ; This might break thi built-in monitor only
 tray-position = ${env:TRAY_POSITION_BUILT:right}
-tray-maxsize = 19
+tray-maxsize = 15
 
 background = #ff2f343f
 foreground = #ccffffff
@@ -30,7 +29,7 @@ modules-left = i3 radio
 separator = |
 
 [bar/top]
-monitor = ${env:MONITOR}
+monitor = ${env:MONITOR:DP1-2}
 width = 100%
 height = 25
 
@@ -54,7 +53,7 @@ font-4 = Noto Sans Mono:style=Regular:size=8;0
 
 modules-right = keyboard backlight pulseaudio openvpn wireless-network wired-network battery memory cpu temperature
 modules-center = date
-modules-left = i3 
+modules-left = i3 radio
 
 separator = |
 
@@ -145,7 +144,7 @@ type = internal/i3
 pin-workspaces = true
 
 ws-icon-0 = 1;
-ws-icon-1 = 2;
+ws-icon-1 = 2;
 ws-icon-2 = 3;
 ws-icon-3 = 4;
 ws-icon-4 = 5;
@@ -202,7 +201,7 @@ label =  %gb_used%
 
 [module/wireless-network]
 type = internal/network
-interface = wlan0
+interface = wlp2s0
 interval = 3.0
 ping-interval = 10
 
@@ -225,7 +224,7 @@ label-mounted = %mountpoint%: %free%
 
 [module/wired-network]
 type = internal/network
-interface = eth0
+interface = enx3ce1a151496d
 interval = 3.0
 
 label-connected =  %local_ip%
