@@ -8,14 +8,11 @@ ZSH_THEME="honukai"
 HIST_STAMPS="dd.mm.yyyy"
 
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(ssh-agent zsh-autosuggestions zsh-syntax-highlighting)
+plugins=(docker docker-compose ssh-agent zsh-autosuggestions zsh-syntax-highlighting)
 
 zstyle :omz:plugins:ssh-agent identities id_rsa
 zstyle :omz:plugins:ssh-agent lifetime 24h
 source $ZSH/oh-my-zsh.sh
-
-# Preferred editor for local and remote sessions
-export EDITOR='vim'
 
 # ssh
 export SSH_KEY_PATH="~/.ssh/id_rsa"
@@ -34,18 +31,20 @@ export DOCKER_API_VERSION=1.34
 # Aliases
 alias aptul="sudo apt list --upgradable"
 alias nfzf="xdg-open \$(fzf)"
-alias vu="vagrant up"
-alias vh="vagrant halt"
-alias vssh="vagrant ssh"
 alias l="ls -ahltr --color=always"
 alias c="clear"
+
+# Vagrant
 alias vssh="vagrant ssh"
+alias vu="vagrant up"
+alias vh="vagrant halt"
 
 alias urldecode='python -c "import sys, urllib as ul; \
     print ul.unquote_plus(sys.argv[1])"'
 alias urlencode='python -c "import sys, urllib as ul; \
     print ul.quote_plus(sys.argv[1])"'
-# opens up the pdf with the latest 'last modified' timestamp and removes it from the shell job list
+
+# tmux
 alias ta='tmux attach -t'
 alias ts='tmux new-session -s'
 
@@ -59,7 +58,17 @@ nd() {
 }
 compdef nd=nautilus
 
-# Added this to avoid duplicates on fzf
+dexec(){
+	docker exec -it $1 /bin/bash
+}
+_dexec() {
+  ((CURRENT++))
+  words=(docker exec "${words[@]:1}")
+  _normal
+}
+compdef _dexec dexec
+
+# avoid duplicates on fzf
 setopt HIST_IGNORE_ALL_DUPS
 
 export HISTFILE=/home/lgian/.zsh_history
@@ -67,7 +76,7 @@ export EDITOR="vim"
 export TERMINAL="gnome-terminal -e"
 export BROWSER="/usr/bin/firefox-esr"
 export VISUAL="vim"
-export NNN_USE_EDITOR=1
+
 
 ############# Colored Manpages ###########
 export LESS_TERMCAP_mb=$'\e[1;31m'     # begin bold

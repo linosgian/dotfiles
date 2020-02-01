@@ -13,19 +13,17 @@
         Plug 'scrooloose/nerdtree'
         Plug 'raimondi/delimitmate'
         Plug 'qpkorr/vim-bufkill'
-        Plug 'jwalton512/vim-blade'
         Plug 'mgee/lightline-bufferline'
         Plug 'w0ng/vim-hybrid'
         Plug 'cocopon/lightline-hybrid.vim'
         Plug 'skywind3000/asyncrun.vim'
-        Plug 'tikhomirov/vim-glsl'
-        " Plug 'SirVer/ultisnips'
         Plug 'godlygeek/tabular'
         Plug 'plasticboy/vim-markdown'
         Plug 'vim-ruby/vim-ruby'
         Plug 'cespare/vim-toml'
         Plug 'rodjek/vim-puppet'
-        " Plug 'liuchengxu/vim-which-key' This is nice for beginners
+        Plug 'b4b4r07/vim-hcl'
+        Plug 'pearofducks/ansible-vim'
     call plug#end()
 "}
 
@@ -265,6 +263,20 @@
         endif
         endfunction
 
+    nnoremap gr :set operatorfunc=GrepOperator<cr>g@
+    vnoremap gr :<c-u>call GrepOperator(visualmode())<cr>
+
+    function! GrepOperator(type)
+        if a:type ==# 'v'
+            execute "normal! `<v`>y"
+        elseif a:type ==# 'char'
+            execute "normal! `[v`]y"
+        else
+            return
+        endif
+
+       execute 'Find' @@
+    endfunction
     "}
 
     " Filetypes
@@ -283,6 +295,7 @@
         autocmd FileType ruby setlocal expandtab shiftwidth=2 tabstop=2
         autocmd FileType conf setlocal expandtab shiftwidth=4 tabstop=4
         autocmd FileType sh   setlocal noexpandtab shiftwidth=4 tabstop=4
+        autocmd FileType hcl  setlocal expandtab shiftwidth=2 tabstop=2
         autocmd FileType yaml setlocal expandtab shiftwidth=2 tabstop=2
         autocmd FileType glsl setlocal noexpandtab shiftwidth=4 tabstop=4
         " autocmd BufNewFile,BufRead *.vim setlocal expandtab shiftwidth=2 tabstop=2

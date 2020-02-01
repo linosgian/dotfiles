@@ -86,7 +86,7 @@ type = internal/temperature
 
 interval = 1
 thermal-zone = 0
-hwmon-path = /sys/devices/platform/coretemp.0/hwmon/hwmon2/temp1_input
+; hwmon-path = /sys/devices/platform/coretemp.0/hwmon/hwmon3/temp1_input
 
 warn-temperature = 70
 label =   %temperature-c:2% 
