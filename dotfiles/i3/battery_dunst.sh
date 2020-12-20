@@ -6,7 +6,7 @@ DANGER_PERCENT=16  # Warn when battery at this level.
 CRITICAL_PERCENT=5
 while true
 do
-	BATTINFO=$(acpi -b)
+	BATTINFO=$(acpi -b | sed '/information/ d')
 	DISCHARGING=$(echo $BATTINFO | grep Discharging)
 	if [[ $DISCHARGING ]]; then
 		CAPACITY=$(echo $BATTINFO | cut -f 4 -d " " | tr -d "%,")

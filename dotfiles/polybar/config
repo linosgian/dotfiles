@@ -22,9 +22,9 @@ font-2 = Termsynu:size=8:antialias=false;-2
 font-3 = FontAwesome:size=10;0
 font-4 = Noto Sans Mono:style=Regular:size=8;0
 
-modules-right = keyboard backlight pulseaudio openvpn wireless-network wired-network battery memory cpu temperature
+modules-right = openvpn keyboard backlight pulseaudio wireless-network wired-network battery memory cpu temperature
 modules-center = date
-modules-left = i3 radio
+modules-left = i3
 
 separator = |
 
@@ -51,11 +51,17 @@ font-2 = Termsynu:size=8:antialias=false;-2
 font-3 = FontAwesome:size=10;0
 font-4 = Noto Sans Mono:style=Regular:size=8;0
 
-modules-right = keyboard backlight pulseaudio openvpn wireless-network wired-network battery memory cpu temperature
+modules-right = openvpn keyboard backlight pulseaudio wireless-network wired-network battery memory cpu temperature
 modules-center = date
-modules-left = i3 radio
+modules-left = i3
+
 
 separator = |
+
+[module/openvpn]
+type = custom/script
+exec = systemctl is-active --quiet openvpn-client@openvpn.skroutz && echo 
+interval = 60
 
 [module/backlight]
 type = internal/xbacklight
@@ -66,20 +72,6 @@ label = %percentage:3%%
 ramp-0 = 
 ramp-1 = 
 ramp-2 = 
-
-[module/openvpn]
-type = custom/script
-exec = $HOME/.config/polybar/openvpn.sh
-exec-if = pgrep -x openvpn
-interval = 60
-
-[module/radio]
-type = custom/script
-exec = python3 $HOME/.config/polybar/pepper.py
-exec-if=pacmd list-sink-inputs | grep "google-chrome" -B 14 | grep "state: RUNNING" > /dev/null
-interval = 30
-format-underline = #8fa993
-format-prefix = " "
 
 [module/temperature]
 type = internal/temperature

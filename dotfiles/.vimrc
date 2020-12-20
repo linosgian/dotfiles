@@ -9,21 +9,22 @@
         Plug 'itchyny/lightline.vim'
         Plug 'romainl/vim-cool'
         Plug 'tpope/vim-commentary'
-        Plug 'christoomey/vim-tmux-navigator'
         Plug 'scrooloose/nerdtree'
+        Plug 'knubie/vim-kitty-navigator'
         Plug 'raimondi/delimitmate'
         Plug 'qpkorr/vim-bufkill'
         Plug 'mgee/lightline-bufferline'
         Plug 'w0ng/vim-hybrid'
         Plug 'cocopon/lightline-hybrid.vim'
-        Plug 'skywind3000/asyncrun.vim'
         Plug 'godlygeek/tabular'
         Plug 'plasticboy/vim-markdown'
         Plug 'vim-ruby/vim-ruby'
         Plug 'cespare/vim-toml'
         Plug 'rodjek/vim-puppet'
-        Plug 'b4b4r07/vim-hcl'
         Plug 'pearofducks/ansible-vim'
+        Plug 'preservim/tagbar'
+        Plug 'ludovicchabant/vim-gutentags'
+        Plug 'dense-analysis/ale'
     call plug#end()
 "}
 
@@ -58,7 +59,7 @@
         set clipboard=unnamedplus
     "}
     set backspace=indent,eol,start " Make backspace work as 'intented'
-	set shiftround " 'Smart indent'
+    set shiftround " 'Smart indent'
 
     " Autocomplete menu {
         set wildmenu " show preview of completion-suggestions
@@ -95,7 +96,7 @@
 
         " Wrapping {
             " Avoid line wrapping
-            set nowrap 
+            set nowrap
             set textwidth=0
             set wrapmargin=0
             set formatoptions-=t
@@ -143,14 +144,14 @@
         if !isdirectory($HOME."/.vim/undo-dir")
             call mkdir($HOME."/.vim/undo-dir", "", 0700)
         endif
-        set undodir=~/.vim/undo-dir 
+        set undodir=~/.vim/undo-dir
         set undofile " Enable persistent undo ( writes to disk )
 
         set noswapfile " Disable swap files
         set nobackup " Do not create annoying backup files
         set autowrite " Autowrite when several commands occur ( e.g. :make :next etc.)
         set autoread " Auto reload files changed on disk ( an external command has to be issued in order to reload the subject file , e.g. :checktime )
-        set history=9000 
+        set history=9000
     "}
 
     " Splits {
@@ -159,21 +160,15 @@
     "}
 
     " Custom commands {
-        " Compile latex upon saving
-        function! CompileTex()
-            AsyncRun! pdflatex %
-            redraw!
-        endfunction
 
-        " au BufWritePost *.tex call CompileTex()
+        " Trim whitespaces but keep cursor position
+        fun! TrimWhitespace()
+            let l:save = winsaveview()
+            keeppatterns %s/\s\+$//e
+            call winrestview(l:save)
+        endfun
 
-        function! CompileMarkdown()
-            let l:outfile = expand("%:r")
-            let l:command = "!pandoc ". expand("%"). " -o " . l:outfile . ".pdf"
-            AsyncRun! pandoc "%" -o "%<.pdf"
-        endfunction
-
-        au BufWritePost *.md call CompileMarkdown()
+        " autocmd BufWritePre * :call TrimWhitespace()
 
         " Generates a github permalink out of the current file + commit (HEAD)
         " + current line number
@@ -192,11 +187,9 @@
             let @+ = l:trimmed_url
         endfunction
 
-        " Asynchronously convert the markdown file to pdf
-        " au BufWritePost *.md :AsyncRun! pandoc % -o %<.pdf
 
         " open :help vertically
-        command! -nargs=* -complete=help Help vertical belowright help <args> 
+        command! -nargs=* -complete=help Help vertical belowright help <args>
         autocmd FileType help wincmd L
 
         " Find the current dir's root by looking for the git-root
@@ -221,8 +214,8 @@
         " Use Ripgrep for searching with fzf.
         " Pop open a preview window with '?'
         " Lastly, the search is going to be project-wide (see find_git_root())
-        command! -bang -nargs=* Find call 
-                    \ fzf#vim#grep('rg --column --line-number --no-heading ' 
+        command! -bang -nargs=* Find call
+                    \ fzf#vim#grep('rg --column --line-number --no-heading '
                     \ .'--fixed-strings --ignore-case --no-ignore --hidden '
                     \ .'--follow --glob "!.git/*" --color "always" '
                     \ .shellescape(<q-args>).' '.s:find_git_root().'| tr -d "\017"', 1, <bang>0 ? fzf#vim#with_preview('up:60%')
@@ -247,7 +240,7 @@
         function! s:GotoDefinitionPython()
             let cword= expand("<cword>")
             let output=system("rg --line-number 'def ". cword . "\\(' " . s:find_git_root())
-            let tokens=split(output, ':') 
+            let tokens=split(output, ':')
             silent exe "edit +". tokens[1]. " " .tokens[0]
         endfunction
         command W :execute ':silent w !sudo tee % > /dev/null' | :edit!
@@ -285,6 +278,7 @@
         autocmd BufNewFile,BufRead *.md setlocal tw=80
         autocmd BufNewFile,BufRead *.tex setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
         autocmd BufNewFile,BufRead *.js setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
+        autocmd BufNewFile,BufRead *.pp setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
         autocmd BufNewFile,BufRead *.php setlocal expandtab tabstop=4 shiftwidth=4 softtabstop=4
         autocmd BufNewFile,BufRead *.blade.php setlocal noexpandtab tabstop=2 shiftwidth=2 softtabstop=2
         autocmd BufNewFile,BufRead *.blade.php setlocal noexpandtab tabstop=2 shiftwidth=2 softtabstop=2
@@ -298,6 +292,11 @@
         autocmd FileType hcl  setlocal expandtab shiftwidth=2 tabstop=2
         autocmd FileType yaml setlocal expandtab shiftwidth=2 tabstop=2
         autocmd FileType glsl setlocal noexpandtab shiftwidth=4 tabstop=4
+        autocmd FileType Jenkinsfile setlocal expandtab shiftwidth=2 tabstop=2
+        autocmd FileType xml setlocal expandtab shiftwidth=2 tabstop=2
+        au FileType puppet nnoremap <c-]> :exe "tag " . substitute(expand("<cword>"), "^::", "", "")<CR>
+        au FileType puppet nnoremap <c-w><c-]> :tab split<CR>:exe "tag " . substitute(expand("<cword>"), "^::", "", "")<CR>
+        au FileType puppet setlocal isk+=:
         " autocmd BufNewFile,BufRead *.vim setlocal expandtab shiftwidth=2 tabstop=2
         augroup filetypedetect
             autocmd BufNewFile,BufRead .tmux.conf*,tmux.conf* setf tmux
@@ -375,6 +374,8 @@
 
     nnoremap <silent> <F10> :call ToggleSpellCheck()<CR>
 
+    nmap <F8> :TagbarToggle<CR>
+
     " Search and replace all occurences of current word
     :nnoremap <Leader>sr :%s/\<<C-r><C-w>\>/
 
@@ -404,17 +405,6 @@
     " Close all buffers but the current one
     nnoremap <leader>o :call <SID>CloseAllBuffers()<cr>
 
-    " Enable tmux-navigator for all modes
-    nnoremap <silent> <C-h> :TmuxNavigateLeft<cr>
-    nnoremap <silent> <C-j> :TmuxNavigateDown<cr>
-    nnoremap <silent> <C-k> :TmuxNavigateUp<cr>
-    nnoremap <silent> <C-l> :TmuxNavigateRight<cr>
-
-    inoremap <silent> <C-h> <Esc>:TmuxNavigateLeft<cr>
-    inoremap <silent> <C-j> <Esc>:TmuxNavigateDown<cr>
-    inoremap <silent> <C-k> <Esc>:TmuxNavigateUp<cr>
-    inoremap <silent> <C-l> <Esc>:TmuxNavigateRight<cr>
-
     " Source .vimrc
     map <silent> <leader>V :source ~/.vimrc<CR>:filetype detect<CR>:exe ":echo 'vimrc reloaded'"<CR>
 
@@ -431,13 +421,13 @@
     noremap H ^
     noremap L $
 
-    " Page-down 
+    " Page-down
     nnoremap <c-u> <c-u>zz
     vnoremap <c-u> <c-u>zz
     " This can be triggered by <C-Space> as well
     " For more: https://stackoverflow.com/questions/24983372/what-does-ctrlspace-do-in-vim
-    nnoremap <C-d> <C-d>zz 
-    vnoremap <C-d> <C-d>zz 
+    nnoremap <C-d> <C-d>zz
+    vnoremap <C-d> <C-d>zz
 
     " Search mappings: These will make it so that going to the next one in a
     " search will center on the line it's found in.
@@ -453,7 +443,7 @@
     " Enter automatically into the files directory
     "autocmd BufEnter * silent! lcd %:p:h
 
-    " Prevent the q: window from showing 
+    " Prevent the q: window from showing
     map q: :q
     map q; :q
 
@@ -502,6 +492,13 @@
         let l:files = system("ls ". l:main_dir . " | grep .go | grep -v '_test.go' | tr '\n' ' ' ")
         execute '!go run '.  l:main_dir . '/' . l:files
     endfunction
+
+    let g:kitty_navigator_no_mappings = 1
+
+    nnoremap <silent> <c-h> :KittyNavigateLeft<cr>
+    nnoremap <silent> <c-j> :KittyNavigateDown<cr>
+    nnoremap <silent> <c-k> :KittyNavigateUp<cr>
+    nnoremap <silent> <c-l> :KittyNavigateRight<cr>
 
     augroup go
         autocmd!
@@ -556,6 +553,18 @@
         let g:go_highlight_functions = 1
     "}
 
+    " Tagbar
+        let g:tagbar_type_puppet = {
+            \ 'ctagstype': 'puppet',
+            \ 'kinds': [
+                \'c:class',
+                \'s:site',
+                \'n:node',
+                \'d:definition'
+            \]
+            \}
+    " }
+
     " fzf {
         let g:fzf_history_dir = '~/.local/share/fzf-history'
     " }
@@ -588,8 +597,14 @@
     " vim-ruby {
         let ruby_no_expensive=1
     " }
+    "
+    " gutentags {
+        let g:gutentags_cache_dir='~/.cache/gutentag'
+    " }
 "}
 
 " Fix lightline issue, where if lazyredraw is set, it doesnt appear
 autocmd VimEnter * redraw
+set title
+let &titlestring='%t - nvim'
 set clipboard=unnamedplus

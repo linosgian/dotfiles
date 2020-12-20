@@ -1,5 +1,7 @@
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
+export SSH_AUTH_SOCK=/run/user/1000/ssh_auth_sock
+export DISABLE_UPDATE_PROMPT=true
 
 ZSH_THEME="honukai"
 # Uncomment the following line to enable command auto-correction.
@@ -8,14 +10,9 @@ ZSH_THEME="honukai"
 HIST_STAMPS="dd.mm.yyyy"
 
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(docker docker-compose ssh-agent zsh-autosuggestions zsh-syntax-highlighting)
+plugins=(docker docker-compose zsh-autosuggestions zsh-syntax-highlighting)
 
-zstyle :omz:plugins:ssh-agent identities id_rsa
-zstyle :omz:plugins:ssh-agent lifetime 24h
 source $ZSH/oh-my-zsh.sh
-
-# ssh
-export SSH_KEY_PATH="~/.ssh/id_rsa"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
@@ -33,6 +30,7 @@ alias aptul="sudo apt list --upgradable"
 alias nfzf="xdg-open \$(fzf)"
 alias l="ls -ahltr --color=always"
 alias c="clear"
+alias ssh-add='ssh-add -t 24h'
 
 # Vagrant
 alias vssh="vagrant ssh"

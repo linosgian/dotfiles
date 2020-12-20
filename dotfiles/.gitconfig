@@ -3,9 +3,20 @@
 	name = Linos Giannopoulos
 [alias]
 	testme = push origin -f HEAD:jenkins/lgian
+	cmv = commit -v
+	cma = commit --amend
 	lg = log --graph --pretty=format:\"%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset\" --abbrev-commit
 	amen = !git add -A && git commit --amend --no-edit
-	st = status
+	st = status -sb
+	dfc = diff --cached
+	co = checkout
+	cb = checkout -b
+	br   = branch
+	f = fetch
+	rbm = pull --rebase origin master
+	rbc = rebase --continue
+	rbs = rebase --skip
+	rba = rebase --abort
 
 [url "git@github.skroutz.gr:"]
 	insteadOf = skroutz:
