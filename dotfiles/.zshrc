@@ -20,7 +20,7 @@ source $ZSH/oh-my-zsh.sh
 export TERM=xterm-256color
 # [ -n "$TMUX" ] && export TERM=screen-256color
 
-export GOPATH=$HOME/go
+# export GOPATH=$HOME/go
 export PATH=$PATH:/usr/local/go/bin:/snap/bin:$HOME/.cargo/bin
 export FZF_DEFAULT_COMMAND='rg --files --hidden --follow --glob "!.git/*"'
 export DOCKER_API_VERSION=1.34
@@ -67,7 +67,7 @@ _dexec() {
 compdef _dexec dexec
 
 # avoid duplicates on fzf
-setopt HIST_IGNORE_ALL_DUPS
+setopt HIST_IGNORE_ALL_DUPS nonomatch
 
 export HISTFILE=/home/lgian/.zsh_history
 export EDITOR="vim"

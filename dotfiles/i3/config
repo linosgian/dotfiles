@@ -160,7 +160,7 @@
         assign [class="Slack"] 4
         assign [class="Riot"] 4
         assign [class="Evince"] 5
-        assign [class="Skype"] 5
+        assign [class="Skype"] 6
         assign [class="VirtualBox"] 7
         assign [class="Transmission-gtk"] 8
         assign [class="vlc"] 9

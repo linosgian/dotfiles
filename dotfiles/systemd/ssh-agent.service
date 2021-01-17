@@ -2,7 +2,8 @@
 Description=ssh-agent
 
 [Service]
-ExecStart=/usr/bin/ssh-agent -d -a %t/ssh_auth_sock
+Type=forking
+ExecStart=/usr/bin/ssh-agent -a %t/ssh_auth_sock
 SuccessExitStatus=2
 
 [Install]

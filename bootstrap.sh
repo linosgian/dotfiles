@@ -58,3 +58,4 @@ touch ~/.zshrc_local
 ln -s $PWD/dotfiles/.zshrc ~/.zshrc
 ln -s $PWD/dotfiles/.gitconfig ~/.gitconfig
 ln -s $PWD/dotfiles/honukai.zsh-theme $HOME/.oh-my-zsh/themes/
+ln -s $PWD/dotfiles/kitty $HOME/.config/kitty

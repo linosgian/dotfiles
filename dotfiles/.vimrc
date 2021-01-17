@@ -216,7 +216,7 @@
         " Lastly, the search is going to be project-wide (see find_git_root())
         command! -bang -nargs=* Find call
                     \ fzf#vim#grep('rg --column --line-number --no-heading '
-                    \ .'--fixed-strings --ignore-case --no-ignore --hidden '
+                    \ .'--fixed-strings --ignore-case --hidden '
                     \ .'--follow --glob "!.git/*" --color "always" '
                     \ .shellescape(<q-args>).' '.s:find_git_root().'| tr -d "\017"', 1, <bang>0 ? fzf#vim#with_preview('up:60%')
                     \                                                     : fzf#vim#with_preview('right:50%:hidden', '?'), <bang>0)
