@@ -1,5 +1,13 @@
 # Based on the great ys theme (http://ysmood.org/wp/2013/03/my-ys-terminal-theme/)
 
+# Machine name.
+function username_color {
+	if [[ $UID -eq 0 ]]; then
+		echo "$fg[red]"
+	else
+		echo "$fg[cyan]"
+	fi
+}
 # Directory info.
 local current_dir='${PWD/#$HOME/~}'
 
@@ -35,7 +43,7 @@ ys_hg_prompt_info() {
 
 # Prompt format: \n # USER at MACHINE in DIRECTORY on git:BRANCH STATE [TIME] \n $
 PROMPT="%{$terminfo[bold]$fg[blue]%}#%{$reset_color%} \
-%{$fg[cyan]%}%n\
+%{$(username_color)%}%n\
 %{$fg[white]%}\
 "@%{$fg[green]%}"$HOST\
 %{$fg[white]%}[\
