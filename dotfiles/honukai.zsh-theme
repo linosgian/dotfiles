@@ -1,13 +1,5 @@
 # Based on the great ys theme (http://ysmood.org/wp/2013/03/my-ys-terminal-theme/)
 
-# Machine name.
-function box_name {
-    
-	if [ "$SSH_CONNECTION" ]; then
-		echo "@%{$fg[green]%}"$HOST
-	fi
-}
-
 # Directory info.
 local current_dir='${PWD/#$HOME/~}'
 
@@ -45,7 +37,7 @@ ys_hg_prompt_info() {
 PROMPT="%{$terminfo[bold]$fg[blue]%}#%{$reset_color%} \
 %{$fg[cyan]%}%n\
 %{$fg[white]%}\
-$(box_name)\
+"@%{$fg[green]%}"$HOST\
 %{$fg[white]%}[\
 %{$terminfo[bold]$fg[yellow]%}${current_dir}%{$reset_color%}\
 ${hg_info}\
