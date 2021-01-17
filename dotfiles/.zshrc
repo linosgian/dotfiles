@@ -14,6 +14,9 @@ plugins=(docker docker-compose zsh-autosuggestions zsh-syntax-highlighting)
 
 source $ZSH/oh-my-zsh.sh
 
+# ssh
+export SSH_KEY_PATH="~/.ssh/id_ed25519"
+
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # Fix color madness with xterm, screen

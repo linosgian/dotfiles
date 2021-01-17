@@ -1,6 +1,7 @@
 [Unit]
 Description=Lock system on sleep
 Before=sleep.target
+Name=slep
 
 [Service]
 User=%I

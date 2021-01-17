@@ -140,12 +140,12 @@
 
 # Workspaces {
     # Per-monitor config {
-        set $built_in_monitor "DP1-2"
-        set $external_monitor "DP1-1"
+        set $built_in_monitor "DVI-D-1"
+        set $external_monitor "HDMI-0"
         workspace 1 output $built_in_monitor
         workspace 2 output $built_in_monitor
-        workspace 3 output $external_monitor
-        workspace 4 output $built_in_monitor
+        workspace 3 output $extenral_monitor
+        workspace 4 output $external_monitor
         workspace 5 output $external_monitor
         workspace 6 output $built_in_monitor
         workspace 7 output $built_in_monitor
@@ -154,7 +154,6 @@
     # }
 
     # Application assingments {
-        assign [class="Google-chrome"] 5
         assign [class="Firefox"] 2
         assign [class="thunderbird"] 3
         assign [class="Slack"] 4
@@ -169,7 +168,6 @@
 
 # Execs {
     exec --no-startup-id nm-applet
-    exec --no-startup-id blueman-applet
     exec --no-startup-id "setxkbmap -model pc105 -layout us,gr -option grp:alt_g_toggle" # Set keyboard layout and how to switch
     exec --no-startup-id compton
     exec --no-startup-id "xset dpms 300 600 1000" # Sets standby / suspend / off timers
@@ -182,12 +180,10 @@
     --not-when-fullscreen --not-when-audio \
     --timer normal 590 "notify-send 'Suspending in 10 seconds'" '' \
     --timer normal 600 "systemctl suspend" ''
-
     # Sets up xrandr for both monitors and restarts i3
     exec --no-startup-id $HOME/.config/i3/startup_xrandr.sh
 
     # Applications on startup
-    exec --no-startup-id thunderbird
     exec --no-startup-id slack
     # On boot start a new tmux session on workspace 1
     exec --no-startup-id i3-msg 'workspace 1; exec kitty -o allow_remote_control=yes --listen-on unix:/tmp/mykitty3'
