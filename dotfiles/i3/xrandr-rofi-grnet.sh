@@ -31,9 +31,9 @@ fi
 
 echo ${CONNECTED_MONITORS}
 if [ ${NUM_CONNECTED_MONITORS} == 2 ]; then
-	CHOICES[$index]="WFH"
-	COMMANDS[$index]="xrandr --output DP1-2 --mode 1920x1080 --rate 144;sleep 1;\
-		xrandr --output eDP1 --off"
+	CHOICES[$index]="both"
+	COMMANDS[$index]="xrandr --output DVI-D-1 --mode 1920x1080;sleep 1;\
+		xrandr --output HDMI-0 --mode 1920x1080 --primary --left-of DVI-D-1"
 	index+=1
 fi
 #TODO: Implement cloning

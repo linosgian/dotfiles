@@ -55,6 +55,10 @@
     # rofi-xrandr menu
     bindsym $mod+p exec --no-startup-id $HOME/.config/i3/xrandr-rofi-grnet.sh
 
+    # Switch audio sink
+    bindsym Pause exec --no-startup-id pulseaudio-control --sink-blacklist "alsa_output.pci-0000_08_00.1.hdmi-stereo" next-sink
+
+
     # change focus
     bindsym $mod+h focus left
     bindsym $mod+j focus down
@@ -154,6 +158,7 @@
     # }
 
     # Application assingments {
+        assign [class="Firefox-esr"] 2
         assign [class="Firefox"] 2
         assign [class="thunderbird"] 3
         assign [class="Slack"] 4
@@ -172,7 +177,6 @@
     exec --no-startup-id compton
     exec --no-startup-id "xset dpms 300 600 1000" # Sets standby / suspend / off timers
     exec --no-startup-id kitty --class="scratch" -o allow_remote_control=yes --listen-on unix:/tmp/mykitty1
-    exec --no-startup-id $HOME/.config/i3/battery_dunst.sh
     exec_always --no-startup-id $HOME/.config/polybar/launch.sh
     exec_always --no-startup-id feh --bg-scale ~/Pictures/wallpaper.jpg
 

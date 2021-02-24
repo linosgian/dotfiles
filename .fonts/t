@@ -1,0 +1,28 @@
+	<match>
+		<test name="family"><string>Nunito</string></test>
+		<edit name="family" mode="assign" binding="strong">
+			<string>Roboto</string>
+		</edit>
+	</match>
+
+	<match>
+		<test name="family"><string>Arial</string></test>
+		<edit name="family" mode="assign" binding="strong">
+			<string>Roboto</string>
+		</edit>
+	</match>
+	<match>
+		<test name="family"><string>Helvetica</string></test>
+		<edit name="family" mode="assign" binding="strong">
+			<string>Roboto</string>
+		</edit>
+	</match>
+	<match target="pattern">
+		<test qual="any" name="family">
+			<string>mono</string>
+		</test>
+		<edit name="family" mode="assign" binding="same">
+			<string>monospace</string>
+		</edit>
+	</match>
+

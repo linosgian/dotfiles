@@ -1,0 +1,24 @@
+<!--
+  Accept alternate 'sans serif' spelling, replacing it with 'sans-serif'
+-->
+	<match target="pattern">
+		<test qual="any" name="family">
+			<string>sans serif</string>
+		</test>
+		<edit name="family" mode="assign" binding="same">
+			<string>sans-serif</string>
+		</edit>
+	</match>
+
+<!--
+  Accept deprecated 'sans' alias, replacing it with 'sans-serif'
+-->
+	<match target="pattern">
+		<test qual="any" name="family">
+			<string>sans</string>
+		</test>
+		<edit name="family" mode="assign" binding="same">
+			<string>sans-serif</string>
+		</edit>
+	</match>
+

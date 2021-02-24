@@ -11,9 +11,9 @@ NUM_ACTIVE_MONITORS=$(echo ${ACTIVE_MONITORS} | wc -w)
 
 if [[ ${NUM_ACTIVE_MONITORS} == 2 ]]; then
    MONITOR=DVI-D-1 polybar --reload built &
-   MONITOR=HDMI-0 TRAY_POSITION_BUILT=none polybar --reload top &
+   MONITOR=HDMI-0 TRAY_POS=none polybar --reload top &
 else
-   MONITOR=${ACTIVE_MONITORS} TRAY_POSITION_BUILT=right polybar --reload built &
+   MONITOR=${ACTIVE_MONITORS} TRAY_POS=right polybar --reload built &
 fi
 
 echo "Bars launched..."

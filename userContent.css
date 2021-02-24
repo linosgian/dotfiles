@@ -1,0 +1,2 @@
+@font-face {font-family: "Consolas"; src: local("Inconsolata");}
+@-moz-document domain(phabricator.skroutz.gr){ pre {font-size: 14px !important;}  }
