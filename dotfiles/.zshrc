@@ -31,6 +31,8 @@ alias nfzf="xdg-open \$(fzf)"
 alias l="ls -ahltr --color=always"
 alias c="clear"
 alias ssh-add='ssh-add -t 24h'
+alias ls-enabled="systemctl list-units --type=service --state=active,running | awk '/.*\.service/ {print $1}'"
+alias dpg="dpkg"
 
 # Vagrant
 alias vssh="vagrant ssh"
