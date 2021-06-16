@@ -8,3 +8,4 @@ augroup MyColors
 augroup END
 
 colorscheme hybrid
+highlight! GitGutterDelete ctermfg=1 guifg=#ff2222

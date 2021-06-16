@@ -20,6 +20,7 @@ vim +PlugInstall +qall
 # Oh-my-zsh creates a sample .zshrc already, so remove it.
 rm ~/.zshrc
 touch ~/.zshrc_local
+mkdir -p $HOME/.config/systemd/user
 ln -s $PWD/dotfiles/.zshrc ~/.zshrc
 ln -s $PWD/dotfiles/.gitconfig ~/.gitconfig
 ln -s $PWD/dotfiles/honukai.zsh-theme $HOME/.oh-my-zsh/themes/
@@ -29,4 +30,8 @@ ln -s $PWD/dotfiles/dunst $HOME/.config/
 ln -s $PWD/dotfiles/rofi $HOME/.config/
 ln -s $PWD/dotfiles/.compton.conf $HOME/
 ln -s $PWD/dotfiles/.Xresources $HOME/
-ln -s $PWD/dotfiles/.Xinitrc $HOME/
+ln -s $PWD/dotfiles/.xinitrc $HOME/
+ln -s $PWD/dotfiles/i3 $HOME/.config
+ln -s $PWD/dotfiles/polybar $HOME/.config
+ln -s $PWD/dotfiles/systemd/ssh-agent.service $HOME/.config/systemd/user/
+ln -s $PWD/dotfiles/systemd/ssh-agent.service $HOME/.config/systemd/user/

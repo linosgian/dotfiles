@@ -25,6 +25,8 @@
         Plug 'preservim/tagbar'
         Plug 'ludovicchabant/vim-gutentags'
         Plug 'dense-analysis/ale'
+        Plug 'b4b4r07/vim-hcl'
+        Plug 'airblade/vim-gitgutter'
     call plug#end()
 "}
 
@@ -294,6 +296,7 @@
         autocmd FileType glsl setlocal noexpandtab shiftwidth=4 tabstop=4
         autocmd FileType Jenkinsfile setlocal expandtab shiftwidth=2 tabstop=2
         autocmd FileType xml setlocal expandtab shiftwidth=2 tabstop=2
+        autocmd FileType tf setlocal expandtab shiftwidth=2 tabstop=2
         au FileType puppet nnoremap <c-]> :exe "tag " . substitute(expand("<cword>"), "^::", "", "")<CR>
         au FileType puppet nnoremap <c-w><c-]> :tab split<CR>:exe "tag " . substitute(expand("<cword>"), "^::", "", "")<CR>
         au FileType puppet setlocal isk+=:
@@ -600,6 +603,13 @@
     "
     " gutentags {
         let g:gutentags_cache_dir='~/.cache/gutentag'
+    " }
+    " ale {
+        let g:ale_linters_explicit = 1
+        let g:ale_linters = {
+        \   'puppet': ['puppetlint'],
+        \   'python': ['flake8']
+        \}
     " }
 "}
 

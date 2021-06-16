@@ -146,7 +146,7 @@
     # Per-monitor config {
         set $built_in_monitor "DVI-D-1"
         set $external_monitor "HDMI-0"
-        workspace 1 output $built_in_monitor
+        workspace 1 output $external_monitor
         workspace 2 output $built_in_monitor
         workspace 3 output $extenral_monitor
         workspace 4 output $external_monitor
