@@ -1,0 +1,6 @@
+[Unit]
+Description=Screen dimmer
+
+[Service]
+ExecStart=%h/.config/i3/bin/xss-dimmer --delay=%i \
+                                       --background=%h/.cache/i3/current-wallpaper.png

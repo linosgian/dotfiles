@@ -1,39 +1,96 @@
-# Path to your oh-my-zsh installation.
-export ZSH=$HOME/.oh-my-zsh
-export SSH_AUTH_SOCK=/run/user/1000/ssh_auth_sock
-export DISABLE_UPDATE_PROMPT=true
+# Set the shell options
+# autocd: change directory without entering "cd" in front of it
+# nonomatch: pass a globbing expression as-is when it generates no matches
+# histignorespace: ignore lines or aliases starting with a space for history purposes
+# histignorealldups: Ignore duplicates in history
+# share_history: Share commands inserted between terminals
+# inc_append_history: Append commands to HISTFILE before the current shell exits
+setopt autocd nonomatch histignorealldups histignorespace nohup share_history inc_append_history promptsubst
 
-ZSH_THEME="honukai"
-# Uncomment the following line to enable command auto-correction.
-# ENABLE_CORRECTION="true"
+#====================== Functions =======================
+function username_color {
+    if [[ $UID -eq 0 ]]; then
+        echo "red"
+    else
+        echo "cyan"
+    fi
+}
 
-HIST_STAMPS="dd.mm.yyyy"
+function git_prompt_info(){
+    PREFIX=" %F{white}on %F{cyan}"
+    local ref
+    ref=$(command git symbolic-ref --short HEAD 2> /dev/null) \
+    || ref=$(command git rev-parse --short HEAD 2> /dev/null) \
+    || return 0
 
-# Add wisely, as too many plugins slow down shell startup.
-plugins=(docker docker-compose zsh-autosuggestions zsh-syntax-highlighting)
+    echo "${PREFIX}${ref}$(parse_git_dirty)%{$reset_color%}"
+}
 
-source $ZSH/oh-my-zsh.sh
+function parse_git_dirty(){
+    STATUS=$(command git status --porcelain 2> /dev/null | tail -1)
+    if [[ -n $STATUS ]]; then
+        echo " %{$fg[red]%}%{%G⨯%} "
+    else
+        echo " %{$fg[green]%}%{%G●%} "
+    fi
+}
 
-# ssh
-export SSH_KEY_PATH="~/.ssh/id_ed25519"
+evinced() {
+    evince $@ &> /dev/null &; disown
+}
 
+dexec(){
+    docker exec -it $1 /bin/bash
+}
+_dexec() {
+  ((CURRENT++))
+  words=(docker exec "${words[@]:1}")
+  _normal
+}
+# ==============================================================
+
+local current_dir="${_prompt_colors[5]}%~"
+autoload -U colors && colors
+[[ -x /usr/bin/dircolors ]] && eval `dircolors -b`
+autoload -Uz compinit select-word-style
+select-word-style bash # ctrl+w on words
+compinit
+compdef evinced=evince
+compdef _dexec dexec
+local git_info='$(git_prompt_info)'
+
+
+# ================ Bindings ====================================
+bindkey "^[[1;5C" forward-word
+bindkey "^[[1;5D" backward-word
+
+source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+[[ $commands[kubectl] ]] && source <(kubectl completion zsh)
 
+export HISTSIZE=10000000
+export SAVEHIST=10000000
+export HIST_STAMPS="dd.mm.yyyy"
+export SSH_AUTH_SOCK=/run/user/1000/ssh_auth_sock
 # Fix color madness with xterm, screen
 export TERM=xterm-256color
-# [ -n "$TMUX" ] && export TERM=screen-256color
 
-# export GOPATH=$HOME/go
 export PATH=$PATH:/usr/local/go/bin:/snap/bin:$HOME/.cargo/bin
 export FZF_DEFAULT_COMMAND='rg --files --hidden --follow --glob "!.git/*"'
-export DOCKER_API_VERSION=1.34
+
+export HISTFILE=/home/lgian/.zsh_history
+export EDITOR="vim"
+export BROWSER="/usr/bin/firefox"
+export VISUAL="vim"
 
 # Aliases
 alias aptul="sudo apt list --upgradable"
-alias nfzf="xdg-open \$(fzf)"
 alias l="ls -ahltr --color=always"
 alias c="clear"
 alias ssh-add='ssh-add -t 24h'
+alias ls-enabled="systemctl list-units --type=service --state=active,running | awk '/.*\.service/ {print $1}'"
+alias dpg="dpkg"
 
 # Vagrant
 alias vssh="vagrant ssh"
@@ -45,39 +102,20 @@ alias urldecode='python -c "import sys, urllib as ul; \
 alias urlencode='python -c "import sys, urllib as ul; \
     print ul.quote_plus(sys.argv[1])"'
 
-# tmux
-alias ta='tmux attach -t'
-alias ts='tmux new-session -s'
+PROMPT="%F{blue}# \
+%F{$(username_color)}%n\
+%F{white}@%F{green}$HOST\
+%F{white}[\
+%B%F{yellow}$current_dir%b$git_info%F{white}] \
+%B%F{red}%{%G→%}%b%f "
 
-evinced() {
-	evince $@ &> /dev/null &; disown
-}
-compdef evinced=evince
+zstyle :compinstall filename '/home/lgian/.zshrc'
 
-nd() {
-	nautilus $@ 2&>1 &; disown
-}
-compdef nd=nautilus
-
-dexec(){
-	docker exec -it $1 /bin/bash
-}
-_dexec() {
-  ((CURRENT++))
-  words=(docker exec "${words[@]:1}")
-  _normal
-}
-compdef _dexec dexec
-
-# avoid duplicates on fzf
-setopt HIST_IGNORE_ALL_DUPS nonomatch
-
-export HISTFILE=/home/lgian/.zsh_history
-export EDITOR="vim"
-export TERMINAL="gnome-terminal -e"
-export BROWSER="/usr/bin/firefox-esr"
-export VISUAL="vim"
-
+zstyle ':completion:*' completer \
+ _oldlist _expand _complete rehash true
+zstyle ':completion:*' use-cache on
+zstyle ':completion:*' cache-path ~/.zsh/compcache
+zstyle ':completion:*:kill:*' command 'ps -e -o pid,%cpu,cmd'
 
 ############# Colored Manpages ###########
 export LESS_TERMCAP_mb=$'\e[1;31m'     # begin bold
@@ -91,7 +129,8 @@ export GROFF_NO_SGR=1                  # for konsole and gnome-terminal
 ##########################################
 
 source ~/.zshrc_local
+
 # Startx on login
 if [[ ! $DISPLAY && $XDG_VTNR -eq 1  ]]; then
-	exec startx
+    exec startx
 fi

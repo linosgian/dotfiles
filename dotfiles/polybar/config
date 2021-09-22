@@ -22,7 +22,7 @@ font-2 = Termsynu:size=8:antialias=false;-2
 font-3 = FontAwesome:size=10;0
 font-4 = Noto Sans Mono:style=Regular:size=8;0
 
-modules-right = keyboard pulseaudio-control wired-network memory cpu temperature
+modules-right = keyboard pulseaudio-control wired-network vpn-wireguard-wg memory cpu temperature
 modules-center = date
 modules-left = i3
 
@@ -51,7 +51,7 @@ font-2 = Termsynu:size=8:antialias=false;-2
 font-3 = FontAwesome:size=10;0
 font-4 = Noto Sans Mono:style=Regular:size=8;0
 
-modules-right = keyboard pulseaudio-control wired-network memory cpu temperature
+modules-right = keyboard pulseaudio-control wired-network vpn-wireguard-wg memory cpu temperature
 modules-center = date
 modules-left = i3
 
@@ -61,7 +61,7 @@ separator = |
 type = internal/temperature
 
 interval = 1
-hwmon-path = /sys/devices/pci0000:00/0000:00:18.3/hwmon/hwmon0/temp1_input
+hwmon-path = /sys/devices/pci0000:00/0000:00:18.3/hwmon/hwmon1/temp1_input
 
 warn-temperature = 70
 label =   %temperature-c:2% 
@@ -82,6 +82,12 @@ blacklist-0 = num lock
 blacklist-1 = scroll lock
 blacklist-2 = caps lock
 label-layout =  %layout%
+
+[module/vpn-wireguard-wg]
+type = custom/script
+exec = /home/lgian/.config/polybar/vpn-wireguard-wg.sh
+interval = 5
+click-left = /home/lgian/.config/polybar/vpn-wireguard-wg.sh --toggle &
 
 [module/battery]
 type = internal/battery
@@ -182,7 +188,7 @@ label-mounted = %mountpoint%: %free%
 
 [module/wired-network]
 type = internal/network
-interface = enp6s0
+interface = enp5s0
 interval = 3.0
 
 label-connected =  %local_ip%
@@ -216,7 +222,7 @@ label-padding = 2
 # You can copy-paste your options for each possible action, which is more
 # trouble-free but repetitive, or apply only the relevant ones (for example
 # --sink-blacklist is only needed for next-sink).
-exec = pulseaudio-control --icons-volume " , " --icon-muted " " --sink-nicknames-from "device.description" --sink-nickname "alsa_output.pci-0000_12_00.3.analog-stereo:  Speakers" --sink-nickname "alsa_output.usb-Kingston_HyperX_Virtual_Surround_Sound_00000000-00.analog-stereo:  Headphones" listen
+exec = pulseaudio-control --icons-volume " , " --icon-muted " " --sink-nicknames-from "device.description" --sink-nickname "alsa_output.pci-0000_09_00.3.analog-stereo:  Speakers" --sink-nickname "alsa_output.usb-Kingston_HyperX_Virtual_Surround_Sound_00000000-00.analog-stereo:  Headphones" listen
 click-right = exec pavucontrol &
 click-left = pulseaudio-control togmute
 click-middle = pulseaudio-control --sink-blacklist "alsa_output.pci-0000_08_00.1.hdmi-stereo" next-sink
