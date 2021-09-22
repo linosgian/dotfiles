@@ -1,0 +1,60 @@
+#!/bin/bash
+
+me="$(readlink -f "$0")"
+timeout=300
+notify=$((timeout/20))
+
+configure() {
+    xset s $((timeout - notify)) $notify
+    xset dpms $((timeout * 2)) $((timeout * 22 / 10)) $((timeout * 24 / 10))
+}
+dimmer() {
+    systemctl --user $1 xss-dimmer@$notify.service
+}
+
+case "$1" in
+    start)
+        configure
+        exec xss-lock --session=1 --notifier="$me notify" --transfer-sleep-lock "$me" lock
+        ;;
+    dim|notify)
+        echo "notify: start (idle: $(xprintidle))"
+        trap 'echo notify: user activity; dimmer stop; kill %% 2> /dev/null; exit 0' HUP  # user activity
+        trap 'echo notify: locker started; kill %% 2> /dev/null; exit 0' TERM # locker started
+        dimmer start
+        sleep infinity &
+        wait
+        echo "notify: end"
+        ;;
+    lock)
+        echo "lock: lock screen (idle: $(xprintidle))"
+        # Something may have meddled with screensaver settings
+        configure
+        # Pause music player and notifications
+        dunstctl set-paused true
+        # Then, lock screen
+        if [[ -e /dev/fd/${XSS_SLEEP_LOCK_FD:--1} ]]; then
+            kill_i3lock() {
+                pkill -xu $EUID "$@" i3lock
+            }
+
+            trap kill_i3lock TERM INT
+            i3lock -e -f -i $HOME/.cache/i3/current-wallpaper.png -t ${XSS_SLEEP_LOCK_FD}<&-
+
+            exec {XSS_SLEEP_LOCK_FD}<&-
+
+            while kill_i3lock -0; do
+                sleep 0.5
+            done
+        else
+            trap 'kill %%' TERM INT
+            i3lock -n -e -i $HOME/.cache/i3/current-wallpaper.png -t -f
+            wait
+        fi
+        echo "lock: unlock screen"
+        # After unlocking screen, stop dimmer, restore notifications
+        dimmer stop
+        dunstctl set-paused false
+        ;;
+esac
+

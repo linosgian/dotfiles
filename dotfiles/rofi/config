@@ -16,3 +16,4 @@ rofi.color-normal: argb:031d1f21, #f3f4f5, argb:031d1f21, argb:031d1f21, #fba922
 rofi.color-urgent: argb:031d1f21, #f3f4f5, argb:bc303541, argb:031d1f21, #fba922
 rofi.color-active: argb:031d1f21, #f3f4f5, argb:031d1f21, argb:031d1f21, #fba922 
 rofi.font: Cantarell 16
+rofi.theme: /home/lgian/.config/rofi/config.rasi

@@ -25,6 +25,7 @@
         Plug 'preservim/tagbar'
         Plug 'ludovicchabant/vim-gutentags'
         Plug 'dense-analysis/ale'
+        Plug 'b4b4r07/vim-hcl'
         Plug 'airblade/vim-gitgutter'
     call plug#end()
 "}
@@ -280,10 +281,18 @@
         autocmd BufNewFile,BufRead *.tex setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
         autocmd BufNewFile,BufRead *.js setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
         autocmd BufNewFile,BufRead *.pp setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
+        autocmd BufNewFile,BufRead *.nomad setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
         autocmd BufNewFile,BufRead *.php setlocal expandtab tabstop=4 shiftwidth=4 softtabstop=4
         autocmd BufNewFile,BufRead *.blade.php setlocal noexpandtab tabstop=2 shiftwidth=2 softtabstop=2
         autocmd BufNewFile,BufRead *.blade.php setlocal noexpandtab tabstop=2 shiftwidth=2 softtabstop=2
         autocmd BufNewFile,BufRead Vagrantfile setlocal expandtab tabstop=2 shiftwidth=2
+        "Remove trailing whitespace for .py/.yml/.init/.rst/.spec files
+        autocmd BufWritePre *.py :%s/\s\+$//e
+        autocmd BufWritePre *.yml :%s/\s\+$//e
+        autocmd BufWritePre *.init :%s/\s\+$//e
+        autocmd BufWritePre *.rst %s/\s\+$//e
+        autocmd BufWritePre *.spec %s/\s\+$//e
+        autocmd BufWritePre *.conf %s/\s\+$//e
         autocmd FileType json setlocal expandtab shiftwidth=2 tabstop=2
         autocmd FileType toml setlocal expandtab shiftwidth=4 tabstop=4
         autocmd FileType cpp  setlocal expandtab shiftwidth=2 tabstop=2

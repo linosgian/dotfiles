@@ -22,7 +22,7 @@ font-2 = Termsynu:size=8:antialias=false;-2
 font-3 = FontAwesome:size=10;0
 font-4 = Noto Sans Mono:style=Regular:size=8;0
 
-modules-right = openvpn keyboard backlight pulseaudio wireless-network wired-network battery memory cpu temperature
+modules-right = openvpn keyboard backlight pulseaudio wireless-network wired-network vpn-wireguard-wg battery memory cpu temperature
 modules-center = date
 modules-left = i3
 
@@ -51,7 +51,7 @@ font-2 = Termsynu:size=8:antialias=false;-2
 font-3 = FontAwesome:size=10;0
 font-4 = Noto Sans Mono:style=Regular:size=8;0
 
-modules-right = openvpn keyboard backlight pulseaudio wireless-network wired-network battery memory cpu temperature
+modules-right = openvpn keyboard backlight pulseaudio wireless-network wired-network vpn-wireguard-wg battery memory cpu temperature
 modules-center = date
 modules-left = i3
 
@@ -99,6 +99,12 @@ blacklist-0 = num lock
 blacklist-1 = scroll lock
 blacklist-2 = caps lock
 label-layout =  %layout%
+
+[module/vpn-wireguard-wg]
+type = custom/script
+exec = /home/lgian/.config/polybar/vpn-wireguard-wg.sh
+interval = 3
+click-left = /home/lgian/.config/polybar/vpn-wireguard-wg.sh --toggle &
 
 [module/battery]
 type = internal/battery

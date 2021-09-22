@@ -50,7 +50,7 @@
     bindsym $mod+q kill
 
     # start rofi ( program launcher )
-    bindsym $mod+d exec --no-startup-id rofi -show drun
+    bindsym $mod+d exec --no-startup-id rofi -sorting-method fzf -sort -matching fuzzy -modi drun -show drun -show-icons -drun-match-fields name
 
     # rofi-xrandr menu
     bindsym $mod+p exec --no-startup-id $HOME/.config/i3/xrandr-rofi-grnet.sh
@@ -175,13 +175,9 @@
     exec --no-startup-id "xset dpms 300 600 1000" # Sets standby / suspend / off timers
     exec --no-startup-id kitty --class="scratch" -o allow_remote_control=yes --listen-on unix:/tmp/mykitty1
     exec --no-startup-id $HOME/.config/i3/battery_dunst.sh
+    exec --no-startup-id systemctl --user start xss-lock.service
     exec_always --no-startup-id $HOME/.config/polybar/launch.sh
     exec_always --no-startup-id feh --bg-scale ~/Pictures/wallpaper.jpg
-
-    exec --no-startup-id xidlehook \
-    --not-when-fullscreen --not-when-audio \
-    --timer normal 590 "notify-send 'Suspending in 10 seconds'" '' \
-    --timer normal 600 "systemctl suspend" ''
 
     # Sets up xrandr for both monitors and restarts i3
     exec --no-startup-id $HOME/.config/i3/startup_xrandr.sh
