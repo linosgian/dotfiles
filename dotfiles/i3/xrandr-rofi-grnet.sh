@@ -32,7 +32,7 @@ fi
 echo ${CONNECTED_MONITORS}
 if [ ${NUM_CONNECTED_MONITORS} == 2 ]; then
 	CHOICES[$index]="WFH"
-	COMMANDS[$index]="xrandr --output DP1-2 --mode 1920x1080 --rate 144;sleep 1;\
+	COMMANDS[$index]="xrandr --output DP1-2 --mode 1920x1080;sleep 1;\
 		xrandr --output eDP1 --off"
 	index+=1
 fi
