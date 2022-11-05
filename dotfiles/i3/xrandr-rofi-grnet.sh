@@ -19,21 +19,21 @@ COMMANDS[$index]="true"
 index+=1
 
 CHOICES[$index]="laptop only"
-COMMANDS[$index]="xrandr --output eDP1 --mode 1920x1080"
+COMMANDS[$index]="xrandr --output eDP-1 --mode 2560x1600"
 index+=1
 
 if [ "$NUM_CONNECTED_MONITORS" == 3 ]; then
 	CHOICES[$index]="external only"
-	COMMANDS[$index]="xrandr --output DP1-1 --mode 1920x1080;sleep 1;\
-		xrandr --output DP1-2 --mode 1920x1080 --primary --right-of DP1-1"
+	COMMANDS[$index]="xrandr --output DP-1-1 --mode 2560x1440;sleep 1;\
+		xrandr --output DP-1-2 --mode 2560x1440 --primary --left-of DP-1-1"
 	index+=1
 fi
 
 echo ${CONNECTED_MONITORS}
 if [ ${NUM_CONNECTED_MONITORS} == 2 ]; then
 	CHOICES[$index]="WFH"
-	COMMANDS[$index]="xrandr --output DP1-2 --mode 1920x1080;sleep 1;\
-		xrandr --output eDP1 --off"
+	COMMANDS[$index]="xrandr --output DP-1-2 --mode 2560x1440 --rate 165.08;sleep 1;\
+		xrandr --output eDP-1 --off"
 	index+=1
 fi
 #TODO: Implement cloning
@@ -50,7 +50,7 @@ function gen_entries()
 }
 
 # Call menu
-SEL=$( gen_entries | rofi -dmenu -p "Choose monitor setup" -a 0 -no-custom  | awk '{print $1}' )
+SEL=$( gen_entries | rofi -dpi 120 -dmenu -p "Choose monitor setup" -a 0 -no-custom  | awk '{print $1}' )
 
 # If canceled or pressed escape
 [[ -z $SEL || $SEL == 0 ]] && exit

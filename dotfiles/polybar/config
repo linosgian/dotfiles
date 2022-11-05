@@ -1,7 +1,8 @@
 [bar/built]
-monitor = ${env:MONITOR:eDP1}
+monitor = ${env:MONITOR}
 width = 100%
-height = 25
+height = 30
+dpi=110
 
 ; This might break thi built-in monitor only
 tray-position = ${env:TRAY_POSITION_BUILT:right}
@@ -22,16 +23,17 @@ font-2 = Termsynu:size=8:antialias=false;-2
 font-3 = FontAwesome:size=10;0
 font-4 = Noto Sans Mono:style=Regular:size=8;0
 
-modules-right = openvpn keyboard backlight pulseaudio wireless-network wired-network vpn-wireguard-wg battery memory cpu temperature
+modules-right = keyboard backlight pulseaudio-control wireless-network wired-network vpn-wireguard-wg battery memory cpu temperature
 modules-center = date
 modules-left = i3
 
 separator = |
 
 [bar/top]
-monitor = ${env:MONITOR:DP1-2}
+monitor = ${env:MONITOR:DP3-3}
 width = 100%
-height = 25
+height = 30
+dpi=110
 
 tray-position = right
 tray-maxsize = 15
@@ -51,7 +53,7 @@ font-2 = Termsynu:size=8:antialias=false;-2
 font-3 = FontAwesome:size=10;0
 font-4 = Noto Sans Mono:style=Regular:size=8;0
 
-modules-right = openvpn keyboard backlight pulseaudio wireless-network wired-network vpn-wireguard-wg battery memory cpu temperature
+modules-right = openvpn keyboard pulseaudio-control wireless-network wired-network vpn-wireguard-wg battery memory cpu temperature
 modules-center = date
 modules-left = i3
 
@@ -64,7 +66,8 @@ exec = systemctl is-active --quiet openvpn-client@openvpn.skroutz && echo 
 interval = 60
 
 [module/backlight]
-type = internal/xbacklight
+type = internal/backlight
+card = intel_backlight
 format = <ramp> <label>
 
 label = %percentage:3%%
@@ -78,7 +81,7 @@ type = internal/temperature
 
 interval = 1
 thermal-zone = 0
-; hwmon-path = /sys/devices/platform/coretemp.0/hwmon/hwmon3/temp1_input
+hwmon-path = /sys/devices/platform/coretemp.0/hwmon/hwmon6/temp1_input
 
 warn-temperature = 70
 label =   %temperature-c:2% 
@@ -199,7 +202,7 @@ label =  %gb_used%
 
 [module/wireless-network]
 type = internal/network
-interface = wlp2s0
+interface = wlp0s20f3
 interval = 3.0
 ping-interval = 10
 
@@ -222,7 +225,7 @@ label-mounted = %mountpoint%: %free%
 
 [module/wired-network]
 type = internal/network
-interface = enx3ce1a151496d
+interface = enxa029199c947e
 interval = 3.0
 
 label-connected =  %local_ip%
@@ -244,5 +247,23 @@ ramp-volume-0 = 
 ramp-volume-1 = 
 ramp-volume-2 = 
 ramp-volume-3 = 
+
+[module/pulseaudio-control]
+type = custom/script
+tail = true
+; format-underline = ${colors.cyan}
+label-padding = 2
+; label-foreground = ${colors.foreground}
+
+# Icons mixed from Font Awesome 5 and Material Icons
+# You can copy-paste your options for each possible action, which is more
+# trouble-free but repetitive, or apply only the relevant ones (for example
+# --sink-blacklist is only needed for next-sink).
+exec = pulseaudio-control --icons-volume " , " --icon-muted " " --sink-nicknames-from "device.description" --sink-nickname "alsa_output.pci-0000_09_00.3.analog-stereo:  Speakers" --sink-nickname "alsa_output.usb-Kingston_HyperX_Virtual_Surround_Sound_00000000-00.analog-stereo:  Headphones" --sink-nickname "bluez_output.00_16_94_28_53_8E.headset-head-unit:   Headphones" listen
+click-right = exec pavucontrol &
+click-left = pulseaudio-control togmute
+click-middle = pulseaudio-control --sink-blacklist "alsa_output.usb-Generic_USB_Audio_200901010001-00.HiFi__hw_Dock_1__sink,alsa_output.pci-0000_00_1f.3.analog-stereo" next-sink
+scroll-up = pulseaudio-control --volume-max 130 up
+scroll-down = pulseaudio-control --volume-max 130 down
 
 ; vim:ft=dosini

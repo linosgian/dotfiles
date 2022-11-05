@@ -1,8 +1,9 @@
 ! Fixes consolas font issues
-Xft.autohint: 0
+Xft.autohint: 1
 Xft.antialias: 1
 Xft.hinting: 1
 Xft.hintstyle: hintfull
-Xft.dpi: 110
+Xft.dpi: 120
+*.dpi: 120
 Xft.rgba: rgb
 Xft.lcdfilter: lcddefault

@@ -49,7 +49,7 @@ _dexec() {
   _normal
 }
 # ==============================================================
-
+fpath=($fpath /usr/share/zsh/vendor-completions)
 local current_dir='${PWD/#$HOME/~}'
 local git_info='$(git_prompt_info)'
 autoload -U colors && colors
@@ -97,6 +97,9 @@ alias dpg="dpkg"
 alias vssh="vagrant ssh"
 alias vu="vagrant up"
 alias vh="vagrant halt"
+alias k="kubectl"
+alias kon="kubeon"
+alias koff="kubeoff"
 
 alias urldecode='python -c "import sys, urllib as ul; \
     print ul.unquote_plus(sys.argv[1])"'
@@ -133,6 +136,10 @@ export GROFF_NO_SGR=1                  # for konsole and gnome-terminal
 ##########################################
 
 source ~/.zshrc_local
+source ~/kube-ps1.sh
+PROMPT='$(kube_ps1)'$PROMPT
+kubeoff
+
 
 # Startx on login
 if [[ ! $DISPLAY && $XDG_VTNR -eq 1  ]]; then

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-sudo apt install zsh git xclip gcc make ripgrep python3-xlib xss-lock
+sudo apt install zsh git xclip gcc make ripgrep python3-xlib xss-lock rofi zsh-autosuggestions zsh-syntax-highlighting polybar
 chsh -s $(which zsh)
 # Avoid running into zsh during bootstraping
 sh -c "$(curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim)"

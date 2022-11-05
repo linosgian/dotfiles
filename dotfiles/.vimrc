@@ -23,10 +23,11 @@
         Plug 'rodjek/vim-puppet'
         Plug 'pearofducks/ansible-vim'
         Plug 'preservim/tagbar'
-        Plug 'ludovicchabant/vim-gutentags'
         Plug 'dense-analysis/ale'
+        Plug 'junegunn/goyo.vim'
         Plug 'b4b4r07/vim-hcl'
         Plug 'airblade/vim-gitgutter'
+        Plug 'tpope/vim-repeat'
     call plug#end()
 "}
 
@@ -59,9 +60,10 @@
 
         set hidden " Handles buffers better.
         set clipboard=unnamedplus
+        set iskeyword-=_
     "}
     set backspace=indent,eol,start " Make backspace work as 'intented'
-    set shiftround " 'Smart indent'
+    set smartindent
 
     " Autocomplete menu {
         set wildmenu " show preview of completion-suggestions
@@ -276,9 +278,11 @@
 
     " Filetypes
         autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=4 shiftwidth=4 softtabstop=4
-        autocmd BufNewFile,BufRead *.c setlocal  expandtab tabstop=4 shiftwidth=4 softtabstop=4
+        autocmd BufNewFile,BufRead *.c setlocal  noexpandtab tabstop=4 shiftwidth=4 softtabstop=4
+        autocmd BufNewFile,BufRead *.h setlocal  noexpandtab tabstop=4 shiftwidth=4 softtabstop=4
         autocmd BufNewFile,BufRead *.md setlocal tw=80
         autocmd BufNewFile,BufRead *.tex setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
+        autocmd BufNewFile,BufRead *.py setlocal expandtab tabstop=4 shiftwidth=4 softtabstop=4
         autocmd BufNewFile,BufRead *.js setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
         autocmd BufNewFile,BufRead *.pp setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
         autocmd BufNewFile,BufRead *.nomad setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
@@ -478,10 +482,15 @@
     " And open recursively with Space
     let g:NERDTreeMapActivateNode="l"
     let g:NERDTreeMapOpenRecursively="<Space>"
+    let g:NERDTreeMinimalMenu=1
 
     " switch buffers with tab
     nmap <Tab> :bnext<CR>
     nmap <S-Tab> :bprevious<CR>
+
+    " Git-fugitive
+    nmap <leader>gg :0G<CR>
+
 
     " close buffers but not their windows (bufkill)
     nmap <leader>d :BD<CR>

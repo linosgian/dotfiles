@@ -2,7 +2,6 @@
 	name = Linos Giannopoulos
 	email = linosgian00@gmail.com
 [alias]
-	testme = push origin -f HEAD:jenkins/lgian
 	cmv = commit -v
 	cma = commit --amend -v
 	lg = log --graph --pretty=format:\"%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset\" --abbrev-commit
@@ -20,7 +19,12 @@
 	rba = rebase --abort
 	brr = for-each-ref --sort=committerdate refs/heads/ --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(color:red)%(objectname:short)%(color:reset) - %(contents:subject) - %(authorname) (%(color:green)%(committerdate:relative)%(color:reset))'
 
-[url "git@github.skroutz.gr:"]
-	insteadOf = skroutz:
 [includeIf "gitdir:~/work/"]
     path = .gitconfig-work
+
+[url "git@gitlab-ssh.matrix.org"]
+  insteadOf = git@gitlab.int.matrix.org
+[push]
+	default = current
+[init]
+	defaultBranch = main

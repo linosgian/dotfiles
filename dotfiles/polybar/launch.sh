@@ -11,15 +11,15 @@ NUM_ACTIVE_MONITORS=$(echo ${ACTIVE_MONITORS} | wc -w)
 
 echo $ACTIVE_MONITORS
 if [[ ${NUM_ACTIVE_MONITORS} == 3 ]]; then
-   MONITOR=DP1-2 polybar --reload built &
-   MONITOR=DP1-1 TRAY_POSITION_BUILT=none polybar --reload top &
+   MONITOR=DP-1-2 polybar --reload built &
+   MONITOR=DP-1-1 TRAY_POSITION_BUILT=none polybar --reload top &
 elif [[ ${NUM_ACTIVE_MONITORS} == 2 ]]; then
-   MONITOR=DP1-2 polybar --reload built &
-   MONITOR=DP1-1 TRAY_POSITION_BUILT=none polybar --reload top &
-elif [[ ${ACTIVE_MONITORS} =~ "DP1-" ]]; then
-   MONITOR=${ACTIVE_MONITORS} TRAY_POSITION_BUILT=right polybar --reload built &
+   MONITOR=DP-1-2 polybar --reload built &
+   MONITOR=DP-1-1 TRAY_POSITION_BUILT=none polybar --reload top &
+elif [[ ${ACTIVE_MONITORS} == "DP-1-2" ]]; then
+   MONITOR=${ACTIVE_MONITORS} TRAY_POSITION_BUILT=right polybar --reload top &
 else
-   MONITOR=eDP1 TRAY_POSITION_BUILT=right polybar --reload built &
+   MONITOR=eDP-1 TRAY_POSITION_BUILT=right polybar --reload built &
 fi
 
 echo "Bars launched..."
