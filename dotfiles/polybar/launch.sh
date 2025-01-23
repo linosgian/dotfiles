@@ -16,7 +16,7 @@ if [[ ${NUM_ACTIVE_MONITORS} == 3 ]]; then
 elif [[ ${NUM_ACTIVE_MONITORS} == 2 ]]; then
    MONITOR=DP-1-2 polybar --reload built &
    MONITOR=DP-1-1 TRAY_POSITION_BUILT=none polybar --reload top &
-elif [[ ${ACTIVE_MONITORS} == "DP-1-2" ]]; then
+elif [[ ${ACTIVE_MONITORS} == "DP-1" ]]; then
    MONITOR=${ACTIVE_MONITORS} TRAY_POSITION_BUILT=right polybar --reload top &
 else
    MONITOR=eDP-1 TRAY_POSITION_BUILT=right polybar --reload built &

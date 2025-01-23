@@ -49,14 +49,14 @@ _dexec() {
   _normal
 }
 # ==============================================================
-fpath=($fpath /usr/share/zsh/vendor-completions)
+fpath=($fpath /home/lgian/.zsh/functions /usr/share/zsh/vendor-completions)
 local current_dir='${PWD/#$HOME/~}'
 local git_info='$(git_prompt_info)'
 autoload -U colors && colors
 [[ -x /usr/bin/dircolors ]] && eval `dircolors -b`
 autoload -Uz compinit select-word-style
 select-word-style bash # ctrl+w on words
-compinit
+compinit -i
 compdef evinced=evince
 compdef _dexec dexec
 
@@ -77,12 +77,11 @@ export SSH_AUTH_SOCK=/run/user/1000/ssh_auth_sock
 # Fix color madness with xterm, screen
 export TERM=xterm-256color
 
-export PATH=$PATH:/usr/local/go/bin:/snap/bin
+export PATH=$PATH:/usr/local/go/bin:/snap/bin:/home/lgian/playground/kitty/kitty/launcher
 export FZF_DEFAULT_COMMAND='rg --files --hidden --follow --glob "!.git/*"'
 
 export HISTFILE=/home/lgian/.zsh_history
 export EDITOR="vim"
-export BROWSER="/usr/bin/firefox"
 export VISUAL="vim"
 
 # Aliases
@@ -92,6 +91,7 @@ alias c="clear"
 alias ssh-add='ssh-add -t 24h'
 alias ls-enabled="systemctl list-units --type=service --state=active,running | awk '/.*\.service/ {print $1}'"
 alias dpg="dpkg"
+alias tf="terraform"
 
 # Vagrant
 alias vssh="vagrant ssh"
@@ -139,9 +139,102 @@ source ~/.zshrc_local
 source ~/kube-ps1.sh
 PROMPT='$(kube_ps1)'$PROMPT
 kubeoff
+eval "$(zoxide init zsh)"
+
+alias x=extract
+
+extract() {
+  setopt localoptions noautopushd
+
+  if (( $# == 0 )); then
+    cat >&2 <<'EOF'
+Usage: extract [-option] [file ...]
+
+Options:
+    -r, --remove    Remove archive after unpacking.
+EOF
+  fi
+
+  local remove_archive=1
+  if [[ "$1" == "-r" ]] || [[ "$1" == "--remove" ]]; then
+    remove_archive=0
+    shift
+  fi
+
+  local pwd="$PWD"
+  while (( $# > 0 )); do
+    if [[ ! -f "$1" ]]; then
+      echo "extract: '$1' is not a valid file" >&2
+      shift
+      continue
+    fi
+
+    local success=0
+    local extract_dir="${1:t:r}"
+    local file="$1" full_path="${1:A}"
+    case "${file:l}" in
+      (*.tar.gz|*.tgz)
+        (( $+commands[pigz] )) && { tar -I pigz -xvf "$file" } || tar zxvf "$file" ;;
+      (*.tar.bz2|*.tbz|*.tbz2)
+        (( $+commands[pbzip2] )) && { tar -I pbzip2 -xvf "$file" } || tar xvjf "$file" ;;
+      (*.tar.xz|*.txz)
+        (( $+commands[pixz] )) && { tar -I pixz -xvf "$file" } || {
+        tar --xz --help &> /dev/null \
+        && tar --xz -xvf "$file" \
+        || xzcat "$file" | tar xvf - } ;;
+      (*.tar.zma|*.tlz)
+        tar --lzma --help &> /dev/null \
+        && tar --lzma -xvf "$file" \
+        || lzcat "$file" | tar xvf - ;;
+      (*.tar.zst|*.tzst)
+        tar --zstd --help &> /dev/null \
+        && tar --zstd -xvf "$file" \
+        || zstdcat "$file" | tar xvf - ;;
+      (*.tar) tar xvf "$file" ;;
+      (*.tar.lz) (( $+commands[lzip] )) && tar xvf "$file" ;;
+      (*.tar.lz4) lz4 -c -d "$file" | tar xvf - ;;
+      (*.tar.lrz) (( $+commands[lrzuntar] )) && lrzuntar "$file" ;;
+      (*.gz) (( $+commands[pigz] )) && pigz -dk "$file" || gunzip -k "$file" ;;
+      (*.bz2) bunzip2 "$file" ;;
+      (*.xz) unxz "$file" ;;
+      (*.lrz) (( $+commands[lrunzip] )) && lrunzip "$file" ;;
+      (*.lz4) lz4 -d "$file" ;;
+      (*.lzma) unlzma "$file" ;;
+      (*.z) uncompress "$file" ;;
+      (*.zip|*.war|*.jar|*.ear|*.sublime-package|*.ipa|*.ipsw|*.xpi|*.apk|*.aar|*.whl) unzip "$file" -d "$extract_dir" ;;
+      (*.rar) unrar x -ad "$file" ;;
+      (*.rpm)
+        command mkdir -p "$extract_dir" && builtin cd -q "$extract_dir" \
+        && rpm2cpio "$full_path" | cpio --quiet -id ;;
+      (*.7z) 7za x "$file" ;;
+      (*.deb)
+        command mkdir -p "$extract_dir/control" "$extract_dir/data"
+        builtin cd -q "$extract_dir"; ar vx "$full_path" > /dev/null
+        builtin cd -q control; extract ../control.tar.*
+        builtin cd -q ../data; extract ../data.tar.*
+        builtin cd -q ..; command rm *.tar.* debian-binary ;;
+      (*.zst) unzstd "$file" ;;
+      (*.cab) cabextract -d "$extract_dir" "$file" ;;
+      (*.cpio) cpio -idmvF "$file" ;;
+      (*)
+        echo "extract: '$file' cannot be extracted" >&2
+        success=1 ;;
+    esac
+
+    (( success = success > 0 ? success : $? ))
+    (( success == 0 && remove_archive == 0 )) && rm "$full_path"
+    shift
+
+    # Go back to original working directory in case we ran cd previously
+    builtin cd -q "$pwd"
+  done
+}
 
 
 # Startx on login
 if [[ ! $DISPLAY && $XDG_VTNR -eq 1  ]]; then
 	exec startx
 fi
+
+# add Pulumi to the PATH
+export PATH=$PATH:/home/lgian/.pulumi/bin

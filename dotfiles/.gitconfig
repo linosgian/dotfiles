@@ -1,6 +1,7 @@
 [user]
 	name = Linos Giannopoulos
 	email = linosgian00@gmail.com
+	signingkey = /home/lgian/.ssh/id_ed25519.pub
 [alias]
 	cmv = commit -v
 	cma = commit --amend -v
@@ -19,12 +20,16 @@
 	rba = rebase --abort
 	brr = for-each-ref --sort=committerdate refs/heads/ --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(color:red)%(objectname:short)%(color:reset) - %(contents:subject) - %(authorname) (%(color:green)%(committerdate:relative)%(color:reset))'
 
-[includeIf "gitdir:~/work/"]
+[includeIf "gitdir:~/cflow/"]
     path = .gitconfig-work
 
-[url "git@gitlab-ssh.matrix.org"]
-  insteadOf = git@gitlab.int.matrix.org
 [push]
 	default = current
+	default = current
+	autoSetupRemote = true
 [init]
 	defaultBranch = main
+[commit]
+	gpgSign = true
+[gpg]
+	format = ssh

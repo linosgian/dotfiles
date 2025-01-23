@@ -2,14 +2,14 @@
 
 me="$(readlink -f "$0")"
 timeout=300
-notify=$((timeout/20))
+notify=$((timeout/10))
 
 configure() {
     xset s $((timeout - notify)) $notify
-    xset dpms $((timeout * 2)) $((timeout * 22 / 10)) $((timeout * 24 / 10))
+    xset dpms $((timeout * 3)) $((timeout * 32 / 10)) $((timeout * 34 / 10))
 }
 dimmer() {
-    systemctl --user $1 xss-dimmer@$notify.service
+    systemctl --user --no-block $1 xss-dimmer@$notify.service
 }
 
 case "$1" in
@@ -31,30 +31,32 @@ case "$1" in
         # Something may have meddled with screensaver settings
         configure
         # Pause music player and notifications
+        playerctl -a pause
+        dunstctl_state=$(dunstctl is-paused)
         dunstctl set-paused true
         # Then, lock screen
-        if [[ -e /dev/fd/${XSS_SLEEP_LOCK_FD:--1} ]]; then
-            kill_i3lock() {
-                pkill -xu $EUID "$@" i3lock
-            }
-
-            trap kill_i3lock TERM INT
-            i3lock -e -f -i $HOME/.cache/i3/current-wallpaper.png -t ${XSS_SLEEP_LOCK_FD}<&-
-
-            exec {XSS_SLEEP_LOCK_FD}<&-
-
-            while kill_i3lock -0; do
-                sleep 0.5
-            done
-        else
-            trap 'kill %%' TERM INT
-            i3lock -n -e -i $HOME/.cache/i3/current-wallpaper.png -t -f
-            wait
-        fi
+        env XSECURELOCK_SAVER=$HOME/.config/i3/bin/xsecurelock-saver \
+            `# Disable RandR 1.5 support to make screensaver spans accross the whole monitor` \
+            XSECURELOCK_NO_XRANDR15=1 \
+            `# Disable RandR when we know we have a single monitor` \
+            XSECURELOCK_NO_XRANDR=$($(grep -qFwx 1 $XDG_RUNTIME_DIR/i3/outputs.txt 2> /dev/null) && echo 1 || echo 0) \
+            `# Delay mapping saver window by 500ms to give some time to saver to start` \
+            XSECURELOCK_SAVER_DELAY_MS=500 \
+            `# Do not kill screensaver when DPMS is enabled` \
+            XSECURELOCK_SAVER_STOP_ON_BLANK=0 \
+            `# Do not mess with DPMS settings` \
+            XSECURELOCK_BLANK_TIMEOUT=-1 \
+            `# Image and text for saver` \
+            XSECURELOCK_SAVER_IMAGE=$XDG_RUNTIME_DIR/i3/current-wallpaper.png \
+            XSECURELOCK_SAVER_WEATHER=$XDG_RUNTIME_DIR/i3/weather.txt \
+            `# Font for authentication window` \
+            XSECURELOCK_FONT="Iosevka" \
+            `# Timeout for authentication window` \
+            XSECURELOCK_AUTH_TIMEOUT=10 \
+            xsecurelock
         echo "lock: unlock screen"
         # After unlocking screen, stop dimmer, restore notifications
         dimmer stop
-        dunstctl set-paused false
+        dunstctl set-paused ${dunstctl_state}
         ;;
 esac
-

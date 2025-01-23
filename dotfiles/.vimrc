@@ -285,6 +285,7 @@
         autocmd BufNewFile,BufRead *.py setlocal expandtab tabstop=4 shiftwidth=4 softtabstop=4
         autocmd BufNewFile,BufRead *.js setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
         autocmd BufNewFile,BufRead *.pp setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
+        autocmd BufNewFile,BufRead *.nix setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
         autocmd BufNewFile,BufRead *.nomad setlocal expandtab tabstop=2 shiftwidth=2 softtabstop=2
         autocmd BufNewFile,BufRead *.php setlocal expandtab tabstop=4 shiftwidth=4 softtabstop=4
         autocmd BufNewFile,BufRead *.blade.php setlocal noexpandtab tabstop=2 shiftwidth=2 softtabstop=2
@@ -314,6 +315,7 @@
         au FileType puppet setlocal isk+=:
         " autocmd BufNewFile,BufRead *.vim setlocal expandtab shiftwidth=2 tabstop=2
         augroup filetypedetect
+            autocmd BufNewFile,BufRead *.jenkinsfile,*.Jenkinsfile,Jenkinsfile,jenkinsfile setf groovy
             autocmd BufNewFile,BufRead .tmux.conf*,tmux.conf* setf tmux
             autocmd BufNewFile,BufRead Vagrantfile setf ruby
             autocmd BufNewFile,BufRead .nginx.conf*,nginx.conf* setf nginx

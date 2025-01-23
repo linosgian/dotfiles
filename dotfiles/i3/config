@@ -45,8 +45,8 @@
     bindsym $mod+Return exec "kitty -o allow_remote_control=yes --listen-on unix:/tmp/mykitty2"
 
     # Screenshot
-    bindsym --release Print exec scrot -s ~/Pictures/Screenshots/%b%d::%H%M%S.png -e 'notify-send "Screenshot taken:" "$f"'
-    bindsym Control+Print exec scrot ~/Pictures/Screenshots/%b%d::%H%M%S.png -e 'notify-send "Screenshot taken:" "$f"'
+    bindsym --release Print exec scrot -fs ~/Pictures/Screenshots/%b%d::%H%M%S.png -e 'notify-send "Screenshot taken:" "$f"'
+    bindsym Control+Print exec scrot -f ~/Pictures/Screenshots/%b%d::%H%M%S.png -e 'notify-send "Screenshot taken:" "$f"'
 
     # kill focused window
     bindsym $mod+q kill
@@ -82,7 +82,7 @@
     bindsym $mod+o exec --no-startup-id xdg-open "$(rg --sort modified --files --vimgrep -g '!*cache*' -g '!*yogurt*' -g '!*playground*' -g '!*go-old*' -g '!*go/*' -g '!*puppet/*' -g '*.mp4' -g '*.pdf' -g '*.mkv' --no-ignore-vcs | rofi -dpi 120 -auto-select -dmenu -i -matching fuzzy -tokenize)" &> /dev/null &
 
     # split in vertical orientation toggle
-    bindsym $mod+v split toggle
+    bindsym $mod+v split vertical
 
     # enter fullscreen mode for the focused container
     bindsym $mod+f fullscreen toggle

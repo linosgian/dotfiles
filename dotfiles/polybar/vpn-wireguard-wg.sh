@@ -10,7 +10,7 @@ connection_status() {
     fi
 }
 
-config_name=wg0
+config_name=wg1
 green=#55aa55
 red=#ec5f67
 
